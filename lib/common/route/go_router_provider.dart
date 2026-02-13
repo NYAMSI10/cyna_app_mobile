@@ -1,0 +1,43 @@
+import 'package:cyna/common/route/route_name.dart';
+import 'package:cyna/features/authentication/presentation/screens/login/login_screen.dart';
+import 'package:cyna/features/authentication/presentation/screens/register/register_screen.dart';
+import 'package:cyna/features/navigation_menu.dart';
+import 'package:cyna/features/onboarding/screens/onboarding_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+final goRouterProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    // On peut laisser /onboarding ou mettre /
+    initialLocation: '/onboarding',
+
+    routes: [
+      // // Ajoute cette route racine qui redirige ou affiche un splash
+      // GoRoute(
+      //   path: '/',
+      //   builder: (context, state) =>
+      //       const Scaffold(body: Center(child: CircularProgressIndicator())),
+      // ),
+      GoRoute(
+        path: '/onboarding',
+        name: onboardingRoute,
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: loginRoute,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/register',
+        name: registerRoute,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/navigationMenu',
+        name: navigationMenuRoute,
+        builder: (context, state) => const NavigationMenu(),
+      ),
+    ],
+  );
+});
