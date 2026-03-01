@@ -7,10 +7,11 @@ import 'package:toastification/toastification.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: true, // ne l'active pas en release
-      builder: (context) => ProviderScope(child: MainApp()),
-    ),
+    // DevicePreview(
+    //   enabled: true, // ne l'active pas en release
+    //   builder: (context) => ProviderScope(child: MainApp()),
+    // ),
+    ProviderScope(child: MainApp()),
   );
 }
 

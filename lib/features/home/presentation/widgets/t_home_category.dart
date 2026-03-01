@@ -9,49 +9,17 @@ class THomeCategory extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Map<String, dynamic>> categories = [
-      {
-        'name': 'Dry Cat Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFFDE8E8)
-      },
-      {
-        'name': 'Bird Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE8F5E9)
-      },
-      {
-        'name': 'Fish Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE3F2FD)
-      },
-      {
-        'name': 'Dog Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE8F5E9)
-      },
-      {
-        'name': 'Cat Food',
-        'icon': 'assets/images/station.png',
-        'color': Color(0xFFFDE8E8)
-      },
-      {
-        'name': 'Bird Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE8F5E9)
-      },
-      {
-        'name': 'Fish Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE3F2FD)
-      },
-      {
-        'name': 'Dog Food',
-        'icon': 'assets/logos/logo.png',
-        'color': Color(0xFFE8F5E9)
-      },
+      {'name': 'Dry Cat Food fdfdfdfdf', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Bird Food', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Fish Food', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Dog Food', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Cat Food', 'icon': 'assets/images/station.png'},
+      {'name': 'Bird Food', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Fish Food', 'icon': 'assets/logos/logo.png'},
+      {'name': 'Dog Food', 'icon': 'assets/logos/logo.png'},
     ];
+
     return Column(
-      spacing: TSizes.defaultSpace,
       children: [
         Row(
           children: [
@@ -64,60 +32,53 @@ class THomeCategory extends ConsumerWidget {
             ),
             const Spacer(),
             TextButton(
-                onPressed: () {},
-                child: Text(
-                  "voir plus",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .apply(color: TColors.darkGrey),
-                ))
+              onPressed: () {},
+              child: Text(
+                "Voir plus",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .apply(color: TColors.darkGrey),
+              ),
+            )
           ],
         ),
+        const SizedBox(height: 16),
         SizedBox(
-          height: 50, // Hauteur de la "pilule"
+          height: 130, // Hauteur suffisante pour la boîte + le texte
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(
-                horizontal: 20), // Aligne avec ton design
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             itemCount: categories.length,
-            separatorBuilder: (context, index) =>
-                const SizedBox(width: 12), // L'espace entre les items
+            separatorBuilder: (context, index) => const SizedBox(width: 16),
             itemBuilder: (context, index) {
               final category = categories[index];
+              return Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: TColors.secondColor
+                          .withOpacity(0.1), // Couleur de fond pour la boîte
 
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: TColors.secondColor,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  children: [
-                    // Le cercle de couleur pour l'icône
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: category['color'],
-                        shape: BoxShape.circle,
-                      ),
-                      child:
-                          Image.asset(category['icon'], width: 20, height: 20),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(width: 10),
-                    // Le texte de la catégorie
-                    Text(
+                    child: Image.asset(category['icon']),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: 80, // Limite la largeur du texte
+                    child: Text(
                       category['name'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: TColors.white, // Ton Cyan foncé
-                      ),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           ),

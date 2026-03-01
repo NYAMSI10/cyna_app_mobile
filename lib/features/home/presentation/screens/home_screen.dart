@@ -1,3 +1,4 @@
+import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
 import 'package:cyna/features/home/presentation/widgets/t_home_carousel.dart';
 import 'package:cyna/features/home/presentation/widgets/t_home_category.dart';
@@ -20,18 +21,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: SingleChildScrollView(
           child: Padding(
         padding: isMobile
-            ? const EdgeInsets.only(top: 60, left: 20, right: 20)
+            ? const EdgeInsets.only(top: 60, left: 10, right: 10)
             : const EdgeInsets.symmetric(horizontal: 60.0, vertical: 30.0),
         child: Column(
           children: [
-            // Header homex
+            // Header home
+            const THomeHeader(),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: TSizes.defaultSpace),
 
             // Carousel
             THomeCarousel(),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: TSizes.defaultSpace),
 
             // Categories
             THomeCategory(),
