@@ -1,5 +1,4 @@
 import 'package:cyna/common/constant/colors.dart';
-import 'package:cyna/common/constant/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
