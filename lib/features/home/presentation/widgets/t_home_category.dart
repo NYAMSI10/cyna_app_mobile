@@ -1,86 +1,127 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/features/category/presentation/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class THomeCategory extends ConsumerWidget {
   const THomeCategory({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // La nouvelle liste avec uniquement 'name' et 'image'
     final List<Map<String, dynamic>> categories = [
-      {'name': 'Dry Cat Food fdfdfdfdf', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Bird Food', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Fish Food', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Dog Food', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Cat Food', 'icon': 'assets/images/station.png'},
-      {'name': 'Bird Food', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Fish Food', 'icon': 'assets/logos/logo.png'},
-      {'name': 'Dog Food', 'icon': 'assets/logos/logo.png'},
+      {
+        'name': 'Vêtements',
+        'image':
+            'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=500',
+      },
+      {
+        'name': 'Accessoires',
+        'image':
+            'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500',
+      },
+      {
+        'name': 'Chaussures',
+        'image':
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500',
+      },
+      {
+        'name': 'Nouveautés',
+        'image':
+            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
+      },
+      {
+        'name': 'Nouveautés',
+        'image':
+            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
+      },
+      {
+        'name': 'Nouveautés',
+        'image':
+            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
+      },
+      {
+        'name': 'Nouveautés',
+        'image':
+            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
+      },
     ];
 
     return Column(
       children: [
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Catégories",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .apply(fontWeightDelta: 5, fontSizeDelta: -3),
+              "Nos Catégories",
+              style: Theme.of(context).textTheme.titleMedium!.apply(
+                    fontWeightDelta: 5,
+                  ),
             ),
-            const Spacer(),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "Voir plus",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .apply(color: TColors.darkGrey),
+            const SizedBox(height: 16),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                mainAxisExtent: 130,
               ),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CategoryScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: TColors.secondColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        // Ajout de ClipRRect pour respecter les bords arrondis du Container
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            category['image'], // Appel de la bonne clé 'image'
+                            fit: BoxFit.cover,
+                            // Ajout conseillé : gère le chargement et les erreurs d'image réseau
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.broken_image,
+                                    color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: 80,
+                      child: Text(
+                        category['name'],
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                );
+              },
             )
           ],
-        ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 130, // Hauteur suffisante pour la boîte + le texte
-          child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: categories.length,
-            separatorBuilder: (context, index) => const SizedBox(width: 16),
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return Column(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: TColors.secondColor
-                          .withOpacity(0.1), // Couleur de fond pour la boîte
-
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Image.asset(category['icon']),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: 80, // Limite la largeur du texte
-                    child: Text(
-                      category['name'],
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
         ),
       ],
     );
