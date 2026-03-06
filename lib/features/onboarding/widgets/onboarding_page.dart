@@ -32,9 +32,8 @@ class TOnBoardingPage extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: isMobile ? 24 : 36, // Plus gros sur tablette
                   color: Colors.white,
                 ),
           ),
@@ -42,7 +41,7 @@ class TOnBoardingPage extends StatelessWidget {
           Text(
             subTitle,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Colors.white,
                 ),
           ),

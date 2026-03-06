@@ -121,16 +121,19 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       activeColor: TColors.secondColor,
                       onChanged: (v) {}),
                 ),
-                const SizedBox(width: 8),
-                Text("Rester connecté",
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text("Se souvenir de moi",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .apply(fontSizeDelta: -1)),
                 const Spacer(),
                 TextButton(
                   onPressed: () {},
-                  child: const Text("Mot de passe oublié ?",
-                      style: TextStyle(
-                          color: TColors.secondColor,
-                          fontWeight: FontWeight.w600)),
+                  child: Text("Mot de passe oublié ?",
+                      style: Theme.of(context).textTheme.bodyMedium!.apply(
+                          fontWeightDelta: 2,
+                          fontSizeDelta: -1,
+                          color: TColors.secondColor)),
                 ),
               ],
             ),

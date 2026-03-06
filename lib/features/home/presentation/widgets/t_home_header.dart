@@ -35,13 +35,13 @@ class _THomeHeaderState extends ConsumerState<THomeHeader> {
             children: [
               Text(
                 "Bon retour !",
-                style: Theme.of(context).textTheme.titleMedium!.apply(
+                style: Theme.of(context).textTheme.titleSmall!.apply(
                       fontWeightDelta: 5,
                     ),
               ),
               Text(
                 "John Doe",
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),
@@ -80,9 +80,9 @@ class _THomeHeaderState extends ConsumerState<THomeHeader> {
             Text(
               "Rechercher",
               style: Theme.of(context).textTheme.bodyMedium!.apply(
-                  color: TColors.darkGrey,
-                  fontWeightDelta: 2,
-                  fontSizeDelta: 2),
+                    color: TColors.darkGrey,
+                    fontWeightDelta: 2,
+                  ),
             ),
             const Spacer(),
             Container(

@@ -54,7 +54,8 @@ class CategoryScreen extends ConsumerWidget {
           style: TextStyle(
               color: Colors.white,
               overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
           maxLines: 1,
         ),
         centerTitle: true,
@@ -87,7 +88,7 @@ class CategoryScreen extends ConsumerWidget {
                 // Nom de la catégorie superposé
                 Text(
                   'Accessoires',
-                  style: Theme.of(context).textTheme.headlineMedium!.apply(
+                  style: Theme.of(context).textTheme.headlineSmall!.apply(
                         color: Colors.white,
                         fontWeightDelta: 2, // Rend le texte un peu plus gras
                       ),
@@ -103,7 +104,7 @@ class CategoryScreen extends ConsumerWidget {
                 'Découvrez notre sélection exclusive de produits pour cette catégorie. Trouvez ce qu\'il vous faut au meilleur prix.',
                 style: Theme.of(context).textTheme.bodyMedium!.apply(
                       color: Colors.grey[700],
-                      heightFactor: 1.5, // Interligne plus aéré pour la lecture
+                      heightFactor: 1, // Interligne plus aéré pour la lecture
                     ),
                 textAlign: TextAlign.justify,
               ),
@@ -116,7 +117,7 @@ class CategoryScreen extends ConsumerWidget {
                 children: [
                   Text(
                     "${categoryProducts.length} Produits",
-                    style: Theme.of(context).textTheme.titleMedium!.apply(
+                    style: Theme.of(context).textTheme.titleSmall!.apply(
                           color: Colors.black,
                           fontWeightDelta: 2, // Rend le texte un peu plus gras
                         ),

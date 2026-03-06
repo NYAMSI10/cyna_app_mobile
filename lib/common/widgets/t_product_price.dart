@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TProductPrice extends ConsumerWidget {
   const TProductPrice({
-    Key? key,
+    super.key,
     required this.curencySign,
     required this.price,
     this.isLarge = false,
     this.maxlines = 1,
     this.lignThrough = false,
-  }) : super(key: key);
+  });
   final String curencySign, price;
   final bool isLarge;
   final int maxlines;

@@ -28,52 +28,64 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         backgroundColor: TColors.primaryColor,
         items: [
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.home,
+            child: Icon(
+                size: 20,
+                Iconsax.home,
                 color: _currentIndex == 0
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 0 ? FontWeight.bold : null),
             label: 'Accueil',
             labelStyle: TextStyle(
+                fontSize: 12,
                 color: _currentIndex == 0
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 0 ? FontWeight.bold : null),
           ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.search_favorite,
+            child: Icon(
+                size: 20,
+                Iconsax.search_favorite,
                 color: _currentIndex == 1
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 1 ? FontWeight.bold : null),
             label: 'Rechercher',
             labelStyle: TextStyle(
+                fontSize: 12,
                 color: _currentIndex == 1
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 1 ? FontWeight.bold : null),
           ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.shopping_cart,
+            child: Icon(
+                size: 20,
+                Iconsax.shopping_cart,
                 color: _currentIndex == 2
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 2 ? FontWeight.bold : null),
             label: 'Pannier',
             labelStyle: TextStyle(
+                fontSize: 12,
                 color: _currentIndex == 2
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 2 ? FontWeight.bold : null),
           ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.user,
+            child: Icon(
+                size: 20,
+                Iconsax.user,
                 color: _currentIndex == 3
                     ? TColors.primaryColor
                     : TColors.darkGrey,
                 fontWeight: _currentIndex == 3 ? FontWeight.bold : null),
             label: 'Profile',
             labelStyle: TextStyle(
+                fontSize: 12,
                 color: _currentIndex == 3
                     ? TColors.primaryColor
                     : TColors.darkGrey,

@@ -41,6 +41,7 @@ dependencies:
   geolocator: ^14.0.2
   flutter_svg: ^2.2.3
   carousel_slider: ^5.1.2
+  flutter_launcher_icons: ^0.14.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,6 +51,25 @@ dev_dependencies:
   json_serializable: ^6.7.0
   retrofit_generator: ^10.2.1
   flutter_lints: ^6.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logos/logo.png"
+  background_color: "#ffffff"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/logos/logo.png"
+  image_dark: "assets/logos/logo.png"
+
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/logos/logo.png"
+    image_dark: "assets/logos/logo.png"
+
+  web: false
 
 flutter:
   uses-material-design: true

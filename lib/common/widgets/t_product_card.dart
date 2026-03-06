@@ -102,7 +102,9 @@ class TProductCard extends ConsumerWidget {
               children: [
                 Text(
                   product['name'],
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodySmall!.apply(
+                        fontSizeDelta: 1,
+                      ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -115,7 +117,7 @@ class TProductCard extends ConsumerWidget {
                       "${product['price'].toStringAsFixed(2)} €",
                       style: Theme.of(context)
                           .textTheme
-                          .titleMedium!
+                          .titleSmall!
                           .apply(fontWeightDelta: 2),
                     ),
 

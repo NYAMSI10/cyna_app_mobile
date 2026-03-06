@@ -22,7 +22,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: SingleChildScrollView(
           child: Padding(
         padding: isMobile
-            ? const EdgeInsets.only(top: 60, left: 10, right: 10)
+            ? const EdgeInsets.only(top: 60, left: 20, right: 20)
             : const EdgeInsets.symmetric(horizontal: 60.0, vertical: 30.0),
         child: Column(
           children: [

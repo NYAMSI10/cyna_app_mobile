@@ -90,7 +90,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       child: const Text(
         TTexts.next,
         style: TextStyle(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -108,7 +108,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             child: const Text(TTexts.signIn,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600)),
           ),
         ),
@@ -121,7 +121,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             child: const Text(TTexts.signUp,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600)),
           ),
         ),
@@ -133,7 +133,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     return ElevatedButton.styleFrom(
       backgroundColor: TColors.secondColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-      minimumSize: const Size(double.infinity, 54),
+      minimumSize: const Size(double.infinity, 50),
       elevation: 0,
     );
   }
