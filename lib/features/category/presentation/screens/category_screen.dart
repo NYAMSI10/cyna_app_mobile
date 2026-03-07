@@ -55,7 +55,7 @@ class CategoryScreen extends ConsumerWidget {
               color: Colors.white,
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold,
-              fontSize: 17),
+              fontSize: 20),
           maxLines: 1,
         ),
         centerTitle: true,
