@@ -137,6 +137,11 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
           ),
           TSettingsMenuTile(
             onTap: () => context.push('/abonnement'),
+            icon: Iconsax.shopping_cart,
+            title: 'Mes Commandes',
+          ),
+          TSettingsMenuTile(
+            onTap: () => context.push('/abonnement'),
             icon: Iconsax.location,
             title: 'Mes Adresses',
           ),
@@ -157,7 +162,6 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
             icon: Iconsax.info_circle,
             title: 'À propos',
           ),
-          const SizedBox(height: 40),
 
           // Bouton de déconnexion
           TextButton.icon(
