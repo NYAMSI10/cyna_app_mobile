@@ -1,4 +1,5 @@
 import 'package:cyna/common/route/route_name.dart';
+import 'package:cyna/features/abonnement/presentation/screens/abonnement_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/login/login_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/register/register_screen.dart';
 import 'package:cyna/features/navigation_menu.dart';
@@ -10,7 +11,7 @@ import 'package:go_router/go_router.dart';
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     // On peut laisser /onboarding ou mettre /
-    initialLocation: '/navigationMenu',
+    initialLocation: '/login',
 
     routes: [
       // // Ajoute cette route racine qui redirige ou affiche un splash
@@ -43,6 +44,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/userInfo',
         name: userInfoRoute,
         builder: (context, state) => const UserInfoScreen(),
+      ),
+      GoRoute(
+        path: '/abonnement',
+        name: abonnementRoute,
+        builder: (context, state) => const AbonnementScreen(),
       ),
     ],
   );

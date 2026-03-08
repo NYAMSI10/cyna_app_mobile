@@ -4,14 +4,15 @@ import 'package:cyna/common/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserInfoScreen extends ConsumerStatefulWidget {
-  const UserInfoScreen({super.key});
+class PasswordChangeScreen extends ConsumerStatefulWidget {
+  const PasswordChangeScreen({super.key});
 
   @override
-  ConsumerState<UserInfoScreen> createState() => _UserInfoScreenState();
+  ConsumerState<PasswordChangeScreen> createState() =>
+      _PasswordChangeScreenState();
 }
 
-class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
+class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -27,7 +28,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
             backgroundColor: TColors.primaryColor,
             automaticallyImplyLeading: false,
             title: const Text(
-              "Mes Informations",
+              "Changer le mot de passe",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -58,7 +59,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                       const SizedBox(height: TSizes.spaceBtwInputFields / 2),
                       TextFormField(
                         cursorColor: TColors.darkGrey,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -68,7 +69,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                             ),
                           ),
                           labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'Prénom',
+                          labelText: 'Mot de passe actuel',
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -76,7 +77,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                       ),
                       TextFormField(
                         cursorColor: TColors.darkGrey,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -86,7 +87,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                             ),
                           ),
                           labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'Nom',
+                          labelText: 'Nouveau mot de passe',
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -104,7 +105,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                             ),
                           ),
                           labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'Adresse Email',
+                          labelText: 'Confirmer le nouveau mot de passe',
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -119,7 +120,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: () async {},
-                        child: Text("Modifier mes informations",
+                        child: Text("Modifier le mot de passe",
                             style: Theme.of(context).textTheme.bodyLarge!.apply(
                                 color: Colors.white, fontWeightDelta: 2)),
                       ),
