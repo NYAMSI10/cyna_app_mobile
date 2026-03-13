@@ -1,5 +1,6 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/features/abonnement/presentation/widgets/t_abonnement_title.dart';
+import 'package:cyna/features/commande/presentation/widgets/t_filters_row.dart';
 import 'package:cyna/features/commande/presentation/widgets/t_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -243,11 +244,38 @@ class CommandeScreenState extends ConsumerState<CommandeScreen> {
       ),
       body: Column(
         children: [
-          // _buildSearchBar(),
           TSearchBar(
               searchController: _searchController,
               onChanged: (_) => setState(() {})),
-          _buildFiltersRow(),
+          // _buildFiltersRow(),
+          TFiltersRow(
+            years: years,
+            selectedYear: _selectedYear!,
+            selectedType: _selectedType!,
+            selectedStatus: _selectedStatus!,
+            onYearChanged: (value) {
+              setState(() {
+                _selectedYear = value ?? 'Tous';
+              });
+            },
+            onTypeChanged: (value) {
+              setState(() {
+                _selectedType = value ?? 'Tous';
+              });
+            },
+            onStatusChanged: (value) {
+              setState(() {
+                _selectedStatus = value ?? 'Toutes';
+              });
+            },
+            onResetFilters: () {
+              setState(() {
+                _selectedYear = 'Tous';
+                _selectedType = 'Tous';
+                _selectedStatus = 'Toutes';
+              });
+            },
+          ),
           const Divider(height: 1),
           Expanded(
             child: filteredOrders.isEmpty
@@ -267,126 +295,6 @@ class CommandeScreenState extends ConsumerState<CommandeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (_) => setState(() {}),
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                    setState(() {});
-                  },
-                )
-              : null,
-          hintText: 'Rechercher un service ou une date…',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          isDense: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFiltersRow() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            _buildYearDropdown(),
-            const SizedBox(width: 8),
-            _buildTypeDropdown(),
-            const SizedBox(width: 8),
-            _buildStatusDropdown(),
-            const SizedBox(width: 8),
-            if (_selectedYear != 'Tous' ||
-                _selectedType != 'Tous' ||
-                _selectedStatus != 'Toutes')
-              TextButton.icon(
-                onPressed: () {
-                  setState(() {
-                    _selectedYear = 'Tous';
-                    _selectedType = 'Tous';
-                    _selectedStatus = 'Toutes';
-                  });
-                },
-                icon: const Icon(Icons.filter_alt_off),
-                label: const Text('Réinitialiser'),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildYearDropdown() {
-    final items = <String>['Tous', ..._years.map((e) => e.toString())];
-    return DropdownButton<String>(
-      value: _selectedYear,
-      onChanged: (value) {
-        setState(() {
-          _selectedYear = value;
-        });
-      },
-      items: items
-          .map(
-            (year) => DropdownMenuItem<String>(
-              value: year,
-              child: Text('Année: $year'),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Widget _buildTypeDropdown() {
-    const types = ['Tous', 'SOC', 'EDR', 'XDR'];
-    return DropdownButton<String>(
-      value: _selectedType,
-      onChanged: (value) {
-        setState(() {
-          _selectedType = value;
-        });
-      },
-      items: types
-          .map(
-            (type) => DropdownMenuItem<String>(
-              value: type,
-              child: Text('Type: $type'),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Widget _buildStatusDropdown() {
-    const statuses = ['Toutes', 'Actives', 'Résiliées'];
-    return DropdownButton<String>(
-      value: _selectedStatus,
-      onChanged: (value) {
-        setState(() {
-          _selectedStatus = value;
-        });
-      },
-      items: statuses
-          .map(
-            (status) => DropdownMenuItem<String>(
-              value: status,
-              child: Text('Statut: $status'),
-            ),
-          )
-          .toList(),
     );
   }
 
