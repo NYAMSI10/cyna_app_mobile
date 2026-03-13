@@ -136,7 +136,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
             title: 'Mes Abonnements',
           ),
           TSettingsMenuTile(
-            onTap: () => context.push('/abonnement'),
+            onTap: () => context.push('/commande'),
             icon: Iconsax.shopping_cart,
             title: 'Mes Commandes',
           ),
