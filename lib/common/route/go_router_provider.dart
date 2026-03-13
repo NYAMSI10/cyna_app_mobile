@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     // On peut laisser /onboarding ou mettre /
-    initialLocation: '/login',
+    initialLocation: '/onboarding',
 
     routes: [
       // // Ajoute cette route racine qui redirige ou affiche un splash
