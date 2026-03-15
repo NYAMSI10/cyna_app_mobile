@@ -1,3 +1,4 @@
+import 'package:cyna/common/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,7 @@ class _TSearchBarState extends ConsumerState<TSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+      padding: Responsive.pagePadding(context),
       child: TextField(
         controller: widget.searchController,
         onChanged: widget.onChanged,

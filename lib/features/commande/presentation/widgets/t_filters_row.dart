@@ -1,5 +1,6 @@
 // t_filters_row.dart
 
+import 'package:cyna/common/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 
 class TFiltersRow extends StatelessWidget {
@@ -37,7 +38,7 @@ class TFiltersRow extends StatelessWidget {
     const statuses = ['Toutes', 'Actives', 'Résiliées'];
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      padding: Responsive.pagePadding(context),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(

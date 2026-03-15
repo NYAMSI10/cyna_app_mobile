@@ -104,7 +104,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
                 context: context,
                 barrierColor: Colors.black54,
                 enableDrag: true,
-                expand: false,
+                expand: true,
                 duration:
                     const Duration(milliseconds: 500), // Plus lent et fluide
                 backgroundColor: Colors
@@ -141,7 +141,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
             title: 'Mes Commandes',
           ),
           TSettingsMenuTile(
-            onTap: () => context.push('/abonnement'),
+            onTap: () => context.push('/adresse'),
             icon: Iconsax.location,
             title: 'Mes Adresses',
           ),

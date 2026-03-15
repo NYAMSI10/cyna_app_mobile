@@ -1,5 +1,6 @@
 import 'package:cyna/common/route/route_name.dart';
 import 'package:cyna/features/abonnement/presentation/screens/abonnement_screen.dart';
+import 'package:cyna/features/adresse/presentation/screen/adresse_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/login/login_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/register/register_screen.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
@@ -55,6 +56,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/commande',
         name: commandeRoute,
         builder: (context, state) => const CommandeScreen(),
+      ),
+      GoRoute(
+        path: '/adresse',
+        name: adresseRoute,
+        builder: (context, state) => const AdresseScreen(),
       ),
     ],
   );
