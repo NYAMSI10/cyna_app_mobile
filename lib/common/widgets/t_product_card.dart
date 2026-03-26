@@ -1,6 +1,6 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/widgets/icons/t_circular_icon.dart';
-import 'package:cyna/features/product/presentation/screen/product_detail_screen.dart';
+import 'package:cyna/features/product-detail/presentation/screen/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart'; // N'oublie pas l'import pour Iconsax.heart

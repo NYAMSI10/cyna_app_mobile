@@ -2,27 +2,43 @@ import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/constant/mok_data.dart';
 import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
-import 'package:cyna/features/product/presentation/widgets/circle_action_button.dart';
-import 'package:cyna/features/product/presentation/widgets/t_info_badge.dart';
-import 'package:cyna/features/product/presentation/widgets/t_plan_tile.dart';
-import 'package:cyna/features/product/presentation/widgets/t_product_detail_carousel.dart';
-import 'package:cyna/features/product/presentation/widgets/t_section_card.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/circle_action_button.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/t_info_badge.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/t_plan_tile.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/t_product_detail_carousel.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/t_section_card.dart';
+import 'package:cyna/features/product-detail/presentation/widgets/t_selectable_plan_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:readmore/readmore.dart';
 
-class ProductDetailScreen extends ConsumerWidget {
+enum _PlanType { monthly, yearly }
+
+class ProductDetailScreen extends ConsumerStatefulWidget {
   const ProductDetailScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProductDetailScreen> createState() =>
+      _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
+  _PlanType _selectedPlan = _PlanType.yearly;
+
+  @override
+  Widget build(BuildContext context) {
     final product = TMokData.productDetail;
     final monthlyPrice = (product['priceMonth'] as num).toDouble();
     final yearlyPrice = (product['priceYear'] as num).toDouble();
     final stock = product['stock'] as int;
     final yearlyEquivalent = monthlyPrice * 12;
     final yearlySavings = yearlyEquivalent - yearlyPrice;
+    final isYearlySelected = _selectedPlan == _PlanType.yearly;
+    final selectedPriceLabel = isYearlySelected
+        ? '${yearlyPrice.toStringAsFixed(2)} € / an'
+        : '${monthlyPrice.toStringAsFixed(2)} € / mois';
+    final selectedPlanTitle =
+        isYearlySelected ? 'Formule annuelle' : 'Formule mensuelle';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FC),
@@ -66,7 +82,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${monthlyPrice.toStringAsFixed(2)} € / mois',
+                      selectedPriceLabel,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w800,
                             color: const Color(0xFF111827),
@@ -74,7 +90,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Ou ${yearlyPrice.toStringAsFixed(2)} € / an',
+                      selectedPlanTitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: const Color(0xFF6B7280),
                           ),
@@ -86,7 +102,14 @@ class ProductDetailScreen extends ConsumerWidget {
                 child: SizedBox(
                   height: 54,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('$selectedPlanTitle sélectionnée'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor: TColors.secondColor,
@@ -94,10 +117,12 @@ class ProductDetailScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: const Text(
-                      'Choisir cette offre',
+                    child: Text(
+                      isYearlySelected
+                          ? 'Choisir l’annuel'
+                          : 'Choisir le mensuel',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
@@ -290,24 +315,34 @@ class ProductDetailScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 18),
-                  TPlanTile(
-                    title: 'Mensuel',
-                    priceLabel: '${monthlyPrice.toStringAsFixed(2)} € / mois',
-                    subtitle: 'Flexible, sans engagement long terme',
-                    accentColor: const Color(0xFFF3E8FF),
-                    borderColor: const Color(0xFFD8B4FE),
-                    icon: Icons.calendar_today_outlined,
+                  TSelectablePlanTile(
+                    isSelected: _selectedPlan == _PlanType.monthly,
+                    onTap: () =>
+                        setState(() => _selectedPlan = _PlanType.monthly),
+                    child: TPlanTile(
+                      title: 'Mensuel',
+                      priceLabel: '${monthlyPrice.toStringAsFixed(2)} € / mois',
+                      subtitle: 'Flexible, sans engagement long terme',
+                      accentColor: const Color(0xFFF3E8FF),
+                      borderColor: const Color(0xFFD8B4FE),
+                      icon: Icons.calendar_today_outlined,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  TPlanTile(
-                    title: 'Annuel',
-                    priceLabel: '${yearlyPrice.toStringAsFixed(2)} € / an',
-                    subtitle:
-                        'Vous économisez ${yearlySavings.toStringAsFixed(2)} € par an',
-                    accentColor: const Color(0xFFDBEAFE),
-                    borderColor: const Color(0xFF93C5FD),
-                    icon: Icons.auto_awesome_outlined,
-                    tag: 'Meilleure valeur',
+                  TSelectablePlanTile(
+                    isSelected: _selectedPlan == _PlanType.yearly,
+                    onTap: () =>
+                        setState(() => _selectedPlan = _PlanType.yearly),
+                    child: TPlanTile(
+                      title: 'Annuel',
+                      priceLabel: '${yearlyPrice.toStringAsFixed(2)} € / an',
+                      subtitle:
+                          'Vous économisez ${yearlySavings.toStringAsFixed(2)} € par an',
+                      accentColor: const Color(0xFFDBEAFE),
+                      borderColor: const Color(0xFF93C5FD),
+                      icon: Icons.auto_awesome_outlined,
+                      tag: 'Meilleure valeur',
+                    ),
                   ),
                 ],
               ),

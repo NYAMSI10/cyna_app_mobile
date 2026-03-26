@@ -65,8 +65,8 @@ class TProductDetailCarousel extends ConsumerWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: ref.watch(onBoardingControllerProvider) == i
-                          ? TColors.primaryColor
-                          : TColors.primaryColor.withOpacity(0.3),
+                          ? TColors.secondColor
+                          : TColors.white,
                     ),
                   )
               ],
