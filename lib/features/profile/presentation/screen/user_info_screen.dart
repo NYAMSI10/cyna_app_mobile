@@ -30,7 +30,7 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
               "Mes Informations",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -4,7 +4,6 @@ import 'package:cyna/features/adresse/presentation/screen/adresse_form_screen.da
 import 'package:cyna/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AdresseScreen extends ConsumerStatefulWidget {

@@ -31,7 +31,7 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
               "Changer le mot de passe",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
             ),

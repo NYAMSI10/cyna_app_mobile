@@ -46,7 +46,7 @@ class AbonnementScreenState extends ConsumerState<AbonnementScreen> {
           "Mes Abonnements",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 17,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -10,13 +10,13 @@ class TOrderCard extends StatelessWidget {
   final Color Function(OrderStatus) statusColor;
 
   const TOrderCard({
-    Key? key,
+    super.key,
     required this.order,
     required this.formatDate,
     required this.formatAmount,
     required this.statusLabel,
     required this.statusColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

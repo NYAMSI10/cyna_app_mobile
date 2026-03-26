@@ -55,7 +55,7 @@ class CategoryScreen extends ConsumerWidget {
               color: Colors.white,
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold,
-              fontSize: 20),
+              fontSize: 17),
           maxLines: 1,
         ),
         centerTitle: true,
@@ -119,11 +119,10 @@ class CategoryScreen extends ConsumerWidget {
                     "${categoryProducts.length} Produits",
                     style: Theme.of(context).textTheme.titleSmall!.apply(
                           color: Colors.black,
-                          fontWeightDelta: 2, // Rend le texte un peu plus gras
+                          fontWeightDelta: 2,
                         ),
                   ),
-                  const Icon(Icons.sort,
-                      color: Colors.grey), // Icône pour un futur filtre/tri
+                  const Icon(Icons.sort, color: Colors.grey),
                 ],
               ),
             ),
