@@ -1,3 +1,4 @@
+import 'package:cyna/common/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 
 class TPlanTile extends StatelessWidget {
@@ -23,7 +24,7 @@ class TPlanTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.pagePadding(context),
       decoration: BoxDecoration(
         color: accentColor,
         borderRadius: BorderRadius.circular(20),

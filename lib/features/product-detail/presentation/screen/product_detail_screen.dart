@@ -2,6 +2,7 @@ import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/constant/mok_data.dart';
 import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/common/widgets/t_product_card.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/circle_action_button.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_info_badge.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_plan_tile.dart';
@@ -28,6 +29,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final product = TMokData.productDetail;
+    final List<Map<String, dynamic>> products = TMokData.categoryProducts;
     final monthlyPrice = (product['priceMonth'] as num).toDouble();
     final yearlyPrice = (product['priceYear'] as num).toDouble();
     final stock = product['stock'] as int;
@@ -118,9 +120,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ),
                     ),
                     child: Text(
-                      isYearlySelected
-                          ? 'Choisir l’annuel'
-                          : 'Choisir le mensuel',
+                      'Ajouter au panier',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
@@ -268,8 +268,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 colorClickableText: TColors.secondColor,
                 trimCollapsedText: 'Voir plus',
                 trimExpandedText: 'Voir moins',
+                lessStyle: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: TColors.secondColor,
+                ),
                 moreStyle: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: TColors.secondColor),
               ),
@@ -279,7 +284,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             // Choisissez votre formule
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: Responsive.pagePadding(context),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
@@ -348,6 +353,33 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               ),
             ),
             const SizedBox(height: TSizes.spaceBtwSections),
+            Text(
+              "Les produits similaires",
+              style: Theme.of(context).textTheme.titleMedium!.apply(
+                    color: Colors.black,
+                    fontWeightDelta: 2,
+                  ),
+            ),
+            const SizedBox(height: 16),
+
+            // --- 4. LA GRILLE DES PRODUITS ---
+            GridView.builder(
+              shrinkWrap: true, // Indispensable ici
+              physics:
+                  const NeverScrollableScrollPhysics(), // Indispensable ici
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                mainAxisExtent: 260, // La même hauteur fixe que sur l'accueil
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                // On appelle simplement la carte produit que tu as déjà codée !
+                return TProductCard(product: products[index]);
+              },
+            ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:cyna/common/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 
 class TSectionCard extends StatelessWidget {
@@ -14,7 +15,7 @@ class TSectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.pagePadding(context),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),

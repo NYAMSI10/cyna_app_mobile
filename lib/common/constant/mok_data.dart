@@ -24,4 +24,39 @@ Enfin, choisir le Quantum Pro, c'est investir dans un système évolutif. Les mi
     'priceYear': 149.99,
     'stock': 342,
   };
+
+  static final List<Map<String, dynamic>> categoryProducts = [
+    {
+      'id': 1,
+      'name': 'Veste en Lin Premium',
+      'price': 129.99,
+      'image':
+          'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=500',
+      'stock': 10,
+    },
+    {
+      'id': 2,
+      'name': 'Sac à dos Urbain',
+      'price': 85.0,
+      'image':
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500',
+      'stock': 0, // Rupture de stock pour tester le badge
+    },
+    {
+      'id': 3,
+      'name': 'Sneakers White Edition',
+      'price': 110.5,
+      'image':
+          'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500',
+      'stock': 12,
+    },
+    {
+      'id': 4,
+      'name': 'Montre Minimaliste',
+      'price': 199.0,
+      'image':
+          'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=500',
+      'stock': 5,
+    },
+  ];
 }
