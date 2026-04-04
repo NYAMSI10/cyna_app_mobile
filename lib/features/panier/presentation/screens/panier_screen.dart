@@ -137,6 +137,14 @@ class _PanierScreenState extends ConsumerState<PanierScreen> {
       backgroundColor: const Color(0xFFF4F4F6),
       body: Column(
         children: [
+          CartSummary(
+            subTotal: _subTotal,
+            promotion: _promotion,
+            taxes: _taxes,
+            total: _grandTotal,
+            moneyFormatter: _moneyFormatter,
+            canCheckout: _canCheckout,
+          ),
           Expanded(
             child: _items.isEmpty
                 ? const Center(
@@ -149,7 +157,7 @@ class _PanierScreenState extends ConsumerState<PanierScreen> {
                     ),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(3),
                     itemBuilder: (context, index) {
                       final item = _items[index];
                       return ServiceCard(
@@ -165,17 +173,9 @@ class _PanierScreenState extends ConsumerState<PanierScreen> {
                       );
                     },
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 2),
                     itemCount: _items.length,
                   ),
-          ),
-          CartSummary(
-            subTotal: _subTotal,
-            promotion: _promotion,
-            taxes: _taxes,
-            total: _grandTotal,
-            moneyFormatter: _moneyFormatter,
-            canCheckout: _canCheckout,
           ),
         ],
       ),

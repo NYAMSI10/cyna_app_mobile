@@ -15,7 +15,7 @@ class SummaryLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = TextStyle(
-      fontSize: emphasized ? 18 : 15,
+      fontSize: 15,
       fontWeight: emphasized ? FontWeight.w700 : FontWeight.w500,
       color: const Color(0xFF161628),
     );

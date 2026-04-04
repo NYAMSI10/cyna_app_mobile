@@ -21,8 +21,8 @@ class StepButton extends StatelessWidget {
         customBorder: const CircleBorder(),
         onTap: onTap,
         child: SizedBox(
-          height: 34,
-          width: 34,
+          height: 30,
+          width: 30,
           child: Icon(
             icon,
             color: isPrimary ? Colors.white : const Color(0xFF1D1D2A),

@@ -60,37 +60,15 @@ class ServiceCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF161628),
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              item.unitLabel,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF8C8C95),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: onRemove,
-                        icon: const Icon(Icons.close, color: Color(0xFF9F9FA7)),
-                      ),
-                    ],
+                  Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    item.unitLabel,
+                    style: Theme.of(context).textTheme.bodySmall?.apply(
+                        color: const Color(0xFF8C8C95), fontSizeDelta: 1),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -134,24 +112,38 @@ class ServiceCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          moneyFormatter.format(item.totalPrice),
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: const Color(0xFF080B35),
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                  Text(
+                    moneyFormatter.format(item.totalPrice),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: const Color(0xFF080B35),
+                          fontWeight: FontWeight.w700,
                         ),
-                      ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    spacing: 10,
+                    children: [
                       QuantityStepper(
                         quantity: item.quantity,
                         enabled: item.isUnavailable == false,
                         onIncrement: onIncrement,
                         onDecrement: onDecrement,
                       ),
+                      Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          shape: BoxShape.rectangle,
+                          border: Border.all(color: const Color(0xFFDEDEE4)),
+                        ),
+                        child: TextButton(
+                            onPressed: onRemove,
+                            child: Text(
+                              "supprimer",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            )),
+                      )
                     ],
                   ),
                   if (item.isUnavailable) ...[

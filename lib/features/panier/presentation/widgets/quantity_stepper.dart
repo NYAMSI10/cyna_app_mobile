@@ -18,7 +18,7 @@ class QuantityStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 46,
+      height: 35,
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F7),
@@ -31,12 +31,12 @@ class QuantityStepper extends StatelessWidget {
             onTap: enabled ? onDecrement : null,
           ),
           SizedBox(
-            width: 34,
+            width: 40,
             child: Text(
               quantity.toString(),
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
               ),
             ),

@@ -9,10 +9,10 @@ class AdresseFormScreen extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AdresseFormScreenState();
+      AdresseFormScreenState();
 }
 
-class _AdresseFormScreenState extends ConsumerState<AdresseFormScreen> {
+class AdresseFormScreenState extends ConsumerState<AdresseFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override

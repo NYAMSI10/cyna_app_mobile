@@ -102,6 +102,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         Expanded(
           child: ElevatedButton(
             onPressed: () {
+              getStorage.write('has_seen_onboarding', true);
               context.go('/login');
             },
             style: _buttonStyle(),

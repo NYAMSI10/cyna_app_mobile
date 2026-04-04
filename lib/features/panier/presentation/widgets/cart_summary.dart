@@ -1,4 +1,5 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/common/helpers/responsive.dart';
 import 'package:cyna/features/panier/presentation/widgets/summary_line.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +25,9 @@ class CartSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      padding: Responsive.pagePadding(context),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
         boxShadow: [
           BoxShadow(
             color: Color(0x17000000),
@@ -44,33 +44,15 @@ class CartSummary extends StatelessWidget {
             SummaryLine(
               label: 'Sous-total',
               value: moneyFormatter.format(subTotal),
-            ),
-            const SizedBox(height: 6),
-            SummaryLine(
-              label: 'Promotions',
-              value: '-${moneyFormatter.format(promotion)}',
-            ),
-            const SizedBox(height: 6),
-            SummaryLine(
-              label: 'Taxes',
-              value: moneyFormatter.format(taxes),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Divider(height: 1),
-            ),
-            SummaryLine(
-              label: 'Total à payer',
-              value: moneyFormatter.format(total),
               emphasized: true,
             ),
             const SizedBox(height: 14),
             SizedBox(
               width: double.infinity,
-              height: 52,
+              height: 40,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
+                  minimumSize: const Size.fromHeight(20),
                   backgroundColor: TColors.secondColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -78,11 +60,11 @@ class CartSummary extends StatelessWidget {
                 ),
                 onPressed: canCheckout ? () {} : null,
                 child: Text(
-                  'Passer à la caisse',
+                  'Passer la commande (3 produits)',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyLarge!
-                      .apply(color: Colors.white, fontWeightDelta: 2),
+                      .bodyMedium!
+                      .apply(color: Colors.white, fontWeightDelta: 1),
                 ),
               ),
             ),
