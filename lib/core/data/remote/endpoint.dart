@@ -5,7 +5,7 @@ const String verifyCodeEndPoint = '/api/auth/user/verify';
 const String resetCodeEndPoint = '/api/auth/user/resend-code';
 
 // User Endpoints
-const String currentUserEndPoint = '/api/auth/current-user';
+const String currentUserEndPoint = '/api/auth/user/me';
 
 // Station Endpoints
 const String getStationByUserEndPoint = '/api/station/user/{userId}';

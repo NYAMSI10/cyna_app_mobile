@@ -51,12 +51,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      // // Ajoute cette route racine qui redirige ou affiche un splash
-      // GoRoute(
-      //   path: '/',
-      //   builder: (context, state) =>
-      //       const Scaffold(body: Center(child: CircularProgressIndicator())),
-      // ),
       GoRoute(
         path: '/onboarding',
         name: onboardingRoute,

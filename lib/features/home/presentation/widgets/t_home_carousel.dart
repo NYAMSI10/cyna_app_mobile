@@ -25,7 +25,7 @@ class THomeCarousel extends ConsumerWidget {
         "image": "assets/images/station.png",
       },
       {
-        "title": "VoltShare Plus",
+        "title": "cyna Plus",
         "subtitle": "Découvrez nos nouveaux tarifs.",
         "image": "assets/images/station.png",
       },

@@ -1,6 +1,5 @@
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
 import 'package:cyna/features/authentication/data/usecasesImpl/auth_usecase_impl.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_controller.g.dart';
