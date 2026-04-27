@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 
 class THomeHeader extends ConsumerStatefulWidget {
-  const THomeHeader({super.key});
-
+  const THomeHeader(this.userName, {super.key});
+  final String userName;
   @override
   ConsumerState<THomeHeader> createState() => _THomeHeaderState();
 }
@@ -40,7 +40,7 @@ class _THomeHeaderState extends ConsumerState<THomeHeader> {
                     ),
               ),
               Text(
-                "John Doe",
+                widget.userName,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],

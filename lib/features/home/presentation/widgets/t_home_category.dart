@@ -1,4 +1,5 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/features/category/presentation/provider/category_controller.dart';
 import 'package:cyna/features/category/presentation/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,83 +47,91 @@ class THomeCategory extends ConsumerWidget {
             'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
       },
     ];
-
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final categoriesState = ref.watch(categoryControllerProvider);
+    return categoriesState.when(
+      data: (categories) {
+        return Column(
           children: [
-            Text(
-              "Nos Catégories",
-              style: Theme.of(context).textTheme.titleMedium!.apply(
-                    fontWeightDelta: 5,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Nos Catégories",
+                  style: Theme.of(context).textTheme.titleMedium!.apply(
+                        fontWeightDelta: 5,
+                      ),
+                ),
+                const SizedBox(height: 16),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(left: 5, right: 5),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    mainAxisExtent: 130,
                   ),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    print(
+                        "Category data: $categories"); // Debug print pour vérifier les données
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: TColors.secondColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            // Ajout de ClipRRect pour respecter les bords arrondis du Container
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                "localhost:3000/${category.image}", // Appel de la bonne clé 'image'
+                                fit: BoxFit.cover,
+                                // Ajout conseillé : gère le chargement et les erreurs d'image réseau
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.broken_image,
+                                        color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            category.name,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                )
+              ],
             ),
-            const SizedBox(height: 16),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(left: 5, right: 5),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                mainAxisExtent: 130,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategoryScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: TColors.secondColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        // Ajout de ClipRRect pour respecter les bords arrondis du Container
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            category['image'], // Appel de la bonne clé 'image'
-                            fit: BoxFit.cover,
-                            // Ajout conseillé : gère le chargement et les erreurs d'image réseau
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image,
-                                    color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: 80,
-                      child: Text(
-                        category['name'],
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            )
           ],
-        ),
-      ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(child: Text("Error: $error")),
     );
   }
 }
