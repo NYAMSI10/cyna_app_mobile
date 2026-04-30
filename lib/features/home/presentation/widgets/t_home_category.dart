@@ -1,4 +1,3 @@
-import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/features/category/presentation/provider/category_controller.dart';
 import 'package:cyna/features/category/presentation/screens/category_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,129 +8,92 @@ class THomeCategory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // La nouvelle liste avec uniquement 'name' et 'image'
-    final List<Map<String, dynamic>> categories = [
-      {
-        'name': 'Vêtements',
-        'image':
-            'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=500',
-      },
-      {
-        'name': 'Accessoires',
-        'image':
-            'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500',
-      },
-      {
-        'name': 'Chaussures',
-        'image':
-            'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=500',
-      },
-      {
-        'name': 'Nouveautés',
-        'image':
-            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
-      },
-      {
-        'name': 'Nouveautés',
-        'image':
-            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
-      },
-      {
-        'name': 'Nouveautés',
-        'image':
-            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
-      },
-      {
-        'name': 'Nouveautés',
-        'image':
-            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500',
-      },
-    ];
     final categoriesState = ref.watch(categoryControllerProvider);
+
     return categoriesState.when(
       data: (categories) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Nos Catégories",
-                  style: Theme.of(context).textTheme.titleMedium!.apply(
-                        fontWeightDelta: 5,
-                      ),
-                ),
-                const SizedBox(height: 16),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    mainAxisExtent: 130,
+            Text(
+              "Nos Catégories",
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    print(
-                        "Category data: $categories"); // Debug print pour vérifier les données
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CategoryScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: TColors.secondColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            // Ajout de ClipRRect pour respecter les bords arrondis du Container
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                "localhost:3000/${category.image}", // Appel de la bonne clé 'image'
-                                fit: BoxFit.cover,
-                                // Ajout conseillé : gère le chargement et les erreurs d'image réseau
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image,
-                                        color: Colors.grey),
-                              ),
-                            ),
+            ),
+            if (categories.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Aucune catégorie disponible pour le moment.",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              )
+            else
+              const SizedBox(height: 16),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 2,
+                mainAxisExtent: 140, // Augmenté un peu pour le texte
+              ),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CategoryScreen()),
+                      ),
+                      child: Container(
+                        width: 85,
+                        height: 85,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(20), // Bords plus arrondis
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            "http://localhost:3000/${category.image}",
+                            fit: BoxFit
+                                .cover, // <--- L'image ne sera plus zoomée/coupée
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.category_outlined,
+                                    color: Colors.grey),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        SizedBox(
-                          width: 80,
-                          child: Text(
-                            category.name,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      category.name,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                )
-              ],
+                      maxLines: 1, // Autorise 1 ligne si le nom est long
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text("Error: $error")),
+      error: (error, stack) => Center(child: Text("Erreur : $error")),
     );
   }
 }

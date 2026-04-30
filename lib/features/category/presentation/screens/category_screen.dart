@@ -129,23 +129,23 @@ class CategoryScreen extends ConsumerWidget {
             const SizedBox(height: 16),
 
             // --- 4. LA GRILLE DES PRODUITS ---
-            GridView.builder(
-              shrinkWrap: true, // Indispensable ici
-              physics:
-                  const NeverScrollableScrollPhysics(), // Indispensable ici
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                mainAxisExtent: 260, // La même hauteur fixe que sur l'accueil
-              ),
-              itemCount: categoryProducts.length,
-              itemBuilder: (context, index) {
-                // On appelle simplement la carte produit que tu as déjà codée !
-                return TProductCard(product: categoryProducts[index]);
-              },
-            ),
+            // GridView.builder(
+            //   shrinkWrap: true, // Indispensable ici
+            //   physics:
+            //       const NeverScrollableScrollPhysics(), // Indispensable ici
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //     crossAxisCount: 2,
+            //     crossAxisSpacing: 16,
+            //     mainAxisSpacing: 16,
+            //     mainAxisExtent: 260, // La même hauteur fixe que sur l'accueil
+            //   ),
+            //   itemCount: categoryProducts.length,
+            //   itemBuilder: (context, index) {
+            //     // On appelle simplement la carte produit que tu as déjà codée !
+            //     return TProductCard(product: categoryProducts[index]);
+            //   },
+            // ),
 
             const SizedBox(
                 height: 40), // Petit espace en bas de page pour respirer

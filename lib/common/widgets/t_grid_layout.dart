@@ -21,7 +21,7 @@ class TGridLayout extends ConsumerWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: TSizes.gridViewSpacing,
-          crossAxisSpacing: TSizes.gridViewSpacing,
+          crossAxisSpacing: 5,
           mainAxisExtent: mainAxisExtent),
       itemBuilder: itemBuilder,
     );

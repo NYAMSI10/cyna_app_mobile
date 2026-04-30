@@ -1,5 +1,6 @@
 import 'package:cyna/common/exception/failure.dart';
 import 'package:cyna/common/extension/string_hardcoded.dart';
+import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/features/category/data/model/category_response.dart';
 import 'package:cyna/features/category/data/repositoryImpl/category_repository_impl.dart';
 import 'package:cyna/features/category/domain/repository/category_repository.dart';
@@ -19,7 +20,8 @@ final class CategoryUsecaseImpl implements CategoryUsecase {
   CategoryUsecaseImpl(this._categoryRepository);
 
   @override
-  Future<Result<List<CategoryResponse>, Failure>> getCategoriesByOrder() async {
+  Future<Result<ApiResponse<List<CategoryResponse>>, Failure>>
+      getCategoriesByOrder() async {
     try {
       final response = await _categoryRepository.getCategoriesByOrder();
 
@@ -32,7 +34,7 @@ final class CategoryUsecaseImpl implements CategoryUsecase {
         );
       }
 
-      return Result.success(response.data!);
+      return Result.success(response);
     } catch (e, s) {
       throw Failure(
         message: "An unexpected error occurred".hardcoded,

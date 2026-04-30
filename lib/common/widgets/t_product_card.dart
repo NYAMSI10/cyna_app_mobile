@@ -1,5 +1,6 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/widgets/icons/t_circular_icon.dart';
+import 'package:cyna/features/product-detail/data/model/product_response.dart';
 import 'package:cyna/features/product-detail/presentation/screen/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +8,7 @@ import 'package:iconsax/iconsax.dart'; // N'oublie pas l'import pour Iconsax.hea
 
 class TProductCard extends ConsumerWidget {
   // On déclare la variable produit qui sera passée au widget
-  final Map<String, dynamic> product;
+  final ProductResponse product;
 
   // Le produit est requis pour construire la carte
   const TProductCard({
@@ -18,7 +19,7 @@ class TProductCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // On calcule la rupture de stock directement ici
-    final bool isOutOfStock = product['stock'] == 0;
+    final bool isOutOfStock = product.stock == 0;
 
     return GestureDetector(
       onTap: () {
@@ -32,15 +33,8 @@ class TProductCard extends ConsumerWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,18 +49,34 @@ class TProductCard extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(16)),
-                      color: TColors.secondColor.withOpacity(0.1),
                     ),
                     child: ClipRRect(
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(16)),
-                      child: Image.network(
-                        product[
-                            'image'], // L'argument positionnel doit être en premier
-                        height: 200, // La hauteur ensuite
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image, color: Colors.grey),
+                      child: Builder(
+                        builder: (context) {
+                          // 1. On vérifie si la liste n'est pas nulle ET pas vide
+                          final hasImages = product.images != null &&
+                              product.images!.isNotEmpty;
+
+                          // 2. On récupère l'URL si elle existe, sinon le placeholder
+                          final String imageUrl = hasImages
+                              ? "http://localhost:3000/${product.images![0].url}"
+                              : "https://img-0.journaldunet.com/JgOAEEaKp00acGdrktPUB8Y2__8=/1500x/smart/32d90de13a5f411c86709152f70fc67c/ccmcms-jdn/10861192.jpg";
+
+                          return Image.network(
+                            imageUrl,
+                            height: 200,
+                            width: double.infinity, // Optionnel mais conseillé
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                              Icons.broken_image,
+                              color: Colors.grey,
+                              size: 50,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -112,7 +122,7 @@ class TProductCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product['name'],
+                    product.name!,
                     style: Theme.of(context).textTheme.bodySmall!.apply(
                           fontSizeDelta: 1,
                         ),
@@ -121,17 +131,34 @@ class TProductCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // PRIX
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     Text(
+                      //       "${product.priceMonth?.toStringAsFixed(2)} € / mois",
+                      //       style: Theme.of(context)
+                      //           .textTheme
+                      //           .labelLarge!
+                      //           .apply(fontWeightDelta: 3),
+                      //     ),
+                      //     Text(
+                      //       "${product.priceYear?.toStringAsFixed(2)} € / an",
+                      //       style: Theme.of(context)
+                      //           .textTheme
+                      //           .labelLarge!
+                      //           .apply(fontWeightDelta: 3),
+                      //     ),
+                      //   ],
+                      // ),
                       Text(
-                        "${product['price'].toStringAsFixed(2)} €",
+                        "1000 € / mois",
                         style: Theme.of(context)
                             .textTheme
-                            .titleSmall!
-                            .apply(fontWeightDelta: 2),
+                            .titleMedium!
+                            .apply(fontWeightDelta: 3),
                       ),
-
+                      const Spacer(),
                       // BOUTON AJOUTER
                       InkWell(
                         onTap: () {

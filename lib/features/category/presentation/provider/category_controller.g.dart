@@ -34,7 +34,7 @@ final class CategoryControllerProvider
 }
 
 String _$categoryControllerHash() =>
-    r'ce3f225d2cbe9874a4c0acf27360abcdaebc9d03';
+    r'3c6001cd6ddc549fa4849d2d873eec142d6a451f';
 
 abstract class _$CategoryController
     extends $AsyncNotifier<List<CategoryResponse>> {
