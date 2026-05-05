@@ -1,4 +1,5 @@
 import 'package:cyna/features/product-detail/data/model/product_response.dart';
+import 'package:cyna/features/product-detail/data/model/sliders/slider_response.dart';
 import 'package:cyna/features/product-detail/data/usecasesImpl/product_usecase_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,6 +21,22 @@ class ProductController extends _$ProductController {
     return result.when(
       (products) =>
           products.data ?? [], // Si products.data est List<ProductResponse>
+      (failure) {
+        // Au lieu de mettre à jour le state manuellement ici,
+        // on throw l'erreur. Riverpod la transformera en AsyncError automatiquement.
+        throw failure.message;
+      },
+    );
+  }
+
+  Future<List<SliderResponse>> getTopSliders({int? limit}) async {
+    final usecase = ref.read(productUsecaseProvider);
+
+    final result = await usecase.getTopSliders(limit: limit);
+
+    return result.when(
+      (sliders) =>
+          sliders.data ?? [], // Si sliders.data est List<SliderResponse>
       (failure) {
         // Au lieu de mettre à jour le state manuellement ici,
         // on throw l'erreur. Riverpod la transformera en AsyncError automatiquement.

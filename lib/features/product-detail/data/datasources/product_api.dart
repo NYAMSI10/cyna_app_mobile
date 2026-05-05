@@ -3,6 +3,7 @@ import 'package:cyna/core/data/remote/endpoint.dart';
 import 'package:cyna/core/data/remote/network_service.dart';
 
 import 'package:cyna/features/product-detail/data/model/product_response.dart';
+import 'package:cyna/features/product-detail/data/model/sliders/slider_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -21,4 +22,9 @@ abstract class ProductApi {
 
   @GET(getProductsByOrderEndPoint)
   Future<ApiResponse<List<ProductResponse>>> getProductsByOrder();
+
+  @GET(getSlidersEndPoint)
+  Future<ApiResponse<List<SliderResponse>>> getTopSliders(
+    @Query('limit') int? limit,
+  );
 }

@@ -12,3 +12,6 @@ const String getCategoriesByOrderEndPoint = '/api/categories/category-by-order';
 
 // Products Endpoints
 const String getProductsByOrderEndPoint = '/api/products/product-by-order';
+
+// Slider Endpoints
+const String getSlidersEndPoint = '/api/sliders/sliderTop';
