@@ -1,5 +1,6 @@
 import 'package:cyna/features/category/presentation/provider/category_controller.dart';
 import 'package:cyna/features/category/presentation/screens/category_screen.dart';
+import 'package:cyna/features/home/presentation/shimmers/home_category_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,12 +16,6 @@ class THomeCategory extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Nos Catégories",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
             if (categories.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(16.0),
@@ -92,8 +87,8 @@ class THomeCategory extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text("Erreur : $error")),
+      loading: () => HomeCategoryShimmer(),
+      error: (error, stack) => const HomeCategoryShimmer(),
     );
   }
 }

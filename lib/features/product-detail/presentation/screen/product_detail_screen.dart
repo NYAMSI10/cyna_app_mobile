@@ -2,7 +2,6 @@ import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/constant/mok_data.dart';
 import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
-import 'package:cyna/common/widgets/t_product_card.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/circle_action_button.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_info_badge.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_plan_tile.dart';

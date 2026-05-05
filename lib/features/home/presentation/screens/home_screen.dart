@@ -20,51 +20,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     bool isMobile = Responsive.isMobile(context);
-    final userState = ref.watch(userControllerProvider);
 
-    return userState.when(
-      data: (user) {
-        return RefreshIndicator(
-          // Contenu de l'indicateur de rafraîchissement
-          color: TColors.primaryColor,
-          // On déclenche le refresh du controller
-          onRefresh: () =>
-              ref.read(userControllerProvider.notifier).refreshUser(),
+    return RefreshIndicator(
+      // Contenu de l'indicateur de rafraîchissement
+      color: TColors.primaryColor,
+      // On déclenche le refresh du controller
+      onRefresh: () => ref.read(userControllerProvider.notifier).refreshUser(),
 
-          child: Scaffold(
-            body: SingleChildScrollView(
-                child: Padding(
-              padding: isMobile
-                  ? const EdgeInsets.only(top: 60, left: 20, right: 20)
-                  : const EdgeInsets.symmetric(
-                      horizontal: 60.0, vertical: 30.0),
-              child: Column(
-                children: [
-                  // Header home
-                  THomeHeader("${user.data?.firstName} ${user.data?.lastName}"),
+      child: Scaffold(
+        body: SingleChildScrollView(
+            child: Padding(
+          padding: isMobile
+              ? const EdgeInsets.only(top: 60, left: 20, right: 20)
+              : const EdgeInsets.symmetric(horizontal: 60.0, vertical: 30.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header home
+              THomeHeader(),
 
-                  const SizedBox(height: TSizes.defaultSpace),
+              const SizedBox(height: TSizes.defaultSpace),
 
-                  // Carousel
-                  THomeCarousel(),
+              // Carousel
+              THomeCarousel(),
 
-                  const SizedBox(height: TSizes.defaultSpace),
-
-                  // Categories
-                  THomeCategory(),
-
-                  const SizedBox(height: TSizes.defaultSpace),
-
-                  // Product
-                  THomeProduct(),
-                ],
+              const SizedBox(height: TSizes.defaultSpace),
+              Text(
+                "Nos Catégories",
+                style: Theme.of(context).textTheme.titleMedium!.apply(
+                      fontWeightDelta: 5,
+                    ),
               ),
-            )),
+              const SizedBox(height: 10),
+              // Categories
+              THomeCategory(),
+              Text(
+                "Les Top Produits du moment",
+                style: Theme.of(context).textTheme.titleMedium!.apply(
+                      fontWeightDelta: 5,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              // Product
+              THomeProduct(),
+            ],
           ),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text("Error: $error")),
+        )),
+      ),
     );
   }
 }

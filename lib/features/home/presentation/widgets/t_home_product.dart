@@ -1,5 +1,6 @@
 import 'package:cyna/common/widgets/t_grid_layout.dart';
 import 'package:cyna/common/widgets/t_product_card.dart';
+import 'package:cyna/features/home/presentation/shimmers/home_product_shimmer.dart';
 import 'package:cyna/features/product-detail/presentation/provider/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,13 +20,16 @@ class THomeProduct extends ConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Les Top Produits du moment",
-                  style: Theme.of(context).textTheme.titleMedium!.apply(
-                        fontWeightDelta: 5,
-                      ),
-                ),
-                const SizedBox(height: 16),
+                if (products.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Aucun produit disponible pour le moment.",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
+                else
+                  const SizedBox(height: 16),
                 TGridLayout(
                     itemCount: products.length,
                     itemBuilder: (context, index) {
@@ -38,8 +42,8 @@ class THomeProduct extends ConsumerWidget {
           ],
         );
       },
-      error: (error, stackTrace) => Text(error.toString()),
-      loading: () => const CircularProgressIndicator(),
+      error: (error, stackTrace) => const HomeProductShimmer(),
+      loading: () => const HomeProductShimmer(),
     );
   }
 }
