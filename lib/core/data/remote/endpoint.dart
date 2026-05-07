@@ -6,6 +6,9 @@ const String resetCodeEndPoint = '/api/auth/user/resend-code';
 
 // User Endpoints
 const String currentUserEndPoint = '/api/auth/user/me';
+const String updateUserEndPoint = '/api/users/profil/{id}';
+const String changePasswordProfileEndPoint =
+    '/api/users/profil/change-password';
 
 // Categories Endpoints
 const String getCategoriesByOrderEndPoint = '/api/categories/category-by-order';

@@ -6,11 +6,9 @@ part 'user_request.g.dart';
 @freezed
 abstract class UserRequest with _$UserRequest {
   factory UserRequest({
-    String? fullName,
-    String? phone,
-    String? state,
-    String? city,
-    String? zipCode,
+    String? firstName,
+    String? lastName,
+    String? email,
   }) = _UserRequest;
 
   factory UserRequest.fromJson(Map<String, dynamic> json) =>

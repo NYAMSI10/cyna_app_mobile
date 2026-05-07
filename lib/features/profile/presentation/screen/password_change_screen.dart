@@ -1,6 +1,9 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/constant/sizes.dart';
+import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/profile/data/model/request/user_change_password.dart';
+import 'package:cyna/features/profile/presentation/providers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,8 +18,27 @@ class PasswordChangeScreen extends ConsumerStatefulWidget {
 class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final _currentPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userState = ref.watch(userControllerProvider);
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Column(
@@ -58,6 +80,7 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                     children: [
                       const SizedBox(height: TSizes.spaceBtwInputFields / 2),
                       TextFormField(
+                        controller: _currentPasswordController,
                         cursorColor: TColors.darkGrey,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -74,8 +97,15 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Champ obligatoire'.hardcoded;
+                          }
+                          return null;
+                        },
                       ),
                       TextFormField(
+                        controller: _newPasswordController,
                         cursorColor: TColors.darkGrey,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -92,8 +122,15 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Champ obligatoire'.hardcoded;
+                          }
+                          return null;
+                        },
                       ),
                       TextFormField(
+                        controller: _confirmPasswordController,
                         cursorColor: TColors.darkGrey,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -110,6 +147,12 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Champ obligatoire'.hardcoded;
+                          }
+                          return null;
+                        },
                       ),
                       // Bouton de connexion dynamique
                       ElevatedButton(
@@ -119,10 +162,39 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),
-                        onPressed: () async {},
-                        child: Text("Modifier le mot de passe",
-                            style: Theme.of(context).textTheme.bodyLarge!.apply(
-                                color: Colors.white, fontWeightDelta: 2)),
+                        onPressed: userState.isLoading
+                            ? () {}
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  final changePassword = UserChangePassword(
+                                    currentPassword:
+                                        _currentPasswordController.text,
+                                    newPassword: _newPasswordController.text,
+                                    confirmPassword:
+                                        _confirmPasswordController.text,
+                                  );
+                                  Future.delayed(
+                                      const Duration(milliseconds: 100),
+                                      () async {
+                                    await ref
+                                        .read(userControllerProvider.notifier)
+                                        .changePassword(changePassword);
+                                  });
+                                }
+                              },
+                        child: userState.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white, strokeWidth: 2))
+                            : Text("Modifier le mot de passe",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .apply(
+                                        color: Colors.white,
+                                        fontWeightDelta: 2)),
                       ),
                     ],
                   ),

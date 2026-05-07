@@ -14,11 +14,9 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$UserRequest {
-  String? get fullName;
-  String? get phone;
-  String? get state;
-  String? get city;
-  String? get zipCode;
+  String? get firstName;
+  String? get lastName;
+  String? get email;
 
   /// Create a copy of UserRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -35,22 +33,20 @@ mixin _$UserRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is UserRequest &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.zipCode, zipCode) || other.zipCode == zipCode));
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, fullName, phone, state, city, zipCode);
+  int get hashCode => Object.hash(runtimeType, firstName, lastName, email);
 
   @override
   String toString() {
-    return 'UserRequest(fullName: $fullName, phone: $phone, state: $state, city: $city, zipCode: $zipCode)';
+    return 'UserRequest(firstName: $firstName, lastName: $lastName, email: $email)';
   }
 }
 
@@ -60,12 +56,7 @@ abstract mixin class $UserRequestCopyWith<$Res> {
           UserRequest value, $Res Function(UserRequest) _then) =
       _$UserRequestCopyWithImpl;
   @useResult
-  $Res call(
-      {String? fullName,
-      String? phone,
-      String? state,
-      String? city,
-      String? zipCode});
+  $Res call({String? firstName, String? lastName, String? email});
 }
 
 /// @nodoc
@@ -80,32 +71,22 @@ class _$UserRequestCopyWithImpl<$Res> implements $UserRequestCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullName = freezed,
-    Object? phone = freezed,
-    Object? state = freezed,
-    Object? city = freezed,
-    Object? zipCode = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? email = freezed,
   }) {
     return _then(_self.copyWith(
-      fullName: freezed == fullName
-          ? _self.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _self.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
-      phone: freezed == phone
-          ? _self.phone
-          : phone // ignore: cast_nullable_to_non_nullable
+      lastName: freezed == lastName
+          ? _self.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      state: freezed == state
-          ? _self.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _self.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      zipCode: freezed == zipCode
-          ? _self.zipCode
-          : zipCode // ignore: cast_nullable_to_non_nullable
+      email: freezed == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -204,16 +185,14 @@ extension UserRequestPatterns on UserRequest {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String? fullName, String? phone, String? state,
-            String? city, String? zipCode)?
+    TResult Function(String? firstName, String? lastName, String? email)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _UserRequest() when $default != null:
-        return $default(_that.fullName, _that.phone, _that.state, _that.city,
-            _that.zipCode);
+        return $default(_that.firstName, _that.lastName, _that.email);
       case _:
         return orElse();
     }
@@ -234,15 +213,13 @@ extension UserRequestPatterns on UserRequest {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String? fullName, String? phone, String? state,
-            String? city, String? zipCode)
+    TResult Function(String? firstName, String? lastName, String? email)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _UserRequest():
-        return $default(_that.fullName, _that.phone, _that.state, _that.city,
-            _that.zipCode);
+        return $default(_that.firstName, _that.lastName, _that.email);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -262,15 +239,13 @@ extension UserRequestPatterns on UserRequest {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String? fullName, String? phone, String? state,
-            String? city, String? zipCode)?
+    TResult? Function(String? firstName, String? lastName, String? email)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _UserRequest() when $default != null:
-        return $default(_that.fullName, _that.phone, _that.state, _that.city,
-            _that.zipCode);
+        return $default(_that.firstName, _that.lastName, _that.email);
       case _:
         return null;
     }
@@ -280,21 +255,16 @@ extension UserRequestPatterns on UserRequest {
 /// @nodoc
 @JsonSerializable()
 class _UserRequest implements UserRequest {
-  _UserRequest(
-      {this.fullName, this.phone, this.state, this.city, this.zipCode});
+  _UserRequest({this.firstName, this.lastName, this.email});
   factory _UserRequest.fromJson(Map<String, dynamic> json) =>
       _$UserRequestFromJson(json);
 
   @override
-  final String? fullName;
+  final String? firstName;
   @override
-  final String? phone;
+  final String? lastName;
   @override
-  final String? state;
-  @override
-  final String? city;
-  @override
-  final String? zipCode;
+  final String? email;
 
   /// Create a copy of UserRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -316,22 +286,20 @@ class _UserRequest implements UserRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _UserRequest &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.zipCode, zipCode) || other.zipCode == zipCode));
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, fullName, phone, state, city, zipCode);
+  int get hashCode => Object.hash(runtimeType, firstName, lastName, email);
 
   @override
   String toString() {
-    return 'UserRequest(fullName: $fullName, phone: $phone, state: $state, city: $city, zipCode: $zipCode)';
+    return 'UserRequest(firstName: $firstName, lastName: $lastName, email: $email)';
   }
 }
 
@@ -343,12 +311,7 @@ abstract mixin class _$UserRequestCopyWith<$Res>
       __$UserRequestCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {String? fullName,
-      String? phone,
-      String? state,
-      String? city,
-      String? zipCode});
+  $Res call({String? firstName, String? lastName, String? email});
 }
 
 /// @nodoc
@@ -363,32 +326,22 @@ class __$UserRequestCopyWithImpl<$Res> implements _$UserRequestCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? fullName = freezed,
-    Object? phone = freezed,
-    Object? state = freezed,
-    Object? city = freezed,
-    Object? zipCode = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? email = freezed,
   }) {
     return _then(_UserRequest(
-      fullName: freezed == fullName
-          ? _self.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _self.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
-      phone: freezed == phone
-          ? _self.phone
-          : phone // ignore: cast_nullable_to_non_nullable
+      lastName: freezed == lastName
+          ? _self.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      state: freezed == state
-          ? _self.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _self.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      zipCode: freezed == zipCode
-          ? _self.zipCode
-          : zipCode // ignore: cast_nullable_to_non_nullable
+      email: freezed == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

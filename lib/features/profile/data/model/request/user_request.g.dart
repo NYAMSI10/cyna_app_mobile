@@ -7,18 +7,14 @@ part of 'user_request.dart';
 // **************************************************************************
 
 _UserRequest _$UserRequestFromJson(Map<String, dynamic> json) => _UserRequest(
-      fullName: json['fullName'] as String?,
-      phone: json['phone'] as String?,
-      state: json['state'] as String?,
-      city: json['city'] as String?,
-      zipCode: json['zipCode'] as String?,
+      firstName: json['firstName'] as String?,
+      lastName: json['lastName'] as String?,
+      email: json['email'] as String?,
     );
 
 Map<String, dynamic> _$UserRequestToJson(_UserRequest instance) =>
     <String, dynamic>{
-      'fullName': instance.fullName,
-      'phone': instance.phone,
-      'state': instance.state,
-      'city': instance.city,
-      'zipCode': instance.zipCode,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'email': instance.email,
     };

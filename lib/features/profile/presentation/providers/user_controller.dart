@@ -1,4 +1,7 @@
+import 'package:cyna/common/helpers/notification_helper.dart';
 import 'package:cyna/common/model/response/api_response.dart';
+import 'package:cyna/features/profile/data/model/request/user_change_password.dart';
+import 'package:cyna/features/profile/data/model/request/user_request.dart';
 import 'package:cyna/features/profile/data/model/response/user_response.dart';
 import 'package:cyna/features/profile/data/usecasesImpl/user_usecase_impl.dart';
 import 'package:get_storage/get_storage.dart';
@@ -38,5 +41,41 @@ class UserController extends _$UserController {
   void logout() async {
     final getStorage = GetStorage();
     await getStorage.remove('auth_token');
+  }
+
+  Future<void> updateUser(UserRequest user, String id) async {
+    final usecase = ref.read(userUsecaseProvider);
+    // démarre le loader
+
+    final result = await usecase.updateUser(user, id);
+
+    return result.when(
+      (response) {
+        TNotifications.success(message: response.message!);
+        // Si la mise à jour est réussie, on peut rafraîchir les données de l'utilisateur
+
+        refreshUser();
+      },
+      (failure) {
+        // Gérer l'erreur de mise à jour, par exemple en affichant un message d'erreur
+        TNotifications.error(message: failure.message);
+      },
+    );
+  }
+
+  Future<void> changePassword(UserChangePassword user) async {
+    final usecase = ref.read(userUsecaseProvider);
+    // démarre le loader
+    final result = await usecase.changePassword(user);
+
+    return result.when(
+      (response) {
+        TNotifications.success(message: response.message!);
+      },
+      (failure) {
+        // Gérer l'erreur de mise à jour, par exemple en affichant un message d'erreur
+        TNotifications.error(message: failure.message);
+      },
+    );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:cyna/common/model/response/api_response.dart';
+import 'package:cyna/features/profile/data/model/request/user_change_password.dart';
+import 'package:cyna/features/profile/data/model/request/user_request.dart';
 import 'package:cyna/features/profile/data/model/response/user_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,4 +22,12 @@ abstract class UserApi {
 
   @GET(currentUserEndPoint)
   Future<ApiResponse<UserResponse>> getCurrentUser();
+
+  @PATCH(updateUserEndPoint)
+  Future<ApiResponse<UserResponse>> updateUser(
+      @Body() UserRequest user, @Path("id") String id);
+
+  @PATCH(changePasswordProfileEndPoint)
+  Future<ApiResponse<UserResponse>> changePassword(
+      @Body() UserChangePassword user);
 }

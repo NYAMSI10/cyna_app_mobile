@@ -33,7 +33,7 @@ final class UserControllerProvider
   UserController create() => UserController();
 }
 
-String _$userControllerHash() => r'c0ac2d0c29139deebfdacdbc682467418a71a279';
+String _$userControllerHash() => r'44a19a851b4e898286da47bc4c0815e2df6d0bab';
 
 abstract class _$UserController
     extends $AsyncNotifier<ApiResponse<UserResponse>> {

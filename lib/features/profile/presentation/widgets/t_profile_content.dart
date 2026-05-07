@@ -79,7 +79,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
                     context: context,
                     barrierColor: Colors.black54,
                     enableDrag: true,
-                    expand: false,
+                    expand: true,
                     duration: const Duration(
                         milliseconds: 500), // Plus lent et fluide
                     backgroundColor: Colors
@@ -97,7 +97,12 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      child: UserInfoScreen(), // Ton widget de formulaire
+                      child: UserInfoScreen(
+                        firstName: user.data?.firstName,
+                        lastName: user.data?.lastName,
+                        email: user.data?.email,
+                        id: user.data?.id,
+                      ), // Ton widget de formulaire
                     ),
                   );
                 },
