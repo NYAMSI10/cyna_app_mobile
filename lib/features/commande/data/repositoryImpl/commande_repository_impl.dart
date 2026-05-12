@@ -3,7 +3,7 @@ import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/core/dio_eroor_exception.dart';
 import 'package:cyna/features/commande/data/datasources/commande_api.dart';
-import 'package:cyna/features/commande/data/model/commande_response.dart';
+import 'package:cyna/features/commande/data/model/commande_list_response.dart';
 import 'package:cyna/features/commande/domain/repository/commande_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,7 @@ final class CommandeRepositoryImpl implements CommandeRepository {
   CommandeRepositoryImpl(this._commandeApi);
 
   @override
-  Future<ApiResponse<List<CommandeResponse>>> getCommandes(
+  Future<ApiResponse<CommandeListResponse>> getCommandes(
     Map<String, dynamic>? queries,
   ) async {
     try {

@@ -42,7 +42,11 @@ class CommandeController extends _$CommandeController {
     final result = await usecase.getCommandes(queries);
 
     return result.when(
-      (commandes) => commandes.data ?? [],
+      (commandes) {
+        final results = commandes.data?.results;
+        if (results == null) return [];
+        return results.values.expand((list) => list).toList();
+      },
       (failure) {
         TNotifications.error(message: failure.message);
         throw failure;

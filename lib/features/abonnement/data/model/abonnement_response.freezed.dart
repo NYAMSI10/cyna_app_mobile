@@ -14,6 +14,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$AbonnementResponse {
+// ignore: invalid_annotation_target
   @JsonKey(name: '_id')
   String
       get id; // Changement ici : paramètre nommé sans _, annotation pour le JSON

@@ -14,6 +14,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$CategoryResponse {
+// ignore: invalid_annotation_target
   @JsonKey(name: '_id')
   String
       get id; // Changement ici : paramètre nommé sans _, annotation pour le JSON
@@ -291,6 +292,7 @@ class _CategoryResponse implements CategoryResponse {
   factory _CategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$CategoryResponseFromJson(json);
 
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: '_id')
   final String id;

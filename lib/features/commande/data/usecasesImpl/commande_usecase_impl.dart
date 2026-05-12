@@ -1,7 +1,7 @@
 import 'package:cyna/common/exception/failure.dart';
 import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/model/response/api_response.dart';
-import 'package:cyna/features/commande/data/model/commande_response.dart';
+import 'package:cyna/features/commande/data/model/commande_list_response.dart';
 import 'package:cyna/features/commande/data/repositoryImpl/commande_repository_impl.dart';
 import 'package:cyna/features/commande/domain/repository/commande_repository.dart';
 import 'package:cyna/features/commande/domain/usecases/commande_usecase.dart';
@@ -20,7 +20,7 @@ final class CommandeUsecaseImpl implements CommandeUsecase {
   CommandeUsecaseImpl(this._commandeRepository);
 
   @override
-  Future<Result<ApiResponse<List<CommandeResponse>>, Failure>> getCommandes(
+  Future<Result<ApiResponse<CommandeListResponse>, Failure>> getCommandes(
     Map<String, dynamic>? queries,
   ) async {
     try {

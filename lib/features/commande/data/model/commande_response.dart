@@ -14,9 +14,11 @@ abstract class CommandeResponse with _$CommandeResponse {
     required String reference,
     required String periode,
     required int nbreProducts,
-    required int totalPrice,
+    required double totalPrice,
     required String statut,
-    required List<AbonnementResponse> abonnements,
+    required DateTime createdAt,
+    required String createdAtStr,
+    @Default([]) List<AbonnementResponse> abonnements,
   }) = _CommandeResponse;
 
   factory CommandeResponse.fromJson(Map<String, dynamic> json) =>

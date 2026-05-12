@@ -20,7 +20,7 @@ class _CommandeApi implements CommandeApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<List<CommandeResponse>>> getCommandes(
+  Future<ApiResponse<CommandeListResponse>> getCommandes(
     Map<String, dynamic>? queries,
   ) async {
     final _extra = <String, dynamic>{};
@@ -29,7 +29,7 @@ class _CommandeApi implements CommandeApi {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<List<CommandeResponse>>>(
+    final _options = _setStreamType<ApiResponse<CommandeListResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -40,17 +40,11 @@ class _CommandeApi implements CommandeApi {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<List<CommandeResponse>> _value;
+    late ApiResponse<CommandeListResponse> _value;
     try {
-      _value = ApiResponse<List<CommandeResponse>>.fromJson(
+      _value = ApiResponse<CommandeListResponse>.fromJson(
         _result.data!,
-        (json) => json is List<dynamic>
-            ? json
-                .map<CommandeResponse>(
-                  (i) => CommandeResponse.fromJson(i as Map<String, dynamic>),
-                )
-                .toList()
-            : List.empty(),
+        (json) => CommandeListResponse.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

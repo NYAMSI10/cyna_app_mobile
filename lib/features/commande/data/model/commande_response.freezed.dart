@@ -14,14 +14,17 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$CommandeResponse {
+// ignore: invalid_annotation_target
   @JsonKey(name: '_id')
   String
       get id; // Changement ici : paramètre nommé sans _, annotation pour le JSON
   String get reference;
   String get periode;
   int get nbreProducts;
-  int get totalPrice;
+  double get totalPrice;
   String get statut;
+  DateTime get createdAt;
+  String get createdAtStr;
   List<AbonnementResponse> get abonnements;
 
   /// Create a copy of CommandeResponse
@@ -49,6 +52,10 @@ mixin _$CommandeResponse {
             (identical(other.totalPrice, totalPrice) ||
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.createdAtStr, createdAtStr) ||
+                other.createdAtStr == createdAtStr) &&
             const DeepCollectionEquality()
                 .equals(other.abonnements, abonnements));
   }
@@ -63,11 +70,13 @@ mixin _$CommandeResponse {
       nbreProducts,
       totalPrice,
       statut,
+      createdAt,
+      createdAtStr,
       const DeepCollectionEquality().hash(abonnements));
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -82,8 +91,10 @@ abstract mixin class $CommandeResponseCopyWith<$Res> {
       String reference,
       String periode,
       int nbreProducts,
-      int totalPrice,
+      double totalPrice,
       String statut,
+      DateTime createdAt,
+      String createdAtStr,
       List<AbonnementResponse> abonnements});
 }
 
@@ -106,6 +117,8 @@ class _$CommandeResponseCopyWithImpl<$Res>
     Object? nbreProducts = null,
     Object? totalPrice = null,
     Object? statut = null,
+    Object? createdAt = null,
+    Object? createdAtStr = null,
     Object? abonnements = null,
   }) {
     return _then(_self.copyWith(
@@ -128,10 +141,18 @@ class _$CommandeResponseCopyWithImpl<$Res>
       totalPrice: null == totalPrice
           ? _self.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       statut: null == statut
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      createdAtStr: null == createdAtStr
+          ? _self.createdAtStr
+          : createdAtStr // ignore: cast_nullable_to_non_nullable
               as String,
       abonnements: null == abonnements
           ? _self.abonnements
@@ -239,8 +260,10 @@ extension CommandeResponsePatterns on CommandeResponse {
             String reference,
             String periode,
             int nbreProducts,
-            int totalPrice,
+            double totalPrice,
             String statut,
+            DateTime createdAt,
+            String createdAtStr,
             List<AbonnementResponse> abonnements)?
         $default, {
     required TResult orElse(),
@@ -255,6 +278,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.createdAt,
+            _that.createdAtStr,
             _that.abonnements);
       case _:
         return orElse();
@@ -281,8 +306,10 @@ extension CommandeResponsePatterns on CommandeResponse {
             String reference,
             String periode,
             int nbreProducts,
-            int totalPrice,
+            double totalPrice,
             String statut,
+            DateTime createdAt,
+            String createdAtStr,
             List<AbonnementResponse> abonnements)
         $default,
   ) {
@@ -296,6 +323,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.createdAt,
+            _that.createdAtStr,
             _that.abonnements);
       case _:
         throw StateError('Unexpected subclass');
@@ -321,8 +350,10 @@ extension CommandeResponsePatterns on CommandeResponse {
             String reference,
             String periode,
             int nbreProducts,
-            int totalPrice,
+            double totalPrice,
             String statut,
+            DateTime createdAt,
+            String createdAtStr,
             List<AbonnementResponse> abonnements)?
         $default,
   ) {
@@ -336,6 +367,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.createdAt,
+            _that.createdAtStr,
             _that.abonnements);
       case _:
         return null;
@@ -353,7 +386,9 @@ class _CommandeResponse implements CommandeResponse {
       required this.nbreProducts,
       required this.totalPrice,
       required this.statut,
-      required final List<AbonnementResponse> abonnements})
+      required this.createdAt,
+      required this.createdAtStr,
+      final List<AbonnementResponse> abonnements = const []})
       : _abonnements = abonnements;
   factory _CommandeResponse.fromJson(Map<String, dynamic> json) =>
       _$CommandeResponseFromJson(json);
@@ -370,11 +405,16 @@ class _CommandeResponse implements CommandeResponse {
   @override
   final int nbreProducts;
   @override
-  final int totalPrice;
+  final double totalPrice;
   @override
   final String statut;
+  @override
+  final DateTime createdAt;
+  @override
+  final String createdAtStr;
   final List<AbonnementResponse> _abonnements;
   @override
+  @JsonKey()
   List<AbonnementResponse> get abonnements {
     if (_abonnements is EqualUnmodifiableListView) return _abonnements;
     // ignore: implicit_dynamic_type
@@ -410,6 +450,10 @@ class _CommandeResponse implements CommandeResponse {
             (identical(other.totalPrice, totalPrice) ||
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.createdAtStr, createdAtStr) ||
+                other.createdAtStr == createdAtStr) &&
             const DeepCollectionEquality()
                 .equals(other._abonnements, _abonnements));
   }
@@ -424,11 +468,13 @@ class _CommandeResponse implements CommandeResponse {
       nbreProducts,
       totalPrice,
       statut,
+      createdAt,
+      createdAtStr,
       const DeepCollectionEquality().hash(_abonnements));
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -445,8 +491,10 @@ abstract mixin class _$CommandeResponseCopyWith<$Res>
       String reference,
       String periode,
       int nbreProducts,
-      int totalPrice,
+      double totalPrice,
       String statut,
+      DateTime createdAt,
+      String createdAtStr,
       List<AbonnementResponse> abonnements});
 }
 
@@ -469,6 +517,8 @@ class __$CommandeResponseCopyWithImpl<$Res>
     Object? nbreProducts = null,
     Object? totalPrice = null,
     Object? statut = null,
+    Object? createdAt = null,
+    Object? createdAtStr = null,
     Object? abonnements = null,
   }) {
     return _then(_CommandeResponse(
@@ -491,10 +541,18 @@ class __$CommandeResponseCopyWithImpl<$Res>
       totalPrice: null == totalPrice
           ? _self.totalPrice
           : totalPrice // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       statut: null == statut
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      createdAtStr: null == createdAtStr
+          ? _self.createdAtStr
+          : createdAtStr // ignore: cast_nullable_to_non_nullable
               as String,
       abonnements: null == abonnements
           ? _self._abonnements
