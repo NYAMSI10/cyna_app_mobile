@@ -21,3 +21,6 @@ const String getSlidersEndPoint = '/api/sliders/sliderTop';
 
 // Abonnement Endpoints
 const String getAbonnementEndPoint = '/api/commandes/abonnements/by-user';
+
+// Commande Endpoints
+const String getCommandesEndPoint = '/api/commandes/by-user';

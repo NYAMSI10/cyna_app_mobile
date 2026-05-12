@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CommandeDetailScreen extends StatelessWidget {
+class CommandeDetailScreen extends ConsumerWidget {
   final Order order;
 
   const CommandeDetailScreen({super.key, required this.order});
@@ -43,7 +47,7 @@ class CommandeDetailScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final startDate = order.orderDate;
     final endDate = order.subscriptionDuration.toLowerCase() == 'annuel'
         ? DateTime(startDate.year + 1, startDate.month, startDate.day)
@@ -51,167 +55,177 @@ class CommandeDetailScreen extends StatelessWidget {
             ? DateTime(startDate.year, startDate.month + 1, startDate.day)
             : null);
 
+    final commandeState = ref.watch(commandeControllerProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: const BackButton(color: Colors.white),
-        backgroundColor: TColors.primaryColor,
-        title: const Text(
-          "Détails de la Commande",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          centerTitle: true,
+          leading: const BackButton(color: Colors.white),
+          backgroundColor: TColors.primaryColor,
+          title: const Text(
+            "Détails de la Commande",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: Responsive.pagePadding(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Titre + statut
-            Text(
-              order.serviceName,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Commandé le ${_formatDate(order.orderDate)} • Abonnement ${order.subscriptionDuration.toLowerCase()}',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: _statusColor(order.status),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  _statusLabel(order.status),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade800,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Section Résumé
-            Text(
-              'Résumé',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _buildInfoRow('Montant total payé', _formatAmount(order.amount)),
-            _buildInfoRow('Durée de l’abonnement', order.subscriptionDuration),
-            _buildInfoRow('Date de début', _formatDate(startDate)),
-            if (endDate != null)
-              _buildInfoRow('Date de fin', _formatDate(endDate)),
-            const SizedBox(height: 24),
-
-            // Section Paiement
-            Text(
-              'Paiement',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _buildInfoRow('Mode de paiement', order.paymentMethod),
-            _buildInfoRow('Carte', '•••• •••• •••• ${order.last4Digits}'),
-            const SizedBox(height: 24),
-
-            // Section Adresse de facturation
-            Text(
-              'Adresse de facturation',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Text(
-                order.billingAddress,
-                style: const TextStyle(fontSize: 14),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Section Facture
-            Text(
-              'Facture',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: TColors.secondColor,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Téléchargement de la facture (mock). À connecter au backend.',
-                      ),
+        body: SingleChildScrollView(
+          padding: Responsive.pagePadding(context),
+          child: commandeState.when(
+            data: (commandes) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Titre + statut
+                  Text(
+                    order.serviceName,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
                     ),
-                  );
-                },
-                icon: const Icon(Icons.picture_as_pdf),
-                label: const Text('Télécharger la facture (PDF)',
-                    style: TextStyle(fontSize: 14)),
-              ),
-            ),
-            const SizedBox(height: 32),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Commandé le ${_formatDate(order.orderDate)} • Abonnement ${order.subscriptionDuration.toLowerCase()}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: _statusColor(order.status),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _statusLabel(order.status),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade800,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
 
-            // Optionnel: bouton support
-            OutlinedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.support_agent),
-              label:
-                  const Text('Contacter le support à propos de cette commande'),
-            ),
-          ],
-        ),
-      ),
-    );
+                  // Section Résumé
+                  Text(
+                    'Résumé',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(
+                      'Montant total payé', _formatAmount(order.amount)),
+                  _buildInfoRow(
+                      'Durée de l’abonnement', order.subscriptionDuration),
+                  _buildInfoRow('Date de début', _formatDate(startDate)),
+                  if (endDate != null)
+                    _buildInfoRow('Date de fin', _formatDate(endDate)),
+                  const SizedBox(height: 24),
+
+                  // Section Paiement
+                  Text(
+                    'Paiement',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow('Mode de paiement', order.paymentMethod),
+                  _buildInfoRow('Carte', '•••• •••• •••• ${order.last4Digits}'),
+                  const SizedBox(height: 24),
+
+                  // Section Adresse de facturation
+                  Text(
+                    'Adresse de facturation',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Text(
+                      order.billingAddress,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Section Facture
+                  Text(
+                    'Facture',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      style: FilledButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor: TColors.secondColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Téléchargement de la facture (mock). À connecter au backend.',
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.picture_as_pdf),
+                      label: const Text('Télécharger la facture (PDF)',
+                          style: TextStyle(fontSize: 14)),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Optionnel: bouton support
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.support_agent),
+                    label: const Text(
+                        'Contacter le support à propos de cette commande'),
+                  ),
+                ],
+              );
+            },
+            error: (error, stack) =>
+                Center(child: Text("Une erreur est survenue: $error")),
+            loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+        ));
   }
 
   Widget _buildInfoRow(String label, String value) {
