@@ -1,8 +1,9 @@
+import 'package:cyna/features/abonnement/data/model/abonnement_response.dart';
 import 'package:flutter/material.dart';
 import 'package:cyna/common/constant/colors.dart';
 
 void abonnementActionsBottomSheet(
-    BuildContext context, Map<String, dynamic> abo) {
+    BuildContext context, AbonnementResponse abo) {
   showModalBottomSheet(
     backgroundColor: Colors.white,
     context: context,
@@ -27,7 +28,7 @@ void abonnementActionsBottomSheet(
             ),
             const SizedBox(height: 12),
             Text(
-              abo["name"],
+              abo.product.name!,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ void abonnementActionsBottomSheet(
             ),
             const SizedBox(height: 4),
             Text(
-              abo["plan"],
+              abo.periode == "MOIS" ? "Plan Mensuel" : "Plan Annuel",
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.grey.shade600,
@@ -88,7 +89,7 @@ void abonnementActionsBottomSheet(
   );
 }
 
-void _confirmCancel(BuildContext context, Map<String, dynamic> abo) {
+void _confirmCancel(BuildContext context, AbonnementResponse abo) {
   showDialog(
     context: context,
     builder: (context) {
@@ -101,7 +102,7 @@ void _confirmCancel(BuildContext context, Map<String, dynamic> abo) {
               .apply(fontWeightDelta: 3),
         ),
         content: Text(
-          "Voulez-vous vraiment résilier l’abonnement à ${abo['name']} ? "
+          "Voulez-vous vraiment résilier l’abonnement à ${abo.product.name!} ? "
           "Il restera actif jusqu’à la fin de la période en cours.",
         ),
         actions: [

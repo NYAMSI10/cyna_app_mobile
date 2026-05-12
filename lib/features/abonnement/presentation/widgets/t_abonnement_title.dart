@@ -1,20 +1,18 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/abonnement/data/model/abonnement_response.dart';
 import 'package:cyna/features/abonnement/presentation/widgets/t_abonnement_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TAbonnementTitle extends ConsumerWidget {
-  const TAbonnementTitle({super.key, required this.abo});
-  final Map<String, dynamic> abo;
+  const TAbonnementTitle({super.key, required this.abonnement});
+  final AbonnementResponse abonnement;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formattedDate =
-        "${abo['endDate'].day.toString().padLeft(2, '0')}/${abo['endDate'].month.toString().padLeft(2, '0')}/${abo['endDate'].year}";
-
     return InkWell(
       borderRadius: BorderRadius.circular(12),
-      onTap: () => abonnementActionsBottomSheet(context, abo),
+      onTap: () => abonnementActionsBottomSheet(context, abonnement),
       child: Ink(
         padding: Responsive.pagePadding(context),
         decoration: BoxDecoration(
@@ -34,7 +32,7 @@ class TAbonnementTitle extends ConsumerWidget {
               radius: 24,
               backgroundColor: TColors.primaryColor.withOpacity(0.1),
               child: Text(
-                abo['name'][0].toUpperCase(),
+                abonnement.product.name!.substring(0, 1).toUpperCase(),
                 style: const TextStyle(
                   color: TColors.primaryColor,
                   fontWeight: FontWeight.bold,
@@ -46,27 +44,34 @@ class TAbonnementTitle extends ConsumerWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 8,
                 children: [
                   Text(
-                    abo['name'],
+                    abonnement.product.name!,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
                   Text(
-                    abo['plan'],
+                    abonnement.periode == "MOIS"
+                        ? " Plan Mensuel "
+                        : "Plan Annuel ",
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey.shade700,
                     ),
                   ),
-                  const SizedBox(height: 4),
                   Text(
-                    "Renouvellement le $formattedDate",
+                    "Clé : ${abonnement.keyLicence}",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    "${abonnement.dateDebut} - ${abonnement.dateFin}",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       color: Colors.grey.shade600,
                     ),
                   ),
@@ -78,7 +83,7 @@ class TAbonnementTitle extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "${abo['price'].toStringAsFixed(2)} €/ ${abo['billingPeriod']}",
+                  "${abonnement.price.toStringAsFixed(2)} €/ ${abonnement.periode == "MOIS" ? "mois" : "an"}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,

@@ -163,23 +163,20 @@ class _PasswordChangeScreenState extends ConsumerState<PasswordChangeScreen> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: userState.isLoading
-                            ? () {}
+                            ? null
                             : () async {
                                 if (_formKey.currentState!.validate()) {
                                   final changePassword = UserChangePassword(
                                     currentPassword:
-                                        _currentPasswordController.text,
-                                    newPassword: _newPasswordController.text,
+                                        _currentPasswordController.text.trim(),
+                                    newPassword:
+                                        _newPasswordController.text.trim(),
                                     confirmPassword:
-                                        _confirmPasswordController.text,
+                                        _confirmPasswordController.text.trim(),
                                   );
-                                  Future.delayed(
-                                      const Duration(milliseconds: 100),
-                                      () async {
-                                    await ref
-                                        .read(userControllerProvider.notifier)
-                                        .changePassword(changePassword);
-                                  });
+                                  await ref
+                                      .read(userControllerProvider.notifier)
+                                      .changePassword(changePassword);
                                 }
                               },
                         child: userState.isLoading

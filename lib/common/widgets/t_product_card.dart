@@ -89,7 +89,7 @@ class TProductCard extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.9),
+                          color: Colors.red.withAlpha(150),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(

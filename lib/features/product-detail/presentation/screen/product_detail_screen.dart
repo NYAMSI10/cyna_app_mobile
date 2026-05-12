@@ -28,7 +28,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final product = TMokData.productDetail;
-    final List<Map<String, dynamic>> products = TMokData.categoryProducts;
     final monthlyPrice = (product['priceMonth'] as num).toDouble();
     final yearlyPrice = (product['priceYear'] as num).toDouble();
     final stock = product['stock'] as int;

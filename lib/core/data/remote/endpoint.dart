@@ -18,3 +18,6 @@ const String getProductsByOrderEndPoint = '/api/products/product-by-order';
 
 // Slider Endpoints
 const String getSlidersEndPoint = '/api/sliders/sliderTop';
+
+// Abonnement Endpoints
+const String getAbonnementEndPoint = '/api/commandes/abonnements/by-user';

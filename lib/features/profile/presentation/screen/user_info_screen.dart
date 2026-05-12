@@ -3,6 +3,7 @@ import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
 import 'package:cyna/features/profile/data/model/request/user_request.dart';
 import 'package:cyna/features/profile/presentation/providers/user_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -145,7 +146,9 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
                         ),
                         onPressed: userState.isLoading
                             ? () {
-                                print("User update in progress...");
+                                if (kDebugMode) {
+                                  print("Loading...");
+                                }
                               }
                             : () async {
                                 if (_formKey.currentState!.validate()) {
