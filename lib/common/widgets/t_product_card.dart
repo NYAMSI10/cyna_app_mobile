@@ -61,7 +61,7 @@ class TProductCard extends ConsumerWidget {
 
                           // 2. On récupère l'URL si elle existe, sinon le placeholder
                           final String imageUrl = hasImages
-                              ? "http://localhost:3000/${product.images![0].url}"
+                              ? "http://10.0.2.2:3000/${product.images![0].url}"
                               : "https://img-0.journaldunet.com/JgOAEEaKp00acGdrktPUB8Y2__8=/1500x/smart/32d90de13a5f411c86709152f70fc67c/ccmcms-jdn/10861192.jpg";
 
                           return Image.network(

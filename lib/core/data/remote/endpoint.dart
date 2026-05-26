@@ -24,3 +24,7 @@ const String getAbonnementEndPoint = '/api/commandes/abonnements/by-user';
 
 // Commande Endpoints
 const String getCommandesEndPoint = '/api/commandes/by-user';
+
+// Adresse Endpoints
+const String getAdressesEndPoint = '/api/adresse-facturations/by-user';
+const String createAdresseEndPoint = '/api/adresse-facturations';

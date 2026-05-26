@@ -36,20 +36,24 @@ class _THomeHeaderState extends ConsumerState<THomeHeader> {
 
               // space
               SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Bon retour !",
-                    style: Theme.of(context).textTheme.titleSmall!.apply(
-                          fontWeightDelta: 5,
-                        ),
-                  ),
-                  Text(
-                    "${user.data?.firstName} ${user.data?.lastName}",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Bon retour !",
+                      style: Theme.of(context).textTheme.titleSmall!.apply(
+                            fontWeightDelta: 5,
+                          ),
+                    ),
+                    Text(
+                      "${user.data?.firstName} ${user.data?.lastName}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
 
               const Spacer(),
