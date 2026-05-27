@@ -35,7 +35,7 @@ final class AdresseFacturationControllerProvider extends $AsyncNotifierProvider<
 }
 
 String _$adresseFacturationControllerHash() =>
-    r'8491ff7309d75bd16ec253b86610a159faa9ad86';
+    r'2f4554a49d4e894a7031690c8bee9944f869c15b';
 
 abstract class _$AdresseFacturationController
     extends $AsyncNotifier<List<AdresseFacturationResponse>> {

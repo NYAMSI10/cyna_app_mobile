@@ -61,6 +61,61 @@ final class AdresseFacturationRepositoryImpl
     }
   }
 
+  @override
+  Future<ApiResponse<AdresseFacturationResponse>> updateAdresse(
+      AdresseFacturationRequest adresse, String id) async {
+    try {
+      final response = await _adresseApi.updateAdresse(adresse, id);
+      return ApiResponse<AdresseFacturationResponse>(
+        success: response.success,
+        message: response.message,
+        data: _adresseFromJson(response.data),
+      );
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        // Si 'e' est deja une Exception, on la garde, sinon on cree une nouvelle Exception
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> deleteAdresse(String id) async {
+    try {
+      final response = await _adresseApi.deleteAdresse(id);
+      return response;
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        // Si 'e' est deja une Exception, on la garde, sinon on cree une nouvelle Exception
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> setDefaultAdresse(String id) async {
+    try {
+      final response = await _adresseApi.setDefaultAdresse(id);
+      return response;
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
   AdresseFacturationResponse? _adresseFromJson(dynamic json) {
     if (json == null) return null;
 

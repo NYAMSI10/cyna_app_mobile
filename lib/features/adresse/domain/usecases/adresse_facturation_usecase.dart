@@ -9,4 +9,8 @@ abstract interface class AdresseFacturationUsecase {
       getAdresses();
   Future<Result<ApiResponse<AdresseFacturationResponse>, Failure>>
       createAdresse(AdresseFacturationRequest adresse);
+  Future<Result<ApiResponse<AdresseFacturationResponse>, Failure>>
+      updateAdresse(AdresseFacturationRequest adresse, String id);
+  Future<Result<ApiResponse<dynamic>, Failure>> deleteAdresse(String id);
+  Future<Result<ApiResponse<dynamic>, Failure>> setDefaultAdresse(String id);
 }

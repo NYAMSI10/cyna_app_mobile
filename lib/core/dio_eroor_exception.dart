@@ -10,9 +10,18 @@ extension DioErrorExtension on DioException {
     // Si le serveur a renvoyé une réponse JSON de type Map
     if (response?.data != null && response?.data is Map<String, dynamic>) {
       try {
+        final data = response!.data as Map<String, dynamic>;
+
+        final rawMessage = data['message'];
+        if (rawMessage is String && rawMessage.isNotEmpty) {
+          message = rawMessage;
+        } else if (rawMessage is List && rawMessage.isNotEmpty) {
+          message = rawMessage.join('\n');
+        }
+
         // On parse en ApiResponse<dynamic> (ou ApiResponse<void>)
         final apiResponse = ApiResponse<dynamic>.fromJson(
-          response!.data as Map<String, dynamic>,
+          data,
           (obj) => obj, // data est ignoré pour l'erreur, donc identitaire
         );
 

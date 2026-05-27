@@ -8,7 +8,7 @@ part 'adresse_facturation_reponse.g.dart';
 abstract class AdresseFacturationResponse with _$AdresseFacturationResponse {
   factory AdresseFacturationResponse({
     // ignore: invalid_annotation_target
-    @JsonKey(name: '_id') String? id,
+    @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
     required String adresse,

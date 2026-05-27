@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$AdresseFacturationResponse {
 // ignore: invalid_annotation_target
   @JsonKey(name: '_id')
-  String? get id;
+  String get id;
   String get firstName;
   String get lastName;
   String get adresse;
@@ -81,7 +81,7 @@ abstract mixin class $AdresseFacturationResponseCopyWith<$Res> {
       _$AdresseFacturationResponseCopyWithImpl;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@JsonKey(name: '_id') String id,
       String firstName,
       String lastName,
       String adresse,
@@ -107,7 +107,7 @@ class _$AdresseFacturationResponseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? firstName = null,
     Object? lastName = null,
     Object? adresse = null,
@@ -120,10 +120,10 @@ class _$AdresseFacturationResponseCopyWithImpl<$Res>
     Object? isDefault = freezed,
   }) {
     return _then(_self.copyWith(
-      id: freezed == id
+      id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       firstName: null == firstName
           ? _self.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -262,7 +262,7 @@ extension AdresseFacturationResponsePatterns on AdresseFacturationResponse {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            @JsonKey(name: '_id') String? id,
+            @JsonKey(name: '_id') String id,
             String firstName,
             String lastName,
             String adresse,
@@ -312,7 +312,7 @@ extension AdresseFacturationResponsePatterns on AdresseFacturationResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            @JsonKey(name: '_id') String? id,
+            @JsonKey(name: '_id') String id,
             String firstName,
             String lastName,
             String adresse,
@@ -360,7 +360,7 @@ extension AdresseFacturationResponsePatterns on AdresseFacturationResponse {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            @JsonKey(name: '_id') String? id,
+            @JsonKey(name: '_id') String id,
             String firstName,
             String lastName,
             String adresse,
@@ -398,7 +398,7 @@ extension AdresseFacturationResponsePatterns on AdresseFacturationResponse {
 @JsonSerializable()
 class _AdresseFacturationResponse implements AdresseFacturationResponse {
   _AdresseFacturationResponse(
-      {@JsonKey(name: '_id') this.id,
+      {@JsonKey(name: '_id') required this.id,
       required this.firstName,
       required this.lastName,
       required this.adresse,
@@ -415,7 +415,7 @@ class _AdresseFacturationResponse implements AdresseFacturationResponse {
 // ignore: invalid_annotation_target
   @override
   @JsonKey(name: '_id')
-  final String? id;
+  final String id;
   @override
   final String firstName;
   @override
@@ -497,7 +497,7 @@ abstract mixin class _$AdresseFacturationResponseCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@JsonKey(name: '_id') String id,
       String firstName,
       String lastName,
       String adresse,
@@ -523,7 +523,7 @@ class __$AdresseFacturationResponseCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? firstName = null,
     Object? lastName = null,
     Object? adresse = null,
@@ -536,10 +536,10 @@ class __$AdresseFacturationResponseCopyWithImpl<$Res>
     Object? isDefault = freezed,
   }) {
     return _then(_AdresseFacturationResponse(
-      id: freezed == id
+      id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       firstName: null == firstName
           ? _self.firstName
           : firstName // ignore: cast_nullable_to_non_nullable

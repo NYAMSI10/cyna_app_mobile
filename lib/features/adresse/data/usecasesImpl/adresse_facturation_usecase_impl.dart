@@ -38,11 +38,7 @@ final class AdresseFacturationUsecaseImpl implements AdresseFacturationUsecase {
 
       return Result.success(response);
     } catch (e, s) {
-      throw Failure(
-        message: "An unexpected error occurred".hardcoded,
-        exception: e is Exception ? e : Exception(e.toString()),
-        stackTrace: s,
-      );
+      return Result.error(_toFailure(e, s));
     }
   }
 
@@ -63,11 +59,78 @@ final class AdresseFacturationUsecaseImpl implements AdresseFacturationUsecase {
 
       return Result.success(response);
     } catch (e, s) {
-      throw Failure(
-        message: "An unexpected error occurred".hardcoded,
-        exception: e is Exception ? e : Exception(e.toString()),
-        stackTrace: s,
-      );
+      return Result.error(_toFailure(e, s));
     }
+  }
+
+  @override
+  Future<Result<ApiResponse<AdresseFacturationResponse>, Failure>>
+      updateAdresse(AdresseFacturationRequest adresse, String id) async {
+    try {
+      final response = await _adresseRepository.updateAdresse(adresse, id);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+      return Result.success(response);
+    } catch (e, s) {
+      return Result.error(_toFailure(e, s));
+    }
+  }
+
+  @override
+  Future<Result<ApiResponse<dynamic>, Failure>> deleteAdresse(String id) async {
+    try {
+      final response = await _adresseRepository.deleteAdresse(id);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } catch (e, s) {
+      return Result.error(_toFailure(e, s));
+    }
+  }
+
+  @override
+  Future<Result<ApiResponse<dynamic>, Failure>> setDefaultAdresse(
+      String id) async {
+    try {
+      final response = await _adresseRepository.setDefaultAdresse(id);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } catch (e, s) {
+      return Result.error(_toFailure(e, s));
+    }
+  }
+
+  Failure _toFailure(Object e, StackTrace s) {
+    if (e is Failure) return e;
+
+    return Failure(
+      message: "An unexpected error occurred".hardcoded,
+      exception: e is Exception ? e : Exception(e.toString()),
+      stackTrace: s,
+    );
   }
 }

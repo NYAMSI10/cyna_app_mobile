@@ -32,7 +32,7 @@ class AdresseFormScreenState extends ConsumerState<AdresseFormScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.adresse != null) {
+    if (widget.adresse?.id != null) {
       firstNameController.text = widget.adresse!.firstName;
       lastNameController.text = widget.adresse!.lastName;
       adresseController.text = widget.adresse!.adresse;
@@ -41,7 +41,8 @@ class AdresseFormScreenState extends ConsumerState<AdresseFormScreen> {
       countryController.text = widget.adresse!.country;
       regionController.text = widget.adresse!.region;
       phoneController.text = widget.adresse!.phone;
-      complementAdresseController.text = widget.adresse!.complementAdresse!;
+      complementAdresseController.text =
+          widget.adresse!.complementAdresse ?? '';
     }
   }
 
@@ -363,11 +364,19 @@ class AdresseFormScreenState extends ConsumerState<AdresseFormScreen> {
                             region: regionController.text,
                             isDefault: false,
                           );
-                          await ref
-                              .read(
-                                  adresseFacturationControllerProvider.notifier)
-                              .createAdresse(adresse);
-                          Navigator.pop(context);
+                          final isSaved = widget.adresse != null
+                              ? await ref
+                                  .read(adresseFacturationControllerProvider
+                                      .notifier)
+                                  .updateAdresse(adresse, widget.adresse!.id)
+                              : await ref
+                                  .read(adresseFacturationControllerProvider
+                                      .notifier)
+                                  .createAdresse(adresse);
+
+                          if (isSaved && context.mounted) {
+                            Navigator.pop(context);
+                          }
                         }
                       },
                       child: Text(

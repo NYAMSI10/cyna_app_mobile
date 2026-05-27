@@ -26,4 +26,14 @@ abstract class AdresseApi {
   @POST(createAdresseEndPoint)
   Future<ApiResponse<dynamic>> createAdresse(
       @Body() AdresseFacturationRequest adresse);
+
+  @PATCH(updateAdresseEndPoint)
+  Future<ApiResponse<AdresseFacturationResponse>> updateAdresse(
+      @Body() AdresseFacturationRequest adresse, @Path("id") String id);
+
+  @DELETE(deleteAdresseEndPoint)
+  Future<ApiResponse<dynamic>> deleteAdresse(@Path("id") String id);
+
+  @GET(setDefaultAdresseEndPoint)
+  Future<ApiResponse<dynamic>> setDefaultAdresse(@Path("id") String id);
 }

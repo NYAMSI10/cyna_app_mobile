@@ -2,7 +2,6 @@ import 'package:cyna/common/helpers/notification_helper.dart';
 import 'package:cyna/features/adresse/data/model/reponse/adresse_facturation_reponse.dart';
 import 'package:cyna/features/adresse/data/model/request/adresse_facturation_request.dart';
 import 'package:cyna/features/adresse/data/usecasesImpl/adresse_facturation_usecase_impl.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'adresse_facturation_controller.g.dart';
@@ -37,7 +36,7 @@ class AdresseFacturationController extends _$AdresseFacturationController {
     state = await AsyncValue.guard(() => getAdresses());
   }
 
-  Future<void> createAdresse(AdresseFacturationRequest adresse) async {
+  Future<bool> createAdresse(AdresseFacturationRequest adresse) async {
     final usecase = ref.read(adresseFacturationUsecaseProvider);
 
     final result = await usecase.createAdresse(adresse);
@@ -47,9 +46,63 @@ class AdresseFacturationController extends _$AdresseFacturationController {
         TNotifications.success(message: response.message!);
         // Après la création, on rafraîchit la liste des adresses
         refresh();
+        return true;
       },
       (failure) {
         TNotifications.error(message: failure.message);
+        return false;
+      },
+    );
+  }
+
+  Future<bool> updateAdresse(
+      AdresseFacturationRequest adresse, String id) async {
+    final usecase = ref.read(adresseFacturationUsecaseProvider);
+
+    final result = await usecase.updateAdresse(adresse, id);
+    return result.when(
+      (response) {
+        TNotifications.success(message: response.message!);
+        // Après la mise à jour, on rafraîchit la liste des adresses
+        refresh();
+        return true;
+      },
+      (failure) {
+        TNotifications.error(message: failure.message);
+        return false;
+      },
+    );
+  }
+
+  Future<bool> deleteAdresse(String id) async {
+    final usecase = ref.read(adresseFacturationUsecaseProvider);
+    final result = await usecase.deleteAdresse(id);
+    return result.when(
+      (response) {
+        TNotifications.success(message: response.message!);
+        // Après la suppression, on rafraîchit la liste des adresses
+        refresh();
+        return true;
+      },
+      (failure) {
+        TNotifications.error(message: failure.message);
+        return false;
+      },
+    );
+  }
+
+  Future<bool> setDefaultAdresse(String id) async {
+    final usecase = ref.read(adresseFacturationUsecaseProvider);
+    final result = await usecase.setDefaultAdresse(id);
+    return result.when(
+      (response) {
+        TNotifications.success(message: response.message!);
+        refresh();
+        return true;
+      },
+      (failure) {
+        TNotifications.error(message: failure.message);
+        return false;
       },
     );
   }

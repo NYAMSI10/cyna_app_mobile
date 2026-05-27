@@ -6,4 +6,8 @@ abstract interface class AdresseFacturationRepository {
   Future<ApiResponse<List<AdresseFacturationResponse>>> getAdresses();
   Future<ApiResponse<AdresseFacturationResponse>> createAdresse(
       AdresseFacturationRequest adresse);
+  Future<ApiResponse<AdresseFacturationResponse>> updateAdresse(
+      AdresseFacturationRequest adresse, String id);
+  Future<ApiResponse<dynamic>> deleteAdresse(String id);
+  Future<ApiResponse<dynamic>> setDefaultAdresse(String id);
 }

@@ -28,3 +28,7 @@ const String getCommandesEndPoint = '/api/commandes/by-user';
 // Adresse Endpoints
 const String getAdressesEndPoint = '/api/adresse-facturations/by-user';
 const String createAdresseEndPoint = '/api/adresse-facturations';
+const String deleteAdresseEndPoint = '/api/adresse-facturations/{id}';
+const String updateAdresseEndPoint = '/api/adresse-facturations/{id}';
+const String setDefaultAdresseEndPoint =
+    '/api/adresse-facturations/defaut/{id}';

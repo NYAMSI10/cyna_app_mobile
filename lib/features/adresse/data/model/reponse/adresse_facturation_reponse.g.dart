@@ -9,7 +9,7 @@ part of 'adresse_facturation_reponse.dart';
 _AdresseFacturationResponse _$AdresseFacturationResponseFromJson(
         Map<String, dynamic> json) =>
     _AdresseFacturationResponse(
-      id: json['_id'] as String?,
+      id: json['_id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       adresse: json['adresse'] as String,

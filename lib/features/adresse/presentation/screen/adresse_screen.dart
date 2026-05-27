@@ -15,35 +15,39 @@ class AdresseScreen extends ConsumerStatefulWidget {
 }
 
 class _AdresseScreenState extends ConsumerState<AdresseScreen> {
-  final List<Map<String, dynamic>> adresses = [
-    {
-      'id': 1,
-      'firstName': 'Jean',
-      'lastName': 'Dupont',
-      'address': '123 Rue de la Paix',
-      'city': 'Ville',
-      'postalCode': '12345',
-      'phone': '0123456789',
-    },
-    {
-      'id': 2,
-      'firstName': 'Maria',
-      'lastName': 'Garcia',
-      'address': '456 Rue de la Liberté',
-      'city': 'Ville',
-      'postalCode': '67890',
-      'phone': '9876543210',
-    },
-    {
-      'id': 3,
-      'firstName': 'Pierre',
-      'lastName': 'Martin',
-      'address': '789 Rue de la Justice',
-      'city': 'Ville',
-      'postalCode': '54321',
-      'phone': '5555555555',
-    },
-  ];
+  Future<bool> _confirmAdresseAction({
+    required String title,
+    required String message,
+    required String confirmLabel,
+    required Color confirmColor,
+  }) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              confirmLabel,
+              style: TextStyle(
+                color: confirmColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    return confirmed ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final adresseState = ref.watch(adresseFacturationControllerProvider);
@@ -93,7 +97,7 @@ class _AdresseScreenState extends ConsumerState<AdresseScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 5,
                           children: [
-                            if (adresse.isDefault!) ...[
+                            if (adresse.isDefault == true) ...[
                               Text(
                                 'Par defaut',
                                 style: const TextStyle(
@@ -196,25 +200,66 @@ class _AdresseScreenState extends ConsumerState<AdresseScreen> {
                                   ),
                                 ),
                                 TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Supprimer',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Définir par défaut',
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )),
+                                  onPressed: () async {
+                                    final confirmed =
+                                        await _confirmAdresseAction(
+                                      title: 'Supprimer cette adresse ?',
+                                      message:
+                                          'Cette action supprimera définitivement cette adresse de facturation.',
+                                      confirmLabel: 'Supprimer',
+                                      confirmColor: Colors.red,
+                                    );
+
+                                    if (!confirmed || !context.mounted) {
+                                      return;
+                                    }
+
+                                    await ref
+                                        .read(
+                                            adresseFacturationControllerProvider
+                                                .notifier)
+                                        .deleteAdresse(adresse.id);
+                                  },
+                                  child: const Text(
+                                    'Supprimer',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                if (adresse.isDefault != true)
+                                  TextButton(
+                                      onPressed: () async {
+                                        final confirmed =
+                                            await _confirmAdresseAction(
+                                          title:
+                                              'Définir cette adresse par défaut ?',
+                                          message:
+                                              'Cette adresse sera utilisée comme adresse de facturation par défaut.',
+                                          confirmLabel: 'Définir',
+                                          confirmColor: Colors.green,
+                                        );
+
+                                        if (!confirmed || !context.mounted) {
+                                          return;
+                                        }
+
+                                        await ref
+                                            .read(
+                                                adresseFacturationControllerProvider
+                                                    .notifier)
+                                            .setDefaultAdresse(adresse.id);
+                                      },
+                                      child: const Text(
+                                        'Définir par défaut',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      )),
                               ],
                             )
                           ],
