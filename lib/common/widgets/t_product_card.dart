@@ -1,196 +1,192 @@
 import 'package:cyna/common/constant/colors.dart';
-import 'package:cyna/common/widgets/icons/t_circular_icon.dart';
 import 'package:cyna/features/product-detail/data/model/product_response.dart';
 import 'package:cyna/features/product-detail/presentation/screen/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax/iconsax.dart'; // N'oublie pas l'import pour Iconsax.heart
 
 class TProductCard extends ConsumerWidget {
-  // On déclare la variable produit qui sera passée au widget
   final ProductResponse product;
 
-  // Le produit est requis pour construire la carte
   const TProductCard({
     super.key,
     required this.product,
   });
 
+  String get _imageUrl {
+    final images = product.images;
+
+    if (images != null && images.isNotEmpty) {
+      return "http://10.0.2.2:3000/${images.first.url}";
+    }
+
+    return "https://img-0.journaldunet.com/JgOAEEaKp00acGdrktPUB8Y2__8=/1500x/smart/32d90de13a5f411c86709152f70fc67c/ccmcms-jdn/10861192.jpg";
+  }
+
+  String get _monthlyPrice {
+    final price = product.priceMonth;
+
+    if (price == null) return "Prix indisponible";
+
+    final formattedPrice = price % 1 == 0
+        ? price.toStringAsFixed(0)
+        : price.toStringAsFixed(2).replaceAll('.', ',');
+
+    return "$formattedPrice € / mois";
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // On calcule la rupture de stock directement ici
-    final bool isOutOfStock = product.stock == 0;
+    final isOutOfStock = product.stock == 0;
+    final textTheme = Theme.of(context).textTheme;
 
-    return GestureDetector(
-      onTap: () {
-        // On passe le produit en argument
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(),
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Section Image avec badge "Stack"
-            Expanded(
-              child: Stack(
-                children: [
-                  // Image
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(16)),
-                    ),
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(16)),
-                      child: Builder(
-                        builder: (context) {
-                          // 1. On vérifie si la liste n'est pas nulle ET pas vide
-                          final hasImages = product.images != null &&
-                              product.images!.isNotEmpty;
-
-                          // 2. On récupère l'URL si elle existe, sinon le placeholder
-                          final String imageUrl = hasImages
-                              ? "http://10.0.2.2:3000/${product.images![0].url}"
-                              : "https://img-0.journaldunet.com/JgOAEEaKp00acGdrktPUB8Y2__8=/1500x/smart/32d90de13a5f411c86709152f70fc67c/ccmcms-jdn/10861192.jpg";
-
-                          return Image.network(
-                            imageUrl,
-                            height: 200,
-                            width: double.infinity, // Optionnel mais conseillé
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                              Icons.broken_image,
-                              color: Colors.grey,
-                              size: 50,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  // Badge "Rupture de stock"
-                  if (isOutOfStock)
-                    Positioned(
-                      top: 8,
-                      left: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.red.withAlpha(150),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "Rupture",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .apply(color: Colors.white, fontWeightDelta: 2),
-                        ),
-                      ),
-                    ),
-                  // Bouton favoris
-                  const Positioned(
-                    top: 2,
-                    right: 1,
-                    child: TCircularIcon(
-                      // Assure-toi que ce widget est bien importé !
-                      icon: Iconsax.heart,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
+    return Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailScreen(),
               ),
+            );
+          },
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(10),
+                  offset: const Offset(0, 8),
+                  blurRadius: 18,
+                ),
+              ],
             ),
-
-            // Section Texte et Prix
-            Padding(
-              padding: const EdgeInsets.only(left: 12, top: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name!,
-                    style: Theme.of(context).textTheme.bodySmall!.apply(
-                          fontSizeDelta: 1,
-                        ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
                     children: [
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Text(
-                      //       "${product.priceMonth?.toStringAsFixed(2)} € / mois",
-                      //       style: Theme.of(context)
-                      //           .textTheme
-                      //           .labelLarge!
-                      //           .apply(fontWeightDelta: 3),
-                      //     ),
-                      //     Text(
-                      //       "${product.priceYear?.toStringAsFixed(2)} € / an",
-                      //       style: Theme.of(context)
-                      //           .textTheme
-                      //           .labelLarge!
-                      //           .apply(fontWeightDelta: 3),
-                      //     ),
-                      //   ],
-                      // ),
-                      Text(
-                        "1000 € / mois",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .apply(fontWeightDelta: 3),
-                      ),
-                      const Spacer(),
-                      // BOUTON AJOUTER
-                      InkWell(
-                        onTap: () {
-                          // Action : Ajouter au panier
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: TColors.secondColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(16),
-                            ),
-                          ),
-                          child: const SizedBox(
-                            width: 40,
-                            height: 40,
+                      Positioned.fill(
+                        child: Image.network(
+                          _imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: Colors.grey.shade100,
+                            alignment: Alignment.center,
                             child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 20,
+                              Icons.broken_image_outlined,
+                              color: Colors.grey.shade400,
+                              size: 34,
                             ),
                           ),
                         ),
+                      ),
+                      Positioned.fill(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black.withAlpha(20),
+                                Colors.transparent,
+                                Colors.black.withAlpha(12),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (isOutOfStock)
+                        Positioned(
+                          top: 8,
+                          left: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: TColors.error,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              "Rupture",
+                              style: textTheme.labelSmall!.apply(
+                                  color: Colors.white, fontWeightDelta: 2),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name ?? "Produit",
+                        style: textTheme.bodyMedium!.copyWith(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _monthlyPrice,
+                              style: textTheme.titleMedium!.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: isOutOfStock
+                                ? null
+                                : () {
+                                    // Action : Ajouter au panier
+                                  },
+                            child: Container(
+                              width: 48,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: isOutOfStock
+                                    ? Colors.grey.shade300
+                                    : TColors.secondColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: isOutOfStock
+                                    ? Colors.grey.shade600
+                                    : Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
