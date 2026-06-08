@@ -32,3 +32,11 @@ const String deleteAdresseEndPoint = '/api/adresse-facturations/{id}';
 const String updateAdresseEndPoint = '/api/adresse-facturations/{id}';
 const String setDefaultAdresseEndPoint =
     '/api/adresse-facturations/defaut/{id}';
+
+// Carte Bancaire Endpoints
+const String getCartesEndPoint = '/api/carte-bancaires/by-user';
+const String setupIntentCarteEndPoint = '/api/carte-bancaires/setup-intent';
+const String createCarteEndPoint = '/api/carte-bancaires';
+const String deleteCarteEndPoint = '/api/carte-bancaires/{id}';
+const String updateCarteEndPoint = '/api/carte-bancaires/{id}';
+const String setDefaultCarteEndPoint = '/api/carte-bancaires/defaut/{id}';

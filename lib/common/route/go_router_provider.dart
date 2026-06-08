@@ -1,6 +1,7 @@
 import 'package:cyna/common/route/route_name.dart';
 import 'package:cyna/features/abonnement/presentation/screens/abonnement_screen.dart';
 import 'package:cyna/features/adresse/presentation/screen/adresse_screen.dart';
+import 'package:cyna/features/carte_bancaire/presentation/screen/carte_bancaire_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/login/login_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/register/register_screen.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
@@ -90,6 +91,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/adresse',
         name: adresseRoute,
         builder: (context, state) => const AdresseScreen(),
+      ),
+      GoRoute(
+        path: '/carte-bancaire',
+        name: carteBancaireRoute,
+        builder: (context, state) => const CarteBancaireScreen(),
       ),
     ],
   );

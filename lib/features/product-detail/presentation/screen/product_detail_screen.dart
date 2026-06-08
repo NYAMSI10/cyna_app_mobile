@@ -1,21 +1,23 @@
 import 'package:cyna/common/constant/colors.dart';
-import 'package:cyna/common/constant/mok_data.dart';
-import 'package:cyna/common/constant/sizes.dart';
 import 'package:cyna/common/helpers/responsive.dart';
-import 'package:cyna/features/product-detail/presentation/widgets/circle_action_button.dart';
-import 'package:cyna/features/product-detail/presentation/widgets/t_info_badge.dart';
+import 'package:cyna/features/product-detail/data/model/product_response.dart';
+import 'package:cyna/features/product-detail/presentation/provider/product_controller.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_plan_tile.dart';
-import 'package:cyna/features/product-detail/presentation/widgets/t_product_detail_carousel.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_section_card.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_selectable_plan_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
 
 enum _PlanType { monthly, yearly }
 
+const String _imageBaseUrl = 'http://localhost:3000/';
+
 class ProductDetailScreen extends ConsumerStatefulWidget {
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.product});
+
+  final ProductResponse product;
 
   @override
   ConsumerState<ProductDetailScreen> createState() =>
@@ -23,361 +25,775 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
-  _PlanType _selectedPlan = _PlanType.yearly;
+  late final PageController _imageController;
+  int _imageIndex = 0;
+  int _quantity = 1;
+  _PlanType _selectedPlan = _PlanType.monthly;
+
+  ProductResponse get _product => widget.product;
+
+  @override
+  void initState() {
+    super.initState();
+    _imageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _imageController.dispose();
+    super.dispose();
+  }
+
+  List<String> get _imageUrls {
+    final images = _product.images;
+    if (images != null && images.isNotEmpty) {
+      return images.map((image) => '$_imageBaseUrl${image.url}').toList();
+    }
+    return [];
+  }
+
+  double get _monthlyPrice => _product.priceMonth ?? 0;
+  double get _yearlyPrice => _product.priceYear ?? 0;
+  bool get _hasMonthly => _product.priceMonth != null;
+  bool get _hasYearly => _product.priceYear != null;
+  bool get _isYearly => _selectedPlan == _PlanType.yearly;
+
+  double get _selectedUnitPrice => _isYearly ? _yearlyPrice : _monthlyPrice;
+  double get _totalPrice => _selectedUnitPrice * _quantity;
+
+  String _money(double value) => '${value.toStringAsFixed(2)} €';
+  String get _unitSuffix => _isYearly ? '/ an' : '/ mois';
+
+  void _shareProduct() {
+    final name = _product.name ?? 'ce produit';
+    final link = '$_imageBaseUrl${_product.slug ?? _product.id}';
+    Clipboard.setData(
+      ClipboardData(text: 'Découvrez « $name » sur Cyna : $link'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Lien du produit copié, prêt à être partagé'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final product = TMokData.productDetail;
-    final monthlyPrice = (product['priceMonth'] as num).toDouble();
-    final yearlyPrice = (product['priceYear'] as num).toDouble();
-    final stock = product['stock'] as int;
-    final yearlyEquivalent = monthlyPrice * 12;
-    final yearlySavings = yearlyEquivalent - yearlyPrice;
-    final isYearlySelected = _selectedPlan == _PlanType.yearly;
-    final selectedPriceLabel = isYearlySelected
-        ? '${yearlyPrice.toStringAsFixed(2)} € / an'
-        : '${monthlyPrice.toStringAsFixed(2)} € / mois';
-    final selectedPlanTitle =
-        isYearlySelected ? 'Formule annuelle' : 'Formule mensuelle';
+    final stock = _product.stock ?? 0;
+    final inStock = stock > 0;
+    final pagePadding = Responsive.pagePadding(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FC),
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        backgroundColor: TColors.primaryColor,
-        title: const Text(
-          'Détail du produit',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 14, 20, 18),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x12000000),
-                blurRadius: 24,
-                offset: Offset(0, -8),
+      bottomNavigationBar: _BottomBar(
+        totalLabel: _money(_totalPrice),
+        suffix: _unitSuffix,
+        enabled: inStock && _selectedUnitPrice > 0,
+        onAddToCart: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${_product.name ?? 'Produit'} ajouté au panier '
+                '(x$_quantity, ${_isYearly ? 'annuel' : 'mensuel'})',
               ),
-            ],
-          ),
-          child: Row(
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      selectedPriceLabel,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color: const Color(0xFF111827),
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      selectedPlanTitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: const Color(0xFF6B7280),
-                          ),
-                    ),
-                  ],
+              // --- En-tête : image + actions ---
+              _buildHeader(inStock),
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  pagePadding.left,
+                  20,
+                  pagePadding.right,
+                  28,
                 ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 54,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('$selectedPlanTitle sélectionnée'),
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: TColors.secondColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Text(
-                      'Ajouter au panier',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          Responsive.pagePadding(context).left,
-          20,
-          Responsive.pagePadding(context).right,
-          28,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF8E2CFF),
-                    TColors.primaryColor,
-                    Color(0xFF1E88E5),
-                  ],
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x228000FF),
-                    blurRadius: 30,
-                    offset: Offset(0, 18),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(14, 14, 14, 18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Nom + disponibilité
+                    Text(
+                      _product.name ?? 'Produit',
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: const Color(0xFF111827),
+                                height: 1.15,
+                              ),
+                    ),
+                    const SizedBox(height: 12),
+                    _StockChip(inStock: inStock, stock: stock),
+                    const SizedBox(height: 20),
+
+                    // Prix + sélecteur de quantité
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        TInfoBadge(
-                          label: stock > 0 ? 'En stock' : 'Indisponible',
-                          color: stock > 0
-                              ? const Color(0xFFDCFCE7)
-                              : const Color(0xFFFEE2E2),
-                          textColor: stock > 0
-                              ? const Color(0xFF166534)
-                              : const Color(0xFF991B1B),
+                        Expanded(
+                          child: _selectedUnitPrice > 0
+                              ? RichText(
+                                  text: TextSpan(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          color: TColors.secondColor,
+                                        ),
+                                    children: [
+                                      TextSpan(text: _money(_selectedUnitPrice)),
+                                      TextSpan(
+                                        text: ' $_unitSuffix',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: const Color(0xFF6B7280),
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Text(
+                                  'Prix indisponible',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: const Color(0xFF6B7280),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
                         ),
-                        const SizedBox(width: 8),
-                        const Spacer(),
-                        TCircleActionButton(
-                          icon: Icons.favorite_border,
-                          onTap: () {},
-                        ),
-                        const SizedBox(width: 8),
-                        TCircleActionButton(
-                          icon: Icons.share_outlined,
-                          onTap: () {},
+                        _QuantityStepper(
+                          quantity: _quantity,
+                          onDecrement: _quantity > 1
+                              ? () => setState(() => _quantity--)
+                              : null,
+                          onIncrement: () => setState(() => _quantity++),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(22),
-                      child: Container(
-                        color: Colors.white.withValues(alpha: 0.08),
-                        child: TProductDetailCarousel(
-                          images: List<String>.from(product['images'] as List),
+                    const SizedBox(height: 24),
+
+                    // Description
+                    if ((_product.description ?? '').trim().isNotEmpty) ...[
+                      TSectionCard(
+                        title: 'Description',
+                        child: ReadMoreText(
+                          _product.description!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                height: 1.72,
+                                color: const Color(0xFF374151),
+                              ),
+                          textScaler: const TextScaler.linear(1.1),
+                          trimMode: TrimMode.Line,
+                          trimLines: 4,
+                          colorClickableText: TColors.secondColor,
+                          trimCollapsedText: 'Voir plus',
+                          trimExpandedText: 'Voir moins',
+                          lessStyle: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: TColors.secondColor,
+                          ),
+                          moreStyle: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: TColors.secondColor,
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 24),
+                    ],
+
+                    // Choix de la formule
+                    if (_hasMonthly || _hasYearly) _buildPlanSelector(),
+
+                    const SizedBox(height: 28),
+
+                    // Recommandations
+                    _buildRecommendations(),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-            // Titre
-            Text(
-              product['name'] as String,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: const Color(0xFF111827),
-                    height: 1.15,
+  Widget _buildHeader(bool inStock) {
+    final images = _imageUrls;
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFEFF1FB), Color(0xFFF7F8FC)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(36),
+          bottomRight: Radius.circular(36),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+        child: Column(
+          children: [
+            // Barre d'actions : retour / titre / partage (pas de favori)
+            Row(
+              children: [
+                _CircleIconButton(
+                  icon: Icons.arrow_back_ios_new,
+                  onTap: () => Navigator.pop(context),
+                ),
+                Expanded(
+                  child: Text(
+                    'Détail du produit',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF111827),
+                        ),
                   ),
+                ),
+                _CircleIconButton(
+                  icon: Icons.share_outlined,
+                  onTap: _shareProduct,
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
 
-            // Disponibilité
-            TSectionCard(
-              title: 'Disponibilité',
-              child: Row(
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: stock > 0
-                          ? const Color(0xFF22C55E)
-                          : const Color(0xFFEF4444),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      stock > 0
-                          ? '$stock unités disponibles actuellement'
-                          : 'Produit temporairement indisponible',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF374151),
-                            fontWeight: FontWeight.w600,
+            // Image(s) produit
+            SizedBox(
+              height: 260,
+              child: images.isEmpty
+                  ? _imagePlaceholder()
+                  : PageView.builder(
+                      controller: _imageController,
+                      onPageChanged: (index) =>
+                          setState(() => _imageIndex = index),
+                      itemCount: images.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Image.network(
+                            images[index],
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                _imagePlaceholder(),
                           ),
+                        );
+                      },
                     ),
-                  ),
+            ),
+
+            // Indicateurs
+            if (images.length > 1) ...[
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < images.length; i++)
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      width: _imageIndex == i ? 22 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: _imageIndex == i
+                            ? TColors.secondColor
+                            : const Color(0xFFCBD5E1),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
                 ],
               ),
-            ),
-            const SizedBox(height: 24),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 
-            // Description
+  Widget _imagePlaceholder() {
+    return Container(
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        size: 56,
+        color: Colors.grey.shade400,
+      ),
+    );
+  }
 
-            TSectionCard(
-              title: 'Description',
-              child: ReadMoreText(
-                product['description'] as String,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      height: 1.72,
-                      color: const Color(0xFF374151),
-                    ),
-                textScaler: TextScaler.linear(1.1),
-                trimMode: TrimMode.Line,
-                trimLines: 4,
-                colorClickableText: TColors.secondColor,
-                trimCollapsedText: 'Voir plus',
-                trimExpandedText: 'Voir moins',
-                lessStyle: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+  Widget _buildPlanSelector() {
+    final yearlySavings = (_monthlyPrice * 12) - _yearlyPrice;
+
+    return Container(
+      width: double.infinity,
+      padding: Responsive.pagePadding(context),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEFF6FF),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.workspace_premium_outlined,
                   color: TColors.secondColor,
                 ),
-                moreStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: TColors.secondColor),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Choisissez votre formule',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF111827),
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          if (_hasMonthly) ...[
+            TSelectablePlanTile(
+              isSelected: _selectedPlan == _PlanType.monthly,
+              onTap: () => setState(() => _selectedPlan = _PlanType.monthly),
+              child: TPlanTile(
+                title: 'Mensuel',
+                priceLabel: '${_money(_monthlyPrice)} / mois',
+                subtitle: 'Flexible, sans engagement long terme',
+                accentColor: const Color(0xFFF3E8FF),
+                borderColor: const Color(0xFFD8B4FE),
+                icon: Icons.calendar_today_outlined,
               ),
             ),
-            const SizedBox(height: 24),
-
-            // Choisissez votre formule
-            Container(
-              width: double.infinity,
-              padding: Responsive.pagePadding(context),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+            if (_hasYearly) const SizedBox(height: 12),
+          ],
+          if (_hasYearly)
+            TSelectablePlanTile(
+              isSelected: _selectedPlan == _PlanType.yearly,
+              onTap: () => setState(() => _selectedPlan = _PlanType.yearly),
+              child: TPlanTile(
+                title: 'Annuel',
+                priceLabel: '${_money(_yearlyPrice)} / an',
+                subtitle: yearlySavings > 0
+                    ? 'Vous économisez ${_money(yearlySavings)} par an'
+                    : 'Engagement annuel',
+                accentColor: const Color(0xFFDBEAFE),
+                borderColor: const Color(0xFF93C5FD),
+                icon: Icons.auto_awesome_outlined,
+                tag: 'Meilleure valeur',
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEFF6FF),
-                          borderRadius: BorderRadius.circular(14),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecommendations() {
+    final productsAsync = ref.watch(productControllerProvider);
+
+    return productsAsync.maybeWhen(
+      data: (products) {
+        final others =
+            products.where((p) => p.id != _product.id).take(8).toList();
+        if (others.isEmpty) return const SizedBox.shrink();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Recommandations',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF111827),
+                      ),
+                ),
+                const Spacer(),
+                Text(
+                  'Voir tout',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: TColors.secondColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 190,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: others.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 14),
+                itemBuilder: (context, index) {
+                  final reco = others[index];
+                  return _RecommendationCard(
+                    product: reco,
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProductDetailScreen(product: reco),
                         ),
-                        child: const Icon(
-                          Icons.workspace_premium_outlined,
-                          color: TColors.secondColor,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+}
+
+/// Bouton circulaire clair (fond blanc + ombre) pour l'en-tête.
+class _CircleIconButton extends StatelessWidget {
+  const _CircleIconButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      shape: const CircleBorder(),
+      elevation: 2,
+      shadowColor: Colors.black26,
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(11),
+          child: Icon(icon, color: TColors.secondColor, size: 20),
+        ),
+      ),
+    );
+  }
+}
+
+/// Pastille de disponibilité basée sur le stock réel.
+class _StockChip extends StatelessWidget {
+  const _StockChip({required this.inStock, required this.stock});
+
+  final bool inStock;
+  final int stock;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = inStock ? const Color(0xFF16A34A) : const Color(0xFFDC2626);
+    final bg = inStock ? const Color(0xFFDCFCE7) : const Color(0xFFFEE2E2);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 9,
+            height: 9,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            inStock ? '$stock en stock' : 'Indisponible',
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sélecteur de quantité ( - 01 + ).
+class _QuantityStepper extends StatelessWidget {
+  const _QuantityStepper({
+    required this.quantity,
+    required this.onIncrement,
+    required this.onDecrement,
+  });
+
+  final int quantity;
+  final VoidCallback onIncrement;
+  final VoidCallback? onDecrement;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _StepButton(
+            icon: Icons.remove,
+            onTap: onDecrement,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              quantity.toString().padLeft(2, '0'),
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+                color: Color(0xFF111827),
+              ),
+            ),
+          ),
+          _StepButton(
+            icon: Icons.add,
+            onTap: onIncrement,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StepButton extends StatelessWidget {
+  const _StepButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    return InkWell(
+      onTap: onTap,
+      customBorder: const CircleBorder(),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Icon(
+          icon,
+          size: 18,
+          color: enabled ? TColors.secondColor : const Color(0xFFCBD5E1),
+        ),
+      ),
+    );
+  }
+}
+
+/// Carte produit compacte pour la liste de recommandations.
+class _RecommendationCard extends StatelessWidget {
+  const _RecommendationCard({required this.product, required this.onTap});
+
+  final ProductResponse product;
+  final VoidCallback onTap;
+
+  String get _imageUrl {
+    final images = product.images;
+    if (images != null && images.isNotEmpty) {
+      return '$_imageBaseUrl${images.first.url}';
+    }
+    return '';
+  }
+
+  String get _price {
+    final price = product.priceMonth;
+    if (price == null) return 'Prix indisponible';
+    return '${price.toStringAsFixed(2)} € / mois';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final url = _imageUrl;
+    return SizedBox(
+      width: 150,
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 110,
+                  width: double.infinity,
+                  color: const Color(0xFFF1F5F9),
+                  child: url.isEmpty
+                      ? Icon(Icons.image_outlined,
+                          color: Colors.grey.shade400, size: 32)
+                      : Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.broken_image_outlined,
+                            color: Colors.grey.shade400,
+                            size: 32,
+                          ),
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name ?? 'Produit',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: Color(0xFF111827),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Choisissez votre formule',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    color: const Color(0xFF111827),
-                                  ),
+                      const SizedBox(height: 6),
+                      Text(
+                        _price,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13,
+                          color: TColors.secondColor,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 18),
-                  TSelectablePlanTile(
-                    isSelected: _selectedPlan == _PlanType.monthly,
-                    onTap: () =>
-                        setState(() => _selectedPlan = _PlanType.monthly),
-                    child: TPlanTile(
-                      title: 'Mensuel',
-                      priceLabel: '${monthlyPrice.toStringAsFixed(2)} € / mois',
-                      subtitle: 'Flexible, sans engagement long terme',
-                      accentColor: const Color(0xFFF3E8FF),
-                      borderColor: const Color(0xFFD8B4FE),
-                      icon: Icons.calendar_today_outlined,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Barre inférieure : prix total + bouton ajouter au panier.
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    required this.totalLabel,
+    required this.suffix,
+    required this.enabled,
+    required this.onAddToCart,
+  });
+
+  final String totalLabel;
+  final String suffix;
+  final bool enabled;
+  final VoidCallback onAddToCart;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 14, 20, 18),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x12000000),
+              blurRadius: 24,
+              offset: Offset(0, -8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Prix total',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: const Color(0xFF6B7280),
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  totalLabel,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: const Color(0xFF111827),
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: SizedBox(
+                height: 54,
+                child: ElevatedButton.icon(
+                  onPressed: enabled ? onAddToCart : null,
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: TColors.secondColor,
+                    disabledBackgroundColor: const Color(0xFFCBD5E1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  TSelectablePlanTile(
-                    isSelected: _selectedPlan == _PlanType.yearly,
-                    onTap: () =>
-                        setState(() => _selectedPlan = _PlanType.yearly),
-                    child: TPlanTile(
-                      title: 'Annuel',
-                      priceLabel: '${yearlyPrice.toStringAsFixed(2)} € / an',
-                      subtitle:
-                          'Vous économisez ${yearlySavings.toStringAsFixed(2)} € par an',
-                      accentColor: const Color(0xFFDBEAFE),
-                      borderColor: const Color(0xFF93C5FD),
-                      icon: Icons.auto_awesome_outlined,
-                      tag: 'Meilleure valeur',
+                  icon: const Icon(Icons.shopping_bag_outlined,
+                      color: Colors.white, size: 20),
+                  label: const Text(
+                    'Ajouter au panier',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-            const SizedBox(height: TSizes.spaceBtwSections),
-            Text(
-              "Les produits similaires",
-              style: Theme.of(context).textTheme.titleMedium!.apply(
-                    color: Colors.black,
-                    fontWeightDelta: 2,
-                  ),
-            ),
-            const SizedBox(height: 16),
-
-            // --- 4. LA GRILLE DES PRODUITS ---
-            // GridView.builder(
-            //   shrinkWrap: true, // Indispensable ici
-            //   physics:
-            //       const NeverScrollableScrollPhysics(), // Indispensable ici
-            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 2,
-            //     crossAxisSpacing: 16,
-            //     mainAxisSpacing: 16,
-            //     mainAxisExtent: 260, // La même hauteur fixe que sur l'accueil
-            //   ),
-            //   itemCount: products.length,
-            //   itemBuilder: (context, index) {
-            //     // On appelle simplement la carte produit que tu as déjà codée !
-            //     return TProductCard(product: products[index]);
-            //   },
-            // ),
           ],
         ),
       ),

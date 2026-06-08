@@ -157,7 +157,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
                 title: 'Mes Adresses',
               ),
               TSettingsMenuTile(
-                onTap: () => context.push('/abonnement'),
+                onTap: () => context.push('/carte-bancaire'),
                 icon: Iconsax.card,
                 title: 'Mes Cartes Bancaires',
               ),

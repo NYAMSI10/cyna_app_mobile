@@ -7,3 +7,4 @@ const String abonnementRoute = 'abonnement';
 const String commandeRoute = 'commande';
 const String homeRoute = 'home';
 const String adresseRoute = 'adresse';
+const String carteBancaireRoute = 'carteBancaire';

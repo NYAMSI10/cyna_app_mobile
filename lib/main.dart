@@ -1,7 +1,9 @@
+import 'package:cyna/common/constant/stripe_config.dart';
 import 'package:cyna/common/route/go_router_provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,6 +12,10 @@ import 'package:toastification/toastification.dart';
 void main() async {
   // 1. TOUJOURS en premier
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Configuration de Stripe (clé publishable) avant le runApp.
+  Stripe.publishableKey = StripeConfig.publishableKey;
+  await Stripe.instance.applySettings();
 
   // 2. Initialisations asynchrones
   await Future.wait([

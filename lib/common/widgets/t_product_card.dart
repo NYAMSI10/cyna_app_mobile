@@ -48,7 +48,7 @@ class TProductCard extends ConsumerWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(),
+                builder: (context) => ProductDetailScreen(product: product),
               ),
             );
           },
