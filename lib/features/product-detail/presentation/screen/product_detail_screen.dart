@@ -123,16 +123,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     // Nom + disponibilité
                     Text(
                       _product.name ?? 'Produit',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.w900,
-                                color: const Color(0xFF111827),
-                                height: 1.15,
-                              ),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF111827),
+                        height: 1.2,
+                      ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     _StockChip(inStock: inStock, stock: stock),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
 
                     // Prix + sélecteur de quantité
                     Row(
@@ -142,37 +142,32 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           child: _selectedUnitPrice > 0
                               ? RichText(
                                   text: TextSpan(
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w900,
-                                          color: TColors.secondColor,
-                                        ),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                      color: TColors.secondColor,
+                                    ),
                                     children: [
-                                      TextSpan(text: _money(_selectedUnitPrice)),
+                                      TextSpan(
+                                          text: _money(_selectedUnitPrice)),
                                       TextSpan(
                                         text: ' $_unitSuffix',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                              color: const Color(0xFF6B7280),
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xFF6B7280),
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 )
-                              : Text(
+                              : const Text(
                                   'Prix indisponible',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                        color: const Color(0xFF6B7280),
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Color(0xFF6B7280),
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                         ),
                         _QuantityStepper(
@@ -192,14 +187,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         title: 'Description',
                         child: ReadMoreText(
                           _product.description!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                height: 1.72,
-                                color: const Color(0xFF374151),
-                              ),
-                          textScaler: const TextScaler.linear(1.1),
+                          style: const TextStyle(
+                            fontSize: 13.5,
+                            height: 1.6,
+                            color: Color(0xFF374151),
+                          ),
                           trimMode: TrimMode.Line,
                           trimLines: 4,
                           colorClickableText: TColors.secondColor,
@@ -420,39 +412,32 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _buildRecommendations() {
-    final productsAsync = ref.watch(productControllerProvider);
+    // La catégorie est portée par le service du produit (peuplé par product-by-order).
+    final categoryId = _product.service?.category?.id;
+    if (categoryId == null) return const SizedBox.shrink();
 
-    return productsAsync.maybeWhen(
+    final similarAsync = ref.watch(similarProductsProvider(categoryId));
+
+    return similarAsync.maybeWhen(
       data: (products) {
         final others =
-            products.where((p) => p.id != _product.id).take(8).toList();
+            products.where((p) => p.id != _product.id).take(10).toList();
         if (others.isEmpty) return const SizedBox.shrink();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  'Recommandations',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFF111827),
-                      ),
-                ),
-                const Spacer(),
-                Text(
-                  'Voir tout',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: TColors.secondColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-              ],
+            const Text(
+              'Recommandations',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF111827),
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             SizedBox(
-              height: 190,
+              height: 188,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: others.length,
@@ -761,10 +746,11 @@ class _BottomBar extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   totalLabel,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: const Color(0xFF111827),
-                      ),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF111827),
+                  ),
                 ),
               ],
             ),

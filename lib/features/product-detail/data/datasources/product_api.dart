@@ -23,6 +23,11 @@ abstract class ProductApi {
   @GET(getProductsByOrderEndPoint)
   Future<ApiResponse<List<ProductResponse>>> getProductsByOrder();
 
+  @GET(getSimilarProductsEndPoint)
+  Future<ApiResponse<List<ProductResponse>>> getSimilarProducts(
+    @Path("categoryId") String categoryId,
+  );
+
   @GET(getSlidersEndPoint)
   Future<ApiResponse<List<SliderResponse>>> getTopSliders(
     @Query('limit') int? limit,

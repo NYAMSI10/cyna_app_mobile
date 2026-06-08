@@ -24,7 +24,11 @@ mixin _$ProductResponse {
   int? get stock;
   String? get description;
   bool? get priority;
-  int? get order;
+  int?
+      get order; // Le service porte la catégorie (peuplée par product-by-order).
+// ignore: invalid_annotation_target
+  @JsonKey(fromJson: _serviceFromJson)
+  ServiceDto? get service;
 
   /// Create a copy of ProductResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -55,7 +59,8 @@ mixin _$ProductResponse {
                 other.description == description) &&
             (identical(other.priority, priority) ||
                 other.priority == priority) &&
-            (identical(other.order, order) || other.order == order));
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.service, service) || other.service == service));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -71,11 +76,12 @@ mixin _$ProductResponse {
       stock,
       description,
       priority,
-      order);
+      order,
+      service);
 
   @override
   String toString() {
-    return 'ProductResponse(id: $id, name: $name, images: $images, slug: $slug, priceMonth: $priceMonth, priceYear: $priceYear, stock: $stock, description: $description, priority: $priority, order: $order)';
+    return 'ProductResponse(id: $id, name: $name, images: $images, slug: $slug, priceMonth: $priceMonth, priceYear: $priceYear, stock: $stock, description: $description, priority: $priority, order: $order, service: $service)';
   }
 }
 
@@ -95,7 +101,10 @@ abstract mixin class $ProductResponseCopyWith<$Res> {
       int? stock,
       String? description,
       bool? priority,
-      int? order});
+      int? order,
+      @JsonKey(fromJson: _serviceFromJson) ServiceDto? service});
+
+  $ServiceDtoCopyWith<$Res>? get service;
 }
 
 /// @nodoc
@@ -121,6 +130,7 @@ class _$ProductResponseCopyWithImpl<$Res>
     Object? description = freezed,
     Object? priority = freezed,
     Object? order = freezed,
+    Object? service = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -163,7 +173,25 @@ class _$ProductResponseCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as int?,
+      service: freezed == service
+          ? _self.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as ServiceDto?,
     ));
+  }
+
+  /// Create a copy of ProductResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ServiceDtoCopyWith<$Res>? get service {
+    if (_self.service == null) {
+      return null;
+    }
+
+    return $ServiceDtoCopyWith<$Res>(_self.service!, (value) {
+      return _then(_self.copyWith(service: value));
+    });
   }
 }
 
@@ -270,7 +298,8 @@ extension ProductResponsePatterns on ProductResponse {
             int? stock,
             String? description,
             bool? priority,
-            int? order)?
+            int? order,
+            @JsonKey(fromJson: _serviceFromJson) ServiceDto? service)?
         $default, {
     required TResult orElse(),
   }) {
@@ -287,7 +316,8 @@ extension ProductResponsePatterns on ProductResponse {
             _that.stock,
             _that.description,
             _that.priority,
-            _that.order);
+            _that.order,
+            _that.service);
       case _:
         return orElse();
     }
@@ -318,7 +348,8 @@ extension ProductResponsePatterns on ProductResponse {
             int? stock,
             String? description,
             bool? priority,
-            int? order)
+            int? order,
+            @JsonKey(fromJson: _serviceFromJson) ServiceDto? service)
         $default,
   ) {
     final _that = this;
@@ -334,7 +365,8 @@ extension ProductResponsePatterns on ProductResponse {
             _that.stock,
             _that.description,
             _that.priority,
-            _that.order);
+            _that.order,
+            _that.service);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -364,7 +396,8 @@ extension ProductResponsePatterns on ProductResponse {
             int? stock,
             String? description,
             bool? priority,
-            int? order)?
+            int? order,
+            @JsonKey(fromJson: _serviceFromJson) ServiceDto? service)?
         $default,
   ) {
     final _that = this;
@@ -380,7 +413,8 @@ extension ProductResponsePatterns on ProductResponse {
             _that.stock,
             _that.description,
             _that.priority,
-            _that.order);
+            _that.order,
+            _that.service);
       case _:
         return null;
     }
@@ -400,7 +434,8 @@ class _ProductResponse implements ProductResponse {
       this.stock,
       this.description,
       this.priority,
-      this.order})
+      this.order,
+      @JsonKey(fromJson: _serviceFromJson) this.service})
       : _images = images;
   factory _ProductResponse.fromJson(Map<String, dynamic> json) =>
       _$ProductResponseFromJson(json);
@@ -434,6 +469,11 @@ class _ProductResponse implements ProductResponse {
   final bool? priority;
   @override
   final int? order;
+// Le service porte la catégorie (peuplée par product-by-order).
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(fromJson: _serviceFromJson)
+  final ServiceDto? service;
 
   /// Create a copy of ProductResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -468,7 +508,8 @@ class _ProductResponse implements ProductResponse {
                 other.description == description) &&
             (identical(other.priority, priority) ||
                 other.priority == priority) &&
-            (identical(other.order, order) || other.order == order));
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.service, service) || other.service == service));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -484,11 +525,12 @@ class _ProductResponse implements ProductResponse {
       stock,
       description,
       priority,
-      order);
+      order,
+      service);
 
   @override
   String toString() {
-    return 'ProductResponse(id: $id, name: $name, images: $images, slug: $slug, priceMonth: $priceMonth, priceYear: $priceYear, stock: $stock, description: $description, priority: $priority, order: $order)';
+    return 'ProductResponse(id: $id, name: $name, images: $images, slug: $slug, priceMonth: $priceMonth, priceYear: $priceYear, stock: $stock, description: $description, priority: $priority, order: $order, service: $service)';
   }
 }
 
@@ -510,7 +552,11 @@ abstract mixin class _$ProductResponseCopyWith<$Res>
       int? stock,
       String? description,
       bool? priority,
-      int? order});
+      int? order,
+      @JsonKey(fromJson: _serviceFromJson) ServiceDto? service});
+
+  @override
+  $ServiceDtoCopyWith<$Res>? get service;
 }
 
 /// @nodoc
@@ -536,6 +582,7 @@ class __$ProductResponseCopyWithImpl<$Res>
     Object? description = freezed,
     Object? priority = freezed,
     Object? order = freezed,
+    Object? service = freezed,
   }) {
     return _then(_ProductResponse(
       id: null == id
@@ -578,7 +625,25 @@ class __$ProductResponseCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as int?,
+      service: freezed == service
+          ? _self.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as ServiceDto?,
     ));
+  }
+
+  /// Create a copy of ProductResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ServiceDtoCopyWith<$Res>? get service {
+    if (_self.service == null) {
+      return null;
+    }
+
+    return $ServiceDtoCopyWith<$Res>(_self.service!, (value) {
+      return _then(_self.copyWith(service: value));
+    });
   }
 }
 
@@ -891,6 +956,752 @@ class __$ImageDtoCopyWithImpl<$Res> implements _$ImageDtoCopyWith<$Res> {
           ? _self.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$ServiceDto {
+  @JsonKey(name: '_id')
+  String? get id;
+  String? get name;
+  String? get slug; // ignore: invalid_annotation_target
+  @JsonKey(fromJson: _categoryFromJson)
+  CategoryDto? get category;
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ServiceDtoCopyWith<ServiceDto> get copyWith =>
+      _$ServiceDtoCopyWithImpl<ServiceDto>(this as ServiceDto, _$identity);
+
+  /// Serializes this ServiceDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ServiceDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.category, category) ||
+                other.category == category));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, slug, category);
+
+  @override
+  String toString() {
+    return 'ServiceDto(id: $id, name: $name, slug: $slug, category: $category)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $ServiceDtoCopyWith<$Res> {
+  factory $ServiceDtoCopyWith(
+          ServiceDto value, $Res Function(ServiceDto) _then) =
+      _$ServiceDtoCopyWithImpl;
+  @useResult
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? name,
+      String? slug,
+      @JsonKey(fromJson: _categoryFromJson) CategoryDto? category});
+
+  $CategoryDtoCopyWith<$Res>? get category;
+}
+
+/// @nodoc
+class _$ServiceDtoCopyWithImpl<$Res> implements $ServiceDtoCopyWith<$Res> {
+  _$ServiceDtoCopyWithImpl(this._self, this._then);
+
+  final ServiceDto _self;
+  final $Res Function(ServiceDto) _then;
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? slug = freezed,
+    Object? category = freezed,
+  }) {
+    return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _self.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as CategoryDto?,
+    ));
+  }
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryDtoCopyWith<$Res>? get category {
+    if (_self.category == null) {
+      return null;
+    }
+
+    return $CategoryDtoCopyWith<$Res>(_self.category!, (value) {
+      return _then(_self.copyWith(category: value));
+    });
+  }
+}
+
+/// Adds pattern-matching-related methods to [ServiceDto].
+extension ServiceDtoPatterns on ServiceDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ServiceDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ServiceDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ServiceDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: '_id') String? id,
+            String? name,
+            String? slug,
+            @JsonKey(fromJson: _categoryFromJson) CategoryDto? category)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto() when $default != null:
+        return $default(_that.id, _that.name, _that.slug, _that.category);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: '_id') String? id,
+            String? name,
+            String? slug,
+            @JsonKey(fromJson: _categoryFromJson) CategoryDto? category)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto():
+        return $default(_that.id, _that.name, _that.slug, _that.category);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: '_id') String? id,
+            String? name,
+            String? slug,
+            @JsonKey(fromJson: _categoryFromJson) CategoryDto? category)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceDto() when $default != null:
+        return $default(_that.id, _that.name, _that.slug, _that.category);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _ServiceDto implements ServiceDto {
+  const _ServiceDto(
+      {@JsonKey(name: '_id') this.id,
+      this.name,
+      this.slug,
+      @JsonKey(fromJson: _categoryFromJson) this.category});
+  factory _ServiceDto.fromJson(Map<String, dynamic> json) =>
+      _$ServiceDtoFromJson(json);
+
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
+  final String? name;
+  @override
+  final String? slug;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(fromJson: _categoryFromJson)
+  final CategoryDto? category;
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ServiceDtoCopyWith<_ServiceDto> get copyWith =>
+      __$ServiceDtoCopyWithImpl<_ServiceDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ServiceDtoToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ServiceDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.category, category) ||
+                other.category == category));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, slug, category);
+
+  @override
+  String toString() {
+    return 'ServiceDto(id: $id, name: $name, slug: $slug, category: $category)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ServiceDtoCopyWith<$Res>
+    implements $ServiceDtoCopyWith<$Res> {
+  factory _$ServiceDtoCopyWith(
+          _ServiceDto value, $Res Function(_ServiceDto) _then) =
+      __$ServiceDtoCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? name,
+      String? slug,
+      @JsonKey(fromJson: _categoryFromJson) CategoryDto? category});
+
+  @override
+  $CategoryDtoCopyWith<$Res>? get category;
+}
+
+/// @nodoc
+class __$ServiceDtoCopyWithImpl<$Res> implements _$ServiceDtoCopyWith<$Res> {
+  __$ServiceDtoCopyWithImpl(this._self, this._then);
+
+  final _ServiceDto _self;
+  final $Res Function(_ServiceDto) _then;
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? slug = freezed,
+    Object? category = freezed,
+  }) {
+    return _then(_ServiceDto(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _self.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as CategoryDto?,
+    ));
+  }
+
+  /// Create a copy of ServiceDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryDtoCopyWith<$Res>? get category {
+    if (_self.category == null) {
+      return null;
+    }
+
+    return $CategoryDtoCopyWith<$Res>(_self.category!, (value) {
+      return _then(_self.copyWith(category: value));
+    });
+  }
+}
+
+/// @nodoc
+mixin _$CategoryDto {
+  @JsonKey(name: '_id')
+  String? get id;
+  String? get name;
+  String? get slug;
+
+  /// Create a copy of CategoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $CategoryDtoCopyWith<CategoryDto> get copyWith =>
+      _$CategoryDtoCopyWithImpl<CategoryDto>(this as CategoryDto, _$identity);
+
+  /// Serializes this CategoryDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CategoryDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.slug, slug) || other.slug == slug));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, slug);
+
+  @override
+  String toString() {
+    return 'CategoryDto(id: $id, name: $name, slug: $slug)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $CategoryDtoCopyWith<$Res> {
+  factory $CategoryDtoCopyWith(
+          CategoryDto value, $Res Function(CategoryDto) _then) =
+      _$CategoryDtoCopyWithImpl;
+  @useResult
+  $Res call({@JsonKey(name: '_id') String? id, String? name, String? slug});
+}
+
+/// @nodoc
+class _$CategoryDtoCopyWithImpl<$Res> implements $CategoryDtoCopyWith<$Res> {
+  _$CategoryDtoCopyWithImpl(this._self, this._then);
+
+  final CategoryDto _self;
+  final $Res Function(CategoryDto) _then;
+
+  /// Create a copy of CategoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? slug = freezed,
+  }) {
+    return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _self.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [CategoryDto].
+extension CategoryDtoPatterns on CategoryDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CategoryDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CategoryDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CategoryDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: '_id') String? id, String? name, String? slug)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto() when $default != null:
+        return $default(_that.id, _that.name, _that.slug);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: '_id') String? id, String? name, String? slug)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto():
+        return $default(_that.id, _that.name, _that.slug);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: '_id') String? id, String? name, String? slug)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CategoryDto() when $default != null:
+        return $default(_that.id, _that.name, _that.slug);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _CategoryDto implements CategoryDto {
+  const _CategoryDto({@JsonKey(name: '_id') this.id, this.name, this.slug});
+  factory _CategoryDto.fromJson(Map<String, dynamic> json) =>
+      _$CategoryDtoFromJson(json);
+
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
+  final String? name;
+  @override
+  final String? slug;
+
+  /// Create a copy of CategoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CategoryDtoCopyWith<_CategoryDto> get copyWith =>
+      __$CategoryDtoCopyWithImpl<_CategoryDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$CategoryDtoToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _CategoryDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.slug, slug) || other.slug == slug));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, slug);
+
+  @override
+  String toString() {
+    return 'CategoryDto(id: $id, name: $name, slug: $slug)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$CategoryDtoCopyWith<$Res>
+    implements $CategoryDtoCopyWith<$Res> {
+  factory _$CategoryDtoCopyWith(
+          _CategoryDto value, $Res Function(_CategoryDto) _then) =
+      __$CategoryDtoCopyWithImpl;
+  @override
+  @useResult
+  $Res call({@JsonKey(name: '_id') String? id, String? name, String? slug});
+}
+
+/// @nodoc
+class __$CategoryDtoCopyWithImpl<$Res> implements _$CategoryDtoCopyWith<$Res> {
+  __$CategoryDtoCopyWithImpl(this._self, this._then);
+
+  final _CategoryDto _self;
+  final $Res Function(_CategoryDto) _then;
+
+  /// Create a copy of CategoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? slug = freezed,
+  }) {
+    return _then(_CategoryDto(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      slug: freezed == slug
+          ? _self.slug
+          : slug // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }

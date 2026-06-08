@@ -7,6 +7,8 @@ import 'package:multiple_result/multiple_result.dart';
 abstract interface class ProductUseCase {
   Future<Result<ApiResponse<List<ProductResponse>>, Failure>>
       getProductsByOrder();
+  Future<Result<ApiResponse<List<ProductResponse>>, Failure>>
+      getSimilarProducts(String categoryId);
   Future<Result<ApiResponse<List<SliderResponse>>, Failure>> getTopSliders({
     int? limit,
   });

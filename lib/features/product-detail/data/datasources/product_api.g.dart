@@ -56,6 +56,44 @@ class _ProductApi implements ProductApi {
   }
 
   @override
+  Future<ApiResponse<List<ProductResponse>>> getSimilarProducts(
+    String categoryId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<List<ProductResponse>>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/products/similar/${categoryId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<List<ProductResponse>> _value;
+    try {
+      _value = ApiResponse<List<ProductResponse>>.fromJson(
+        _result.data!,
+        (json) => json is List<dynamic>
+            ? json
+                .map<ProductResponse>(
+                  (i) => ProductResponse.fromJson(i as Map<String, dynamic>),
+                )
+                .toList()
+            : List.empty(),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ApiResponse<List<SliderResponse>>> getTopSliders(int? limit) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'limit': limit};

@@ -46,6 +46,31 @@ final class ProductUsecaseImpl implements ProductUseCase {
   }
 
   @override
+  Future<Result<ApiResponse<List<ProductResponse>>, Failure>>
+      getSimilarProducts(String categoryId) async {
+    try {
+      final response = await _productRepository.getSimilarProducts(categoryId);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
   Future<Result<ApiResponse<List<SliderResponse>>, Failure>> getTopSliders({
     int? limit,
   }) async {

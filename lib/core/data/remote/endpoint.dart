@@ -15,6 +15,7 @@ const String getCategoriesByOrderEndPoint = '/api/categories/category-by-order';
 
 // Products Endpoints
 const String getProductsByOrderEndPoint = '/api/products/product-by-order';
+const String getSimilarProductsEndPoint = '/api/products/similar/{categoryId}';
 
 // Slider Endpoints
 const String getSlidersEndPoint = '/api/sliders/sliderTop';

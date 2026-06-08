@@ -20,6 +20,7 @@ _ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       priority: json['priority'] as bool?,
       order: (json['order'] as num?)?.toInt(),
+      service: _serviceFromJson(json['service']),
     );
 
 Map<String, dynamic> _$ProductResponseToJson(_ProductResponse instance) =>
@@ -34,6 +35,7 @@ Map<String, dynamic> _$ProductResponseToJson(_ProductResponse instance) =>
       'description': instance.description,
       'priority': instance.priority,
       'order': instance.order,
+      'service': instance.service,
     };
 
 _ImageDto _$ImageDtoFromJson(Map<String, dynamic> json) => _ImageDto(
@@ -44,4 +46,32 @@ _ImageDto _$ImageDtoFromJson(Map<String, dynamic> json) => _ImageDto(
 Map<String, dynamic> _$ImageDtoToJson(_ImageDto instance) => <String, dynamic>{
       '_id': instance.id,
       'url': instance.url,
+    };
+
+_ServiceDto _$ServiceDtoFromJson(Map<String, dynamic> json) => _ServiceDto(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+      category: _categoryFromJson(json['category']),
+    );
+
+Map<String, dynamic> _$ServiceDtoToJson(_ServiceDto instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'slug': instance.slug,
+      'category': instance.category,
+    };
+
+_CategoryDto _$CategoryDtoFromJson(Map<String, dynamic> json) => _CategoryDto(
+      id: json['_id'] as String?,
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+    );
+
+Map<String, dynamic> _$CategoryDtoToJson(_CategoryDto instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'slug': instance.slug,
     };

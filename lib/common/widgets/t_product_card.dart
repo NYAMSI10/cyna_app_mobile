@@ -125,7 +125,7 @@ class TProductCard extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,47 +139,14 @@ class TProductCard extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              _monthlyPrice,
-                              style: textTheme.titleMedium!.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: isOutOfStock
-                                ? null
-                                : () {
-                                    // Action : Ajouter au panier
-                                  },
-                            child: Container(
-                              width: 48,
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: isOutOfStock
-                                    ? Colors.grey.shade300
-                                    : TColors.secondColor,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: isOutOfStock
-                                    ? Colors.grey.shade600
-                                    : Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        product.service?.category?.name ?? "Catégorie",
+                        style: textTheme.titleMedium!.copyWith(
+                          color: TColors.success,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

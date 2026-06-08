@@ -39,6 +39,23 @@ final class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
+  Future<ApiResponse<List<ProductResponse>>> getSimilarProducts(
+      String categoryId) async {
+    try {
+      final response = await _productApi.getSimilarProducts(categoryId);
+      return response;
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
   Future<ApiResponse<List<SliderResponse>>> getTopSliders({int? limit}) async {
     try {
       final response = await _productApi.getTopSliders(limit);

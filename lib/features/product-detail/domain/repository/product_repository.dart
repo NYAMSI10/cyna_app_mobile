@@ -5,6 +5,10 @@ import 'package:cyna/features/product-detail/data/model/sliders/slider_response.
 abstract interface class ProductRepository {
   Future<ApiResponse<List<ProductResponse>>> getProductsByOrder();
 
+  Future<ApiResponse<List<ProductResponse>>> getSimilarProducts(
+    String categoryId,
+  );
+
   Future<ApiResponse<List<SliderResponse>>> getTopSliders({
     int? limit,
   });

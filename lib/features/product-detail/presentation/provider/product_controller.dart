@@ -1,9 +1,22 @@
 import 'package:cyna/features/product-detail/data/model/product_response.dart';
 import 'package:cyna/features/product-detail/data/model/sliders/slider_response.dart';
 import 'package:cyna/features/product-detail/data/usecasesImpl/product_usecase_impl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_controller.g.dart';
+
+/// Liste les produits de la même catégorie (API `/products/similar/{categoryId}`).
+final similarProductsProvider = FutureProvider.autoDispose
+    .family<List<ProductResponse>, String>((ref, categoryId) async {
+  final usecase = ref.watch(productUsecaseProvider);
+  final result = await usecase.getSimilarProducts(categoryId);
+
+  return result.when(
+    (products) => products.data ?? [],
+    (failure) => throw failure.message,
+  );
+});
 
 @riverpod
 class ProductController extends _$ProductController {
