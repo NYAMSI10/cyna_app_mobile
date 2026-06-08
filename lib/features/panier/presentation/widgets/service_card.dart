@@ -1,3 +1,4 @@
+import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/features/panier/presentation/widgets/cart_service_item.dart';
 import 'package:cyna/features/panier/presentation/widgets/quantity_stepper.dart';
 import 'package:cyna/features/panier/presentation/widgets/unavailable_badge.dart';
@@ -8,22 +9,22 @@ class ServiceCard extends StatelessWidget {
   const ServiceCard({
     super.key,
     required this.item,
+    required this.lineTotal,
+    required this.periodSuffix,
     required this.moneyFormatter,
-    required this.durationMultipliers,
     required this.onIncrement,
     required this.onDecrement,
     required this.onRemove,
-    required this.onDurationChanged,
     required this.onReplace,
   });
 
   final CartServiceItem item;
+  final double lineTotal;
+  final String periodSuffix;
   final NumberFormat moneyFormatter;
-  final Map<String, double> durationMultipliers;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
   final VoidCallback onRemove;
-  final ValueChanged<String?> onDurationChanged;
   final VoidCallback onReplace;
 
   @override
@@ -60,9 +61,34 @@ class ServiceCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item.name,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.name,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      if (item.hasPromotion && !item.isUnavailable)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: TColors.success.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            '-8%',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: TColors.success,
+                            ),
+                          ),
+                        ),
+                      if (item.isUnavailable)
+                        const UnavailableBadge(),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -70,54 +96,25 @@ class ServiceCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall?.apply(
                         color: const Color(0xFF8C8C95), fontSizeDelta: 1),
                   ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0xFFDEDEE4)),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: item.selectedDuration,
-                              isExpanded: true,
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              style: const TextStyle(
-                                color: Color(0xFF252536),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              onChanged:
-                                  item.isUnavailable ? null : onDurationChanged,
-                              items: durationMultipliers.keys
-                                  .map(
-                                    (duration) => DropdownMenuItem(
-                                      value: duration,
-                                      child: Text(duration),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (item.isUnavailable)
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8),
-                          child: UnavailableBadge(),
-                        ),
-                    ],
-                  ),
                   const SizedBox(height: 10),
-                  Text(
-                    moneyFormatter.format(item.totalPrice),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: const Color(0xFF080B35),
-                          fontWeight: FontWeight.w700,
+                  RichText(
+                    text: TextSpan(
+                      text: moneyFormatter.format(lineTotal),
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: const Color(0xFF080B35),
+                            fontWeight: FontWeight.w700,
+                          ),
+                      children: [
+                        TextSpan(
+                          text: ' $periodSuffix',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: const Color(0xFF8C8C95),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                         ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Row(
