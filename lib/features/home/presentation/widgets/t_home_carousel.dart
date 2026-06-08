@@ -172,7 +172,7 @@ class _THomeCarouselState extends ConsumerState<THomeCarousel> {
                 bottomRight: Radius.circular(20),
               ),
               child: Image.network(
-                "http://10.0.2.2:3000/${slider.image}", // adapte au vrai champ de ton modèle
+                "http://localhost:3000/${slider.image}", // adapte au vrai champ de ton modèle
                 fit: BoxFit.cover,
                 width: 150,
                 errorBuilder: (context, error, stackTrace) {

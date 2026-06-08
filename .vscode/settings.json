@@ -1,4 +1,5 @@
 {
   "cmake.sourceDirectory": "/Users/vanelebricenyamsimenyin/Ingetis/Projet_fil_rouge/cyna_app_mobile/linux",
-  "java.configuration.updateBuildConfiguration": "disabled"
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "snyk.advanced.autoSelectOrganization": true
 }
