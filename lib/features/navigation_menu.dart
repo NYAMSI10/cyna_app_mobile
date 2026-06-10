@@ -27,7 +27,9 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
       const ProfileScreen(),
     ];
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: CurvedNavigationBar(
         index: currentIndex,
         backgroundColor: TColors.primaryColor,
         items: [
@@ -99,6 +101,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         onTap: (index) {
           ref.read(currentIndexProvider.notifier).state = index;
         },
+        ),
       ),
       body: screens[currentIndex],
     );
