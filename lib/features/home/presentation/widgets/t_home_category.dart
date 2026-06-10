@@ -46,7 +46,8 @@ class THomeCategory extends ConsumerWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CategoryScreen()),
+                            builder: (context) =>
+                                CategoryScreen(category: category)),
                       ),
                       child: Container(
                         width: 85,

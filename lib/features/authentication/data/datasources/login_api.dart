@@ -2,6 +2,7 @@ import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/core/data/remote/endpoint.dart';
 import 'package:cyna/core/data/remote/network_service.dart';
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
+import 'package:cyna/features/authentication/data/model/request/register/register_request.dart';
 import 'package:cyna/features/authentication/data/model/response/login/login_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,4 +22,9 @@ abstract class LoginApi {
 
   @POST(loginEndPoint)
   Future<ApiResponse<LoginResponse>> login(@Body() LoginRequest loginRequest);
+
+  @POST(registerEndPoint)
+  Future<ApiResponse<dynamic>> register(
+    @Body() RegisterRequest registerRequest,
+  );
 }

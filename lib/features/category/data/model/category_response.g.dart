@@ -12,6 +12,7 @@ _CategoryResponse _$CategoryResponseFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       image: json['image'] as String,
       slug: json['slug'] as String,
+      description: json['description'] as String?,
       order: (json['order'] as num?)?.toInt(),
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$CategoryResponseToJson(_CategoryResponse instance) =>
       'name': instance.name,
       'image': instance.image,
       'slug': instance.slug,
+      'description': instance.description,
       'order': instance.order,
     };

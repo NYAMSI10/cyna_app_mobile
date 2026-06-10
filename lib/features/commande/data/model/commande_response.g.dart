@@ -17,6 +17,9 @@ _CommandeResponse _$CommandeResponseFromJson(Map<String, dynamic> json) =>
       cb: json['cb'] == null
           ? null
           : CarteBancaireResponse.fromJson(json['cb'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
       addresseFacturation: json['addresseFacturation'] == null
           ? null
           : AdresseFacturationResponse.fromJson(
@@ -39,6 +42,7 @@ Map<String, dynamic> _$CommandeResponseToJson(_CommandeResponse instance) =>
       'totalPrice': instance.totalPrice,
       'statut': instance.statut,
       'cb': instance.cb,
+      'user': instance.user,
       'addresseFacturation': instance.addresseFacturation,
       'createdAt': instance.createdAt.toIso8601String(),
       'createdAtStr': instance.createdAtStr,

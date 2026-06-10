@@ -140,7 +140,7 @@ class TProductCard extends ConsumerWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        product.service?.category?.name ?? "Catégorie",
+                        product.service?.category?.name ?? "",
                         style: textTheme.titleMedium!.copyWith(
                           color: TColors.success,
                           fontWeight: FontWeight.w800,

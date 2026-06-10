@@ -1,4 +1,5 @@
 const String loginEndPoint = '/api/auth/login';
+const String registerEndPoint = '/api/auth/register';
 const String signUpEndPoint = '/api/auth/signup';
 const String forgotPasswordEndPoint = '/api/auth/forgot-password';
 const String verifyCodeEndPoint = '/api/auth/user/verify';
@@ -12,6 +13,8 @@ const String changePasswordProfileEndPoint =
 
 // Categories Endpoints
 const String getCategoriesByOrderEndPoint = '/api/categories/category-by-order';
+const String getCategoryBySlugEndPoint =
+    '/api/categories/category-for-user/{slug}';
 
 // Products Endpoints
 const String getProductsByOrderEndPoint = '/api/products/product-by-order';

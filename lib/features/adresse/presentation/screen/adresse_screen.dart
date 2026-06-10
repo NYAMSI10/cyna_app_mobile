@@ -1,5 +1,6 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/common/widgets/t_empty_state.dart';
 import 'package:cyna/features/adresse/presentation/provider/adresse_facturation_controller.dart';
 import 'package:cyna/features/adresse/presentation/screen/adresse_form_screen.dart';
 import 'package:cyna/features/adresse/presentation/shimmer/adresse_facturation_shimmer.dart';
@@ -69,8 +70,9 @@ class _AdresseScreenState extends ConsumerState<AdresseScreen> {
       body: adresseState.when(
           data: (adresses) {
             if (adresses.isEmpty) {
-              return const Center(
-                child: Text("Aucune adresse de facturation"),
+              return const TEmptyState(
+                icon: Icons.location_off_outlined,
+                message: "Aucune adresse de facturation pour le moment",
               );
             }
             return RefreshIndicator(

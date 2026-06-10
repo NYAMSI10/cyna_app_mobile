@@ -3,6 +3,7 @@ import 'package:cyna/common/constant/image_strings.dart';
 import 'package:cyna/common/helpers/responsive.dart';
 import 'package:cyna/common/widgets/image/t_rounded_image.dart';
 import 'package:cyna/features/profile/presentation/providers/user_controller.dart';
+import 'package:cyna/features/profile/presentation/shimmer/profile_shimmer.dart';
 import 'package:cyna/features/profile/presentation/screen/password_change_screen.dart';
 import 'package:cyna/features/profile/presentation/screen/user_info_screen.dart';
 import 'package:cyna/features/profile/presentation/widgets/setting_menu_title.dart';
@@ -214,7 +215,7 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const ProfileShimmer(),
       error: (error, stack) => Center(child: Text("Erreur : $error")),
     );
   }

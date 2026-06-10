@@ -2,6 +2,7 @@ import 'package:cyna/common/exception/failure.dart';
 import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
+import 'package:cyna/features/authentication/data/model/request/register/register_request.dart';
 import 'package:cyna/features/authentication/data/model/response/login/login_response.dart';
 import 'package:cyna/features/authentication/data/repositoryImpl/auth_repository_impl.dart';
 import 'package:cyna/features/authentication/domain/repository/auth_repository.dart';
@@ -36,6 +37,33 @@ final class AuthUsecaseImpl implements AuthUsecase {
       }
 
       return Result.success(response);
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
+  Future<Result<ApiResponse<dynamic>, Failure>> register(
+      RegisterRequest registerRequest) async {
+    try {
+      final response = await _loginRepository.register(registerRequest);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } on Failure catch (failure) {
+      return Result.error(failure);
     } catch (e, s) {
       throw Failure(
         message: "An unexpected error occurred".hardcoded,

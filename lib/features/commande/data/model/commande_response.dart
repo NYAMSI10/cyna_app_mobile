@@ -1,6 +1,7 @@
 import 'package:cyna/features/abonnement/data/model/abonnement_response.dart';
 import 'package:cyna/features/adresse/data/model/reponse/adresse_facturation_reponse.dart';
 import 'package:cyna/features/carte_bancaire/data/model/reponse/carte_bancaire_reponse.dart';
+import 'package:cyna/features/profile/data/model/response/user_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'commande_response.freezed.dart';
@@ -19,6 +20,7 @@ abstract class CommandeResponse with _$CommandeResponse {
     required double totalPrice,
     required String statut,
     CarteBancaireResponse? cb,
+    UserResponse? user,
     AdresseFacturationResponse? addresseFacturation,
     required DateTime createdAt,
     String? createdAtStr,

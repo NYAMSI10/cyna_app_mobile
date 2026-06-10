@@ -24,6 +24,7 @@ mixin _$CommandeResponse {
   double get totalPrice;
   String get statut;
   CarteBancaireResponse? get cb;
+  UserResponse? get user;
   AdresseFacturationResponse? get addresseFacturation;
   DateTime get createdAt;
   String? get createdAtStr;
@@ -55,6 +56,7 @@ mixin _$CommandeResponse {
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
             (identical(other.cb, cb) || other.cb == cb) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.addresseFacturation, addresseFacturation) ||
                 other.addresseFacturation == addresseFacturation) &&
             (identical(other.createdAt, createdAt) ||
@@ -76,6 +78,7 @@ mixin _$CommandeResponse {
       totalPrice,
       statut,
       cb,
+      user,
       addresseFacturation,
       createdAt,
       createdAtStr,
@@ -83,7 +86,7 @@ mixin _$CommandeResponse {
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, user: $user, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -101,12 +104,14 @@ abstract mixin class $CommandeResponseCopyWith<$Res> {
       double totalPrice,
       String statut,
       CarteBancaireResponse? cb,
+      UserResponse? user,
       AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
       String? createdAtStr,
       List<AbonnementResponse> abonnements});
 
   $CarteBancaireResponseCopyWith<$Res>? get cb;
+  $UserResponseCopyWith<$Res>? get user;
   $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation;
 }
 
@@ -130,6 +135,7 @@ class _$CommandeResponseCopyWithImpl<$Res>
     Object? totalPrice = null,
     Object? statut = null,
     Object? cb = freezed,
+    Object? user = freezed,
     Object? addresseFacturation = freezed,
     Object? createdAt = null,
     Object? createdAtStr = freezed,
@@ -164,6 +170,10 @@ class _$CommandeResponseCopyWithImpl<$Res>
           ? _self.cb
           : cb // ignore: cast_nullable_to_non_nullable
               as CarteBancaireResponse?,
+      user: freezed == user
+          ? _self.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserResponse?,
       addresseFacturation: freezed == addresseFacturation
           ? _self.addresseFacturation
           : addresseFacturation // ignore: cast_nullable_to_non_nullable
@@ -194,6 +204,20 @@ class _$CommandeResponseCopyWithImpl<$Res>
 
     return $CarteBancaireResponseCopyWith<$Res>(_self.cb!, (value) {
       return _then(_self.copyWith(cb: value));
+    });
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserResponseCopyWith<$Res>? get user {
+    if (_self.user == null) {
+      return null;
+    }
+
+    return $UserResponseCopyWith<$Res>(_self.user!, (value) {
+      return _then(_self.copyWith(user: value));
     });
   }
 
@@ -314,6 +338,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             double totalPrice,
             String statut,
             CarteBancaireResponse? cb,
+            UserResponse? user,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String? createdAtStr,
@@ -332,6 +357,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.totalPrice,
             _that.statut,
             _that.cb,
+            _that.user,
             _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
@@ -364,6 +390,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             double totalPrice,
             String statut,
             CarteBancaireResponse? cb,
+            UserResponse? user,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String? createdAtStr,
@@ -381,6 +408,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.totalPrice,
             _that.statut,
             _that.cb,
+            _that.user,
             _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
@@ -412,6 +440,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             double totalPrice,
             String statut,
             CarteBancaireResponse? cb,
+            UserResponse? user,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String? createdAtStr,
@@ -429,6 +458,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.totalPrice,
             _that.statut,
             _that.cb,
+            _that.user,
             _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
@@ -450,6 +480,7 @@ class _CommandeResponse implements CommandeResponse {
       required this.totalPrice,
       required this.statut,
       this.cb,
+      this.user,
       this.addresseFacturation,
       required this.createdAt,
       this.createdAtStr,
@@ -475,6 +506,8 @@ class _CommandeResponse implements CommandeResponse {
   final String statut;
   @override
   final CarteBancaireResponse? cb;
+  @override
+  final UserResponse? user;
   @override
   final AdresseFacturationResponse? addresseFacturation;
   @override
@@ -520,6 +553,7 @@ class _CommandeResponse implements CommandeResponse {
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
             (identical(other.cb, cb) || other.cb == cb) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.addresseFacturation, addresseFacturation) ||
                 other.addresseFacturation == addresseFacturation) &&
             (identical(other.createdAt, createdAt) ||
@@ -541,6 +575,7 @@ class _CommandeResponse implements CommandeResponse {
       totalPrice,
       statut,
       cb,
+      user,
       addresseFacturation,
       createdAt,
       createdAtStr,
@@ -548,7 +583,7 @@ class _CommandeResponse implements CommandeResponse {
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, user: $user, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -568,6 +603,7 @@ abstract mixin class _$CommandeResponseCopyWith<$Res>
       double totalPrice,
       String statut,
       CarteBancaireResponse? cb,
+      UserResponse? user,
       AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
       String? createdAtStr,
@@ -575,6 +611,8 @@ abstract mixin class _$CommandeResponseCopyWith<$Res>
 
   @override
   $CarteBancaireResponseCopyWith<$Res>? get cb;
+  @override
+  $UserResponseCopyWith<$Res>? get user;
   @override
   $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation;
 }
@@ -599,6 +637,7 @@ class __$CommandeResponseCopyWithImpl<$Res>
     Object? totalPrice = null,
     Object? statut = null,
     Object? cb = freezed,
+    Object? user = freezed,
     Object? addresseFacturation = freezed,
     Object? createdAt = null,
     Object? createdAtStr = freezed,
@@ -633,6 +672,10 @@ class __$CommandeResponseCopyWithImpl<$Res>
           ? _self.cb
           : cb // ignore: cast_nullable_to_non_nullable
               as CarteBancaireResponse?,
+      user: freezed == user
+          ? _self.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserResponse?,
       addresseFacturation: freezed == addresseFacturation
           ? _self.addresseFacturation
           : addresseFacturation // ignore: cast_nullable_to_non_nullable
@@ -663,6 +706,20 @@ class __$CommandeResponseCopyWithImpl<$Res>
 
     return $CarteBancaireResponseCopyWith<$Res>(_self.cb!, (value) {
       return _then(_self.copyWith(cb: value));
+    });
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserResponseCopyWith<$Res>? get user {
+    if (_self.user == null) {
+      return null;
+    }
+
+    return $UserResponseCopyWith<$Res>(_self.user!, (value) {
+      return _then(_self.copyWith(user: value));
     });
   }
 

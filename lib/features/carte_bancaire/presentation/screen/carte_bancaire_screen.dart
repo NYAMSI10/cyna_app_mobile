@@ -1,5 +1,6 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/common/widgets/t_empty_state.dart';
 import 'package:cyna/features/carte_bancaire/data/model/reponse/carte_bancaire_reponse.dart';
 import 'package:cyna/features/carte_bancaire/presentation/provider/carte_bancaire_controller.dart';
 import 'package:cyna/features/carte_bancaire/presentation/screen/carte_bancaire_form_screen.dart';
@@ -96,8 +97,9 @@ class _CarteBancaireScreenState extends ConsumerState<CarteBancaireScreen> {
       body: carteState.when(
         data: (cartes) {
           if (cartes.isEmpty) {
-            return const Center(
-              child: Text("Aucune carte bancaire enregistrée"),
+            return const TEmptyState(
+              icon: Icons.credit_card_off_outlined,
+              message: "Aucune carte bancaire pour le moment",
             );
           }
           return RefreshIndicator(

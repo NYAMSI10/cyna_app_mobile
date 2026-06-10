@@ -21,6 +21,7 @@ mixin _$CategoryResponse {
   String get name;
   String get image;
   String get slug;
+  String? get description;
   int? get order;
 
   /// Create a copy of CategoryResponse
@@ -43,16 +44,19 @@ mixin _$CategoryResponse {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, image, slug, order);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, image, slug, description, order);
 
   @override
   String toString() {
-    return 'CategoryResponse(id: $id, name: $name, image: $image, slug: $slug, order: $order)';
+    return 'CategoryResponse(id: $id, name: $name, image: $image, slug: $slug, description: $description, order: $order)';
   }
 }
 
@@ -67,6 +71,7 @@ abstract mixin class $CategoryResponseCopyWith<$Res> {
       String name,
       String image,
       String slug,
+      String? description,
       int? order});
 }
 
@@ -87,6 +92,7 @@ class _$CategoryResponseCopyWithImpl<$Res>
     Object? name = null,
     Object? image = null,
     Object? slug = null,
+    Object? description = freezed,
     Object? order = freezed,
   }) {
     return _then(_self.copyWith(
@@ -106,6 +112,10 @@ class _$CategoryResponseCopyWithImpl<$Res>
           ? _self.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       order: freezed == order
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -208,15 +218,15 @@ extension CategoryResponsePatterns on CategoryResponse {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(@JsonKey(name: '_id') String id, String name, String image,
-            String slug, int? order)?
+            String slug, String? description, int? order)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _CategoryResponse() when $default != null:
-        return $default(
-            _that.id, _that.name, _that.image, _that.slug, _that.order);
+        return $default(_that.id, _that.name, _that.image, _that.slug,
+            _that.description, _that.order);
       case _:
         return orElse();
     }
@@ -238,14 +248,14 @@ extension CategoryResponsePatterns on CategoryResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(@JsonKey(name: '_id') String id, String name, String image,
-            String slug, int? order)
+            String slug, String? description, int? order)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CategoryResponse():
-        return $default(
-            _that.id, _that.name, _that.image, _that.slug, _that.order);
+        return $default(_that.id, _that.name, _that.image, _that.slug,
+            _that.description, _that.order);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -266,14 +276,14 @@ extension CategoryResponsePatterns on CategoryResponse {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(@JsonKey(name: '_id') String id, String name,
-            String image, String slug, int? order)?
+            String image, String slug, String? description, int? order)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _CategoryResponse() when $default != null:
-        return $default(
-            _that.id, _that.name, _that.image, _that.slug, _that.order);
+        return $default(_that.id, _that.name, _that.image, _that.slug,
+            _that.description, _that.order);
       case _:
         return null;
     }
@@ -288,6 +298,7 @@ class _CategoryResponse implements CategoryResponse {
       required this.name,
       required this.image,
       required this.slug,
+      this.description,
       this.order});
   factory _CategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$CategoryResponseFromJson(json);
@@ -303,6 +314,8 @@ class _CategoryResponse implements CategoryResponse {
   final String image;
   @override
   final String slug;
+  @override
+  final String? description;
   @override
   final int? order;
 
@@ -330,16 +343,19 @@ class _CategoryResponse implements CategoryResponse {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.slug, slug) || other.slug == slug) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, image, slug, order);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, image, slug, description, order);
 
   @override
   String toString() {
-    return 'CategoryResponse(id: $id, name: $name, image: $image, slug: $slug, order: $order)';
+    return 'CategoryResponse(id: $id, name: $name, image: $image, slug: $slug, description: $description, order: $order)';
   }
 }
 
@@ -356,6 +372,7 @@ abstract mixin class _$CategoryResponseCopyWith<$Res>
       String name,
       String image,
       String slug,
+      String? description,
       int? order});
 }
 
@@ -376,6 +393,7 @@ class __$CategoryResponseCopyWithImpl<$Res>
     Object? name = null,
     Object? image = null,
     Object? slug = null,
+    Object? description = freezed,
     Object? order = freezed,
   }) {
     return _then(_CategoryResponse(
@@ -395,6 +413,10 @@ class __$CategoryResponseCopyWithImpl<$Res>
           ? _self.slug
           : slug // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       order: freezed == order
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable

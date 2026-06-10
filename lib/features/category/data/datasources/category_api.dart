@@ -2,6 +2,7 @@ import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/core/data/remote/endpoint.dart';
 import 'package:cyna/core/data/remote/network_service.dart';
 
+import 'package:cyna/features/category/data/model/category_detail_response.dart';
 import 'package:cyna/features/category/data/model/category_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,4 +22,9 @@ abstract class CategoryApi {
 
   @GET(getCategoriesByOrderEndPoint)
   Future<ApiResponse<List<CategoryResponse>>> getCategoriesByOrder();
+
+  @GET(getCategoryBySlugEndPoint)
+  Future<ApiResponse<CategoryDetailResponse>> getCategoryBySlug(
+    @Path("slug") String slug,
+  );
 }

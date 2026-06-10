@@ -13,6 +13,7 @@ abstract class CategoryResponse with _$CategoryResponse {
     required String name,
     required String image,
     required String slug,
+    String? description,
     int? order,
   }) = _CategoryResponse;
 

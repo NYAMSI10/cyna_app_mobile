@@ -4,6 +4,7 @@ import 'package:cyna/features/adresse/data/model/reponse/adresse_facturation_rep
 import 'package:cyna/features/carte_bancaire/data/model/reponse/carte_bancaire_reponse.dart';
 import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
+import 'package:cyna/features/commande/presentation/shimmer/commande_list_shimmer.dart';
 import 'package:cyna/features/commande/presentation/widgets/t_empty_state.dart';
 import 'package:cyna/features/commande/presentation/widgets/t_filters_row.dart';
 import 'package:cyna/features/commande/presentation/widgets/t_search_bar.dart';
@@ -229,7 +230,7 @@ class CommandeScreenState extends ConsumerState<CommandeScreen> {
         ),
       ),
       body: commandesAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const CommandeListShimmer(),
         error: (error, stackTrace) => Center(
           child: Text('Erreur: $error'),
         ),

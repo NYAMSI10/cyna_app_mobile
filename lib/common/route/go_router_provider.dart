@@ -42,7 +42,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
 
       if (!loggedIn) {
-        return (path == '/login' || path == '/onboarding') ? null : '/login';
+        return (path == '/login' ||
+                path == '/onboarding' ||
+                path == '/register')
+            ? null
+            : '/login';
       }
 
       if (loggedIn &&

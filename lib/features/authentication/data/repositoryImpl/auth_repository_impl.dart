@@ -4,6 +4,7 @@ import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/core/dio_eroor_exception.dart';
 import 'package:cyna/features/authentication/data/datasources/login_api.dart';
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
+import 'package:cyna/features/authentication/data/model/request/register/register_request.dart';
 import 'package:cyna/features/authentication/data/model/response/login/login_response.dart';
 import 'package:cyna/features/authentication/domain/repository/auth_repository.dart';
 import 'package:dio/dio.dart';
@@ -39,6 +40,24 @@ final class AuthRepositoryImpl implements AuthRepository {
       throw Failure(
         message: "An unexpected error occurred".hardcoded,
         // Si 'e' est déjà une Exception, on la garde, sinon on crée une nouvelle Exception
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> register(
+    RegisterRequest registerRequest,
+  ) async {
+    try {
+      final response = await _loginApi.register(registerRequest);
+      return response;
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
         exception: e is Exception ? e : Exception(e.toString()),
         stackTrace: s,
       );

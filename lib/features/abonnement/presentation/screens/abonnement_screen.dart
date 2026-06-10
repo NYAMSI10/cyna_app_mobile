@@ -1,4 +1,5 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/common/widgets/t_empty_state.dart';
 import 'package:cyna/features/abonnement/presentation/provider/abonnement_controller.dart';
 import 'package:cyna/features/abonnement/presentation/shimmer/abonnment_shimmer.dart';
 import 'package:cyna/features/abonnement/presentation/widgets/t_abonnement_title.dart';
@@ -56,6 +57,12 @@ class AbonnementScreenState extends ConsumerState<AbonnementScreen> {
         ),
         body: abonnementState.when(
           data: (abonnements) {
+            if (abonnements.isEmpty) {
+              return const TEmptyState(
+                icon: Icons.subscriptions_outlined,
+                message: "Aucun abonnement pour le moment",
+              );
+            }
             return RefreshIndicator(
                 color: TColors.primaryColor,
                 onRefresh: () => ref

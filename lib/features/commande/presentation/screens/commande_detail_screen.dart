@@ -3,6 +3,8 @@ import 'package:cyna/common/helpers/responsive.dart';
 import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
+import 'package:cyna/features/commande/presentation/shimmer/commande_detail_shimmer.dart';
+import 'package:cyna/features/commande/presentation/utils/invoice_pdf_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -132,10 +134,7 @@ class CommandeDetailScreen extends ConsumerWidget {
 
             // Section Paiement + Adresse de facturation (détail récupéré via l'API)
             detailAsync.when(
-              loading: () => const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
-                child: Center(child: CircularProgressIndicator()),
-              ),
+              loading: () => const CommandeDetailShimmer(),
               error: (error, _) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
@@ -175,14 +174,30 @@ class CommandeDetailScreen extends ConsumerWidget {
                   backgroundColor: TColors.secondColor,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Téléchargement de la facture (mock). À connecter au backend.',
+                onPressed: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+                  final commande =
+                      ref.read(commandeDetailProvider(order.reference)).value;
+                  if (commande == null) {
+                    messenger.showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Le détail de la commande n’est pas encore chargé.',
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                    return;
+                  }
+                  try {
+                    await InvoicePdfService.download(commande);
+                  } catch (e) {
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Erreur lors de la génération du PDF : $e'),
+                      ),
+                    );
+                  }
                 },
                 icon: const Icon(Icons.picture_as_pdf),
                 label: const Text('Télécharger la facture (PDF)',
