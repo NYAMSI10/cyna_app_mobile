@@ -23,6 +23,8 @@ mixin _$CommandeResponse {
   int get nbreProducts;
   double get totalPrice;
   String get statut;
+  CarteBancaireResponse? get cb;
+  AdresseFacturationResponse? get addresseFacturation;
   DateTime get createdAt;
   String get createdAtStr;
   List<AbonnementResponse> get abonnements;
@@ -52,6 +54,9 @@ mixin _$CommandeResponse {
             (identical(other.totalPrice, totalPrice) ||
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
+            (identical(other.cb, cb) || other.cb == cb) &&
+            (identical(other.addresseFacturation, addresseFacturation) ||
+                other.addresseFacturation == addresseFacturation) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.createdAtStr, createdAtStr) ||
@@ -70,13 +75,15 @@ mixin _$CommandeResponse {
       nbreProducts,
       totalPrice,
       statut,
+      cb,
+      addresseFacturation,
       createdAt,
       createdAtStr,
       const DeepCollectionEquality().hash(abonnements));
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -93,9 +100,14 @@ abstract mixin class $CommandeResponseCopyWith<$Res> {
       int nbreProducts,
       double totalPrice,
       String statut,
+      CarteBancaireResponse? cb,
+      AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
       String createdAtStr,
       List<AbonnementResponse> abonnements});
+
+  $CarteBancaireResponseCopyWith<$Res>? get cb;
+  $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation;
 }
 
 /// @nodoc
@@ -117,6 +129,8 @@ class _$CommandeResponseCopyWithImpl<$Res>
     Object? nbreProducts = null,
     Object? totalPrice = null,
     Object? statut = null,
+    Object? cb = freezed,
+    Object? addresseFacturation = freezed,
     Object? createdAt = null,
     Object? createdAtStr = null,
     Object? abonnements = null,
@@ -146,6 +160,14 @@ class _$CommandeResponseCopyWithImpl<$Res>
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
               as String,
+      cb: freezed == cb
+          ? _self.cb
+          : cb // ignore: cast_nullable_to_non_nullable
+              as CarteBancaireResponse?,
+      addresseFacturation: freezed == addresseFacturation
+          ? _self.addresseFacturation
+          : addresseFacturation // ignore: cast_nullable_to_non_nullable
+              as AdresseFacturationResponse?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -159,6 +181,35 @@ class _$CommandeResponseCopyWithImpl<$Res>
           : abonnements // ignore: cast_nullable_to_non_nullable
               as List<AbonnementResponse>,
     ));
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CarteBancaireResponseCopyWith<$Res>? get cb {
+    if (_self.cb == null) {
+      return null;
+    }
+
+    return $CarteBancaireResponseCopyWith<$Res>(_self.cb!, (value) {
+      return _then(_self.copyWith(cb: value));
+    });
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation {
+    if (_self.addresseFacturation == null) {
+      return null;
+    }
+
+    return $AdresseFacturationResponseCopyWith<$Res>(_self.addresseFacturation!,
+        (value) {
+      return _then(_self.copyWith(addresseFacturation: value));
+    });
   }
 }
 
@@ -262,6 +313,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             int nbreProducts,
             double totalPrice,
             String statut,
+            CarteBancaireResponse? cb,
+            AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String createdAtStr,
             List<AbonnementResponse> abonnements)?
@@ -278,6 +331,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.cb,
+            _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
             _that.abonnements);
@@ -308,6 +363,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             int nbreProducts,
             double totalPrice,
             String statut,
+            CarteBancaireResponse? cb,
+            AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String createdAtStr,
             List<AbonnementResponse> abonnements)
@@ -323,6 +380,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.cb,
+            _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
             _that.abonnements);
@@ -352,6 +411,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             int nbreProducts,
             double totalPrice,
             String statut,
+            CarteBancaireResponse? cb,
+            AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
             String createdAtStr,
             List<AbonnementResponse> abonnements)?
@@ -367,6 +428,8 @@ extension CommandeResponsePatterns on CommandeResponse {
             _that.nbreProducts,
             _that.totalPrice,
             _that.statut,
+            _that.cb,
+            _that.addresseFacturation,
             _that.createdAt,
             _that.createdAtStr,
             _that.abonnements);
@@ -386,6 +449,8 @@ class _CommandeResponse implements CommandeResponse {
       required this.nbreProducts,
       required this.totalPrice,
       required this.statut,
+      this.cb,
+      this.addresseFacturation,
       required this.createdAt,
       required this.createdAtStr,
       final List<AbonnementResponse> abonnements = const []})
@@ -408,6 +473,10 @@ class _CommandeResponse implements CommandeResponse {
   final double totalPrice;
   @override
   final String statut;
+  @override
+  final CarteBancaireResponse? cb;
+  @override
+  final AdresseFacturationResponse? addresseFacturation;
   @override
   final DateTime createdAt;
   @override
@@ -450,6 +519,9 @@ class _CommandeResponse implements CommandeResponse {
             (identical(other.totalPrice, totalPrice) ||
                 other.totalPrice == totalPrice) &&
             (identical(other.statut, statut) || other.statut == statut) &&
+            (identical(other.cb, cb) || other.cb == cb) &&
+            (identical(other.addresseFacturation, addresseFacturation) ||
+                other.addresseFacturation == addresseFacturation) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.createdAtStr, createdAtStr) ||
@@ -468,13 +540,15 @@ class _CommandeResponse implements CommandeResponse {
       nbreProducts,
       totalPrice,
       statut,
+      cb,
+      addresseFacturation,
       createdAt,
       createdAtStr,
       const DeepCollectionEquality().hash(_abonnements));
 
   @override
   String toString() {
-    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
+    return 'CommandeResponse(id: $id, reference: $reference, periode: $periode, nbreProducts: $nbreProducts, totalPrice: $totalPrice, statut: $statut, cb: $cb, addresseFacturation: $addresseFacturation, createdAt: $createdAt, createdAtStr: $createdAtStr, abonnements: $abonnements)';
   }
 }
 
@@ -493,9 +567,16 @@ abstract mixin class _$CommandeResponseCopyWith<$Res>
       int nbreProducts,
       double totalPrice,
       String statut,
+      CarteBancaireResponse? cb,
+      AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
       String createdAtStr,
       List<AbonnementResponse> abonnements});
+
+  @override
+  $CarteBancaireResponseCopyWith<$Res>? get cb;
+  @override
+  $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation;
 }
 
 /// @nodoc
@@ -517,6 +598,8 @@ class __$CommandeResponseCopyWithImpl<$Res>
     Object? nbreProducts = null,
     Object? totalPrice = null,
     Object? statut = null,
+    Object? cb = freezed,
+    Object? addresseFacturation = freezed,
     Object? createdAt = null,
     Object? createdAtStr = null,
     Object? abonnements = null,
@@ -546,6 +629,14 @@ class __$CommandeResponseCopyWithImpl<$Res>
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
               as String,
+      cb: freezed == cb
+          ? _self.cb
+          : cb // ignore: cast_nullable_to_non_nullable
+              as CarteBancaireResponse?,
+      addresseFacturation: freezed == addresseFacturation
+          ? _self.addresseFacturation
+          : addresseFacturation // ignore: cast_nullable_to_non_nullable
+              as AdresseFacturationResponse?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -559,6 +650,35 @@ class __$CommandeResponseCopyWithImpl<$Res>
           : abonnements // ignore: cast_nullable_to_non_nullable
               as List<AbonnementResponse>,
     ));
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CarteBancaireResponseCopyWith<$Res>? get cb {
+    if (_self.cb == null) {
+      return null;
+    }
+
+    return $CarteBancaireResponseCopyWith<$Res>(_self.cb!, (value) {
+      return _then(_self.copyWith(cb: value));
+    });
+  }
+
+  /// Create a copy of CommandeResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AdresseFacturationResponseCopyWith<$Res>? get addresseFacturation {
+    if (_self.addresseFacturation == null) {
+      return null;
+    }
+
+    return $AdresseFacturationResponseCopyWith<$Res>(_self.addresseFacturation!,
+        (value) {
+      return _then(_self.copyWith(addresseFacturation: value));
+    });
   }
 }
 

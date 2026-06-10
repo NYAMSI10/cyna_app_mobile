@@ -14,6 +14,13 @@ _CommandeResponse _$CommandeResponseFromJson(Map<String, dynamic> json) =>
       nbreProducts: (json['nbreProducts'] as num).toInt(),
       totalPrice: (json['totalPrice'] as num).toDouble(),
       statut: json['statut'] as String,
+      cb: json['cb'] == null
+          ? null
+          : CarteBancaireResponse.fromJson(json['cb'] as Map<String, dynamic>),
+      addresseFacturation: json['addresseFacturation'] == null
+          ? null
+          : AdresseFacturationResponse.fromJson(
+              json['addresseFacturation'] as Map<String, dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
       createdAtStr: json['createdAtStr'] as String,
       abonnements: (json['abonnements'] as List<dynamic>?)
@@ -31,6 +38,8 @@ Map<String, dynamic> _$CommandeResponseToJson(_CommandeResponse instance) =>
       'nbreProducts': instance.nbreProducts,
       'totalPrice': instance.totalPrice,
       'statut': instance.statut,
+      'cb': instance.cb,
+      'addresseFacturation': instance.addresseFacturation,
       'createdAt': instance.createdAt.toIso8601String(),
       'createdAtStr': instance.createdAtStr,
       'abonnements': instance.abonnements,

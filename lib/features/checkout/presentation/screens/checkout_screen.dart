@@ -1,4 +1,5 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/common/helpers/notification_helper.dart';
 import 'package:cyna/common/route/route_name.dart';
 import 'package:cyna/features/adresse/data/model/reponse/adresse_facturation_reponse.dart';
 import 'package:cyna/features/adresse/presentation/provider/adresse_facturation_controller.dart';
@@ -6,9 +7,12 @@ import 'package:cyna/features/carte_bancaire/data/model/reponse/carte_bancaire_r
 import 'package:cyna/features/carte_bancaire/presentation/provider/carte_bancaire_controller.dart';
 import 'package:cyna/features/checkout/presentation/widgets/checkout_section.dart';
 import 'package:cyna/features/checkout/presentation/widgets/selectable_tile.dart';
+import 'package:cyna/features/commande/data/usecasesImpl/commande_usecase_impl.dart';
+import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
 import 'package:cyna/features/panier/presentation/provider/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -49,16 +53,79 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   }) async {
     setState(() => _isPaying = true);
 
-    // NOTE : l'endpoint de création de commande n'est pas encore disponible
-    // côté API. On simule le traitement puis on vide le panier. Il suffira de
-    // brancher l'appel réel (adresse.id, carte.stripePaymentMethodId, items...).
-    await Future.delayed(const Duration(milliseconds: 1200));
+    final usecase = ref.read(commandeUsecaseProvider);
+    final periode = cart.period == BillingPeriod.annuel ? 'ANNEE' : 'MOIS';
 
-    if (!mounted) return;
-    setState(() => _isPaying = false);
+    // Le serveur recalcule le prix : on lui envoie seulement carte, adresse
+    // et la liste des produits (id, quantité, périodicité).
+    final body = <String, dynamic>{
+      'cbId': carte.id,
+      'adresseFacturationId': adresse.id,
+      'abonnements': cart.availableItems
+          .map((item) => {
+                'productId': item.id,
+                'quantity': item.quantity,
+                'periode': periode,
+              })
+          .toList(),
+    };
 
-    ref.read(cartControllerProvider.notifier).clear();
-    await _showSuccessDialog();
+    try {
+      final result = await usecase.createCommande(body);
+
+      final payment = result.when(
+        (response) => response.data,
+        (failure) {
+          TNotifications.error(message: failure.message);
+          return null;
+        },
+      );
+
+      if (payment == null) return;
+
+      // Authentification 3D Secure requise : on la déclenche puis on confirme.
+      if (payment.status == 'REQUIRES_ACTION' &&
+          (payment.clientSecret ?? '').isNotEmpty) {
+        try {
+          await Stripe.instance.handleNextAction(payment.clientSecret!);
+        } on StripeException catch (e) {
+          TNotifications.error(
+            message: e.error.localizedMessage ??
+                "L'authentification de la carte a échoué.",
+          );
+          return;
+        }
+
+        final confirm = await usecase.confirmPayment({
+          'orderId': payment.orderId,
+          'payment_intent': payment.paymentIntentId,
+        });
+
+        final confirmed = confirm.when(
+          (response) => true,
+          (failure) {
+            TNotifications.error(message: failure.message);
+            return false;
+          },
+        );
+        if (!confirmed) return;
+      } else if (payment.status != 'PAID') {
+        // PENDING / processing : le paiement n'est pas confirmé.
+        TNotifications.info(
+          message: 'Votre paiement est en cours de traitement.',
+        );
+        return;
+      }
+
+      // Paiement confirmé : on vide le panier et on rafraîchit les commandes.
+      ref.read(cartControllerProvider.notifier).clear();
+      ref.invalidate(commandeControllerProvider);
+
+      if (!mounted) return;
+      await _showSuccessDialog();
+    } finally {
+      if (mounted) setState(() => _isPaying = false);
+    }
   }
 
   Future<void> _showSuccessDialog() async {
@@ -97,7 +164,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
-              context.push(commandeRoute);
+              context.pushNamed(commandeRoute);
             },
             child: const Text('Voir mes commandes',
                 style: TextStyle(
@@ -106,7 +173,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
-              context.push(navigationMenuRoute);
+              context.pushNamed(navigationMenuRoute);
             },
             child:
                 Text('Accueil', style: TextStyle(color: Colors.grey.shade700)),
@@ -289,8 +356,6 @@ class _OrderRecap extends StatelessWidget {
         _recapLine('Périodicité', cart.period.label),
         const SizedBox(height: 6),
         _recapLine('Sous-total', money.format(cart.subTotal)),
-        const SizedBox(height: 6),
-        _recapLine('Remise', '- ${money.format(cart.promotion)}'),
         const SizedBox(height: 6),
         _recapLine('TVA (20%)', money.format(cart.taxes)),
         const Divider(height: 24),

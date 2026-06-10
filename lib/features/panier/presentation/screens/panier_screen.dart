@@ -96,7 +96,6 @@ class PanierScreen extends ConsumerWidget {
                 ),
                 CartSummary(
                   subTotal: cart.subTotal,
-                  promotion: cart.promotion,
                   taxes: cart.taxes,
                   total: cart.total,
                   productCount: cart.productCount,

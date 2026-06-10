@@ -1,5 +1,7 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/adresse/data/model/reponse/adresse_facturation_reponse.dart';
+import 'package:cyna/features/carte_bancaire/data/model/reponse/carte_bancaire_reponse.dart';
 import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
 import 'package:cyna/features/commande/presentation/widgets/t_empty_state.dart';
@@ -21,6 +23,8 @@ class Order {
   final String reference;
   final int nbreProducts;
   final int year;
+  final CarteBancaireResponse cb;
+  final AdresseFacturationResponse adresseFacturation;
 
   Order({
     required this.id,
@@ -31,6 +35,8 @@ class Order {
     required this.status,
     required this.reference,
     required this.nbreProducts,
+    required this.cb,
+    required this.adresseFacturation,
   }) : year = orderDate.year;
 
   factory Order.fromCommande(CommandeResponse commande) {
@@ -43,6 +49,25 @@ class Order {
       status: _mapStatutToStatus(commande.statut),
       reference: commande.reference,
       nbreProducts: commande.nbreProducts,
+      cb: commande.cb ??
+          CarteBancaireResponse(
+            id: 'N/A',
+            carteName: 'N/A',
+            carteNumber: 'N/A',
+            carteDate: 'N/A',
+          ),
+      adresseFacturation: commande.addresseFacturation ??
+          AdresseFacturationResponse(
+            id: 'N/A',
+            firstName: 'N/A',
+            lastName: 'N/A',
+            adresse: 'N/A',
+            codePostal: 'N/A',
+            city: 'N/A',
+            country: 'N/A',
+            region: 'N/A',
+            phone: 'N/A',
+          ),
     );
   }
 
@@ -209,6 +234,8 @@ class CommandeScreenState extends ConsumerState<CommandeScreen> {
           child: Text('Erreur: $error'),
         ),
         data: (commandes) {
+          print("Commandes reçues: ${commandes.length}");
+
           final orders = commandes.map((c) => Order.fromCommande(c)).toList();
 
           final filteredOrders = _applyFilters(orders);

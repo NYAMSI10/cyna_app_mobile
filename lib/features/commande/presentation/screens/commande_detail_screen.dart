@@ -51,7 +51,7 @@ class CommandeDetailScreen extends ConsumerWidget {
         : (order.subscriptionDuration.toLowerCase() == 'mensuel'
             ? DateTime(startDate.year, startDate.month + 1, startDate.day)
             : null);
-
+    print(order);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -139,6 +139,9 @@ class CommandeDetailScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             _buildInfoRow('Mode de paiement', "Carte bancaire"),
+            _buildInfoRow('Nom de carte', order.cb.carteName),
+            _buildInfoRow('Number de carte', order.cb.carteNumber),
+            _buildInfoRow('Date d’expiration', order.cb.carteDate),
             // _buildInfoRow('Carte', '•••• •••• •••• ${order.last4Digits}'),
             const SizedBox(height: 24),
 
@@ -152,18 +155,22 @@ class CommandeDetailScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Text(
-                " order.billingAddress",
-                style: const TextStyle(fontSize: 14),
+            // Section Paiement
+            Text(
+              'Adresse de facturation',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade900,
               ),
             ),
+            const SizedBox(height: 8),
+            _buildInfoRow('Nom', order.adresseFacturation.firstName),
+            _buildInfoRow('Prénom', order.adresseFacturation.lastName),
+            _buildInfoRow('Adresse', order.adresseFacturation.adresse),
+            _buildInfoRow('Code postal', order.adresseFacturation.codePostal),
+            _buildInfoRow('Ville', order.adresseFacturation.city),
+
             const SizedBox(height: 24),
 
             // Section Facture

@@ -56,17 +56,9 @@ class CartState {
         (sum, item) => sum + item.lineTotal(multiplier),
       );
 
-  /// Remise de 8% sur les lignes en promotion.
-  double get promotion => availableItems
-      .where((item) => item.hasPromotion)
-      .fold(0, (sum, item) => sum + item.lineTotal(multiplier) * 0.08);
+  double get taxes => subTotal * 0.2;
 
-  double get taxes {
-    final taxable = (subTotal - promotion).clamp(0, double.infinity);
-    return taxable * 0.2;
-  }
-
-  double get total => subTotal - promotion + taxes;
+  double get total => subTotal + taxes;
 
   bool get canCheckout => availableItems.isNotEmpty && total > 0;
 }

@@ -8,7 +8,6 @@ class CartSummary extends StatelessWidget {
   const CartSummary({
     super.key,
     required this.subTotal,
-    required this.promotion,
     required this.taxes,
     required this.total,
     required this.productCount,
@@ -19,7 +18,6 @@ class CartSummary extends StatelessWidget {
   });
 
   final double subTotal;
-  final double promotion;
   final double taxes;
   final double total;
   final int productCount;
@@ -53,11 +51,6 @@ class CartSummary extends StatelessWidget {
             SummaryLine(
               label: 'Sous-total',
               value: moneyFormatter.format(subTotal),
-            ),
-            const SizedBox(height: 8),
-            SummaryLine(
-              label: 'Remise',
-              value: '- ${moneyFormatter.format(promotion)}',
             ),
             const SizedBox(height: 8),
             SummaryLine(

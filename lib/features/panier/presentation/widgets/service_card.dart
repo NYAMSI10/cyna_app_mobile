@@ -1,4 +1,3 @@
-import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/features/panier/presentation/widgets/cart_service_item.dart';
 import 'package:cyna/features/panier/presentation/widgets/quantity_stepper.dart';
 import 'package:cyna/features/panier/presentation/widgets/unavailable_badge.dart';
@@ -79,23 +78,6 @@ class ServiceCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      if (item.hasPromotion && !item.isUnavailable)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: TColors.success.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            '-8%',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: TColors.success,
-                            ),
-                          ),
-                        ),
                       if (item.isUnavailable)
                         const UnavailableBadge(),
                     ],

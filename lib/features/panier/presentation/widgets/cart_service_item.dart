@@ -7,7 +7,6 @@ class CartServiceItem {
     required this.quantity,
     required this.imagePath,
     this.isUnavailable = false,
-    this.hasPromotion = false,
   });
 
   final String id;
@@ -17,7 +16,6 @@ class CartServiceItem {
   int quantity;
   final String imagePath;
   bool isUnavailable;
-  bool hasPromotion;
 
   /// Vrai si l'image provient du réseau (URL) plutôt que d'un asset local.
   bool get isNetworkImage =>
@@ -38,7 +36,6 @@ class CartServiceItem {
         'quantity': quantity,
         'imagePath': imagePath,
         'isUnavailable': isUnavailable,
-        'hasPromotion': hasPromotion,
       };
 
   factory CartServiceItem.fromJson(Map<String, dynamic> json) {
@@ -50,7 +47,6 @@ class CartServiceItem {
       quantity: json['quantity'] as int,
       imagePath: json['imagePath'] as String,
       isUnavailable: json['isUnavailable'] as bool? ?? false,
-      hasPromotion: json['hasPromotion'] as bool? ?? false,
     );
   }
 }
