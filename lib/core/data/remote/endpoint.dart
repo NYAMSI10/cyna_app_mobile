@@ -25,6 +25,7 @@ const String getAbonnementEndPoint = '/api/commandes/abonnements/by-user';
 
 // Commande Endpoints
 const String getCommandesEndPoint = '/api/commandes/by-user';
+const String getCommandeDetailEndPoint = '/api/commandes/{reference}';
 const String createCommandeEndPoint = '/api/commandes/create';
 const String confirmPaymentEndPoint = '/api/commandes/payment/success';
 

@@ -32,7 +32,9 @@ class TAbonnementTitle extends ConsumerWidget {
               radius: 24,
               backgroundColor: TColors.primaryColor.withOpacity(0.1),
               child: Text(
-                abonnement.product.name!.substring(0, 1).toUpperCase(),
+                (abonnement.product?.name ?? '?')
+                    .substring(0, 1)
+                    .toUpperCase(),
                 style: const TextStyle(
                   color: TColors.primaryColor,
                   fontWeight: FontWeight.bold,
@@ -47,7 +49,7 @@ class TAbonnementTitle extends ConsumerWidget {
                 spacing: 8,
                 children: [
                   Text(
-                    abonnement.product.name!,
+                    abonnement.product?.name ?? 'Produit indisponible',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

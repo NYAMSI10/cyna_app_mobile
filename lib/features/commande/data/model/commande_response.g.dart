@@ -22,7 +22,7 @@ _CommandeResponse _$CommandeResponseFromJson(Map<String, dynamic> json) =>
           : AdresseFacturationResponse.fromJson(
               json['addresseFacturation'] as Map<String, dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
-      createdAtStr: json['createdAtStr'] as String,
+      createdAtStr: json['createdAtStr'] as String?,
       abonnements: (json['abonnements'] as List<dynamic>?)
               ?.map(
                   (e) => AbonnementResponse.fromJson(e as Map<String, dynamic>))

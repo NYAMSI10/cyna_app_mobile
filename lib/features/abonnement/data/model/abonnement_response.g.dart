@@ -16,8 +16,9 @@ _AbonnementResponse _$AbonnementResponseFromJson(Map<String, dynamic> json) =>
       periode: json['periode'] as String,
       price: (json['price'] as num).toInt(),
       statut: json['statut'] as String,
-      product:
-          ProductResponse.fromJson(json['product'] as Map<String, dynamic>),
+      product: json['product'] == null
+          ? null
+          : ProductResponse.fromJson(json['product'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AbonnementResponseToJson(_AbonnementResponse instance) =>

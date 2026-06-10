@@ -28,7 +28,7 @@ void abonnementActionsBottomSheet(
             ),
             const SizedBox(height: 12),
             Text(
-              abo.product.name!,
+              abo.product?.name ?? 'Produit indisponible',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ void _confirmCancel(BuildContext context, AbonnementResponse abo) {
               .apply(fontWeightDelta: 3),
         ),
         content: Text(
-          "Voulez-vous vraiment résilier l’abonnement à ${abo.product.name!} ? "
+          "Voulez-vous vraiment résilier l’abonnement à ${abo.product?.name ?? 'ce produit'} ? "
           "Il restera actif jusqu’à la fin de la période en cours.",
         ),
         actions: [

@@ -2,6 +2,7 @@ import 'package:cyna/common/exception/failure.dart';
 import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/features/commande/data/model/commande_list_response.dart';
+import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/data/model/create_commande_response.dart';
 import 'package:cyna/features/commande/data/repositoryImpl/commande_repository_impl.dart';
 import 'package:cyna/features/commande/domain/repository/commande_repository.dart';
@@ -37,6 +38,34 @@ final class CommandeUsecaseImpl implements CommandeUsecase {
       }
 
       return Result.success(response);
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
+
+  @override
+  Future<Result<ApiResponse<CommandeResponse>, Failure>> getCommandeDetail(
+    String reference,
+  ) async {
+    try {
+      final response = await _commandeRepository.getCommandeDetail(reference);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } on Failure catch (failure) {
+      return Result.error(failure);
     } catch (e, s) {
       throw Failure(
         message: "An unexpected error occurred".hardcoded,

@@ -54,6 +54,38 @@ class _CommandeApi implements CommandeApi {
   }
 
   @override
+  Future<ApiResponse<CommandeResponse>> getCommandeDetail(
+    String reference,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<CommandeResponse>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/commandes/${reference}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<CommandeResponse> _value;
+    try {
+      _value = ApiResponse<CommandeResponse>.fromJson(
+        _result.data!,
+        (json) => CommandeResponse.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ApiResponse<CreateCommandeResponse>> createCommande(
     Map<String, dynamic> body,
   ) async {

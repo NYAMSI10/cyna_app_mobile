@@ -26,7 +26,7 @@ mixin _$CommandeResponse {
   CarteBancaireResponse? get cb;
   AdresseFacturationResponse? get addresseFacturation;
   DateTime get createdAt;
-  String get createdAtStr;
+  String? get createdAtStr;
   List<AbonnementResponse> get abonnements;
 
   /// Create a copy of CommandeResponse
@@ -103,7 +103,7 @@ abstract mixin class $CommandeResponseCopyWith<$Res> {
       CarteBancaireResponse? cb,
       AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
-      String createdAtStr,
+      String? createdAtStr,
       List<AbonnementResponse> abonnements});
 
   $CarteBancaireResponseCopyWith<$Res>? get cb;
@@ -132,7 +132,7 @@ class _$CommandeResponseCopyWithImpl<$Res>
     Object? cb = freezed,
     Object? addresseFacturation = freezed,
     Object? createdAt = null,
-    Object? createdAtStr = null,
+    Object? createdAtStr = freezed,
     Object? abonnements = null,
   }) {
     return _then(_self.copyWith(
@@ -172,10 +172,10 @@ class _$CommandeResponseCopyWithImpl<$Res>
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      createdAtStr: null == createdAtStr
+      createdAtStr: freezed == createdAtStr
           ? _self.createdAtStr
           : createdAtStr // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       abonnements: null == abonnements
           ? _self.abonnements
           : abonnements // ignore: cast_nullable_to_non_nullable
@@ -316,7 +316,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             CarteBancaireResponse? cb,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
-            String createdAtStr,
+            String? createdAtStr,
             List<AbonnementResponse> abonnements)?
         $default, {
     required TResult orElse(),
@@ -366,7 +366,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             CarteBancaireResponse? cb,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
-            String createdAtStr,
+            String? createdAtStr,
             List<AbonnementResponse> abonnements)
         $default,
   ) {
@@ -414,7 +414,7 @@ extension CommandeResponsePatterns on CommandeResponse {
             CarteBancaireResponse? cb,
             AdresseFacturationResponse? addresseFacturation,
             DateTime createdAt,
-            String createdAtStr,
+            String? createdAtStr,
             List<AbonnementResponse> abonnements)?
         $default,
   ) {
@@ -452,7 +452,7 @@ class _CommandeResponse implements CommandeResponse {
       this.cb,
       this.addresseFacturation,
       required this.createdAt,
-      required this.createdAtStr,
+      this.createdAtStr,
       final List<AbonnementResponse> abonnements = const []})
       : _abonnements = abonnements;
   factory _CommandeResponse.fromJson(Map<String, dynamic> json) =>
@@ -480,7 +480,7 @@ class _CommandeResponse implements CommandeResponse {
   @override
   final DateTime createdAt;
   @override
-  final String createdAtStr;
+  final String? createdAtStr;
   final List<AbonnementResponse> _abonnements;
   @override
   @JsonKey()
@@ -570,7 +570,7 @@ abstract mixin class _$CommandeResponseCopyWith<$Res>
       CarteBancaireResponse? cb,
       AdresseFacturationResponse? addresseFacturation,
       DateTime createdAt,
-      String createdAtStr,
+      String? createdAtStr,
       List<AbonnementResponse> abonnements});
 
   @override
@@ -601,7 +601,7 @@ class __$CommandeResponseCopyWithImpl<$Res>
     Object? cb = freezed,
     Object? addresseFacturation = freezed,
     Object? createdAt = null,
-    Object? createdAtStr = null,
+    Object? createdAtStr = freezed,
     Object? abonnements = null,
   }) {
     return _then(_CommandeResponse(
@@ -641,10 +641,10 @@ class __$CommandeResponseCopyWithImpl<$Res>
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      createdAtStr: null == createdAtStr
+      createdAtStr: freezed == createdAtStr
           ? _self.createdAtStr
           : createdAtStr // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       abonnements: null == abonnements
           ? _self._abonnements
           : abonnements // ignore: cast_nullable_to_non_nullable

@@ -1,3 +1,4 @@
+import 'package:cyna/common/exception/failure.dart';
 import 'package:cyna/common/helpers/notification_helper.dart';
 import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/data/usecasesImpl/commande_usecase_impl.dart';
@@ -53,4 +54,27 @@ class CommandeController extends _$CommandeController {
       },
     );
   }
+}
+
+@riverpod
+Future<CommandeResponse> commandeDetail(
+  Ref ref,
+  String reference,
+) async {
+  final usecase = ref.read(commandeUsecaseProvider);
+  final result = await usecase.getCommandeDetail(reference);
+
+  return result.when(
+    (response) {
+      final data = response.data;
+      if (data == null) {
+        throw Failure(message: "Commande introuvable");
+      }
+      return data;
+    },
+    (failure) {
+      TNotifications.error(message: failure.message);
+      throw failure;
+    },
+  );
 }

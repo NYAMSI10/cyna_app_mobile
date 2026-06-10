@@ -21,7 +21,7 @@ abstract class CommandeResponse with _$CommandeResponse {
     CarteBancaireResponse? cb,
     AdresseFacturationResponse? addresseFacturation,
     required DateTime createdAt,
-    required String createdAtStr,
+    String? createdAtStr,
     @Default([]) List<AbonnementResponse> abonnements,
   }) = _CommandeResponse;
 

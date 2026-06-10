@@ -25,7 +25,7 @@ mixin _$AbonnementResponse {
   String get periode;
   int get price;
   String get statut;
-  ProductResponse get product;
+  ProductResponse? get product;
 
   /// Create a copy of AbonnementResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -83,9 +83,9 @@ abstract mixin class $AbonnementResponseCopyWith<$Res> {
       String periode,
       int price,
       String statut,
-      ProductResponse product});
+      ProductResponse? product});
 
-  $ProductResponseCopyWith<$Res> get product;
+  $ProductResponseCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -109,7 +109,7 @@ class _$AbonnementResponseCopyWithImpl<$Res>
     Object? periode = null,
     Object? price = null,
     Object? statut = null,
-    Object? product = null,
+    Object? product = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -144,10 +144,10 @@ class _$AbonnementResponseCopyWithImpl<$Res>
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
+      product: freezed == product
           ? _self.product
           : product // ignore: cast_nullable_to_non_nullable
-              as ProductResponse,
+              as ProductResponse?,
     ));
   }
 
@@ -155,8 +155,12 @@ class _$AbonnementResponseCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $ProductResponseCopyWith<$Res> get product {
-    return $ProductResponseCopyWith<$Res>(_self.product, (value) {
+  $ProductResponseCopyWith<$Res>? get product {
+    if (_self.product == null) {
+      return null;
+    }
+
+    return $ProductResponseCopyWith<$Res>(_self.product!, (value) {
       return _then(_self.copyWith(product: value));
     });
   }
@@ -264,7 +268,7 @@ extension AbonnementResponsePatterns on AbonnementResponse {
             String periode,
             int price,
             String statut,
-            ProductResponse product)?
+            ProductResponse? product)?
         $default, {
     required TResult orElse(),
   }) {
@@ -310,7 +314,7 @@ extension AbonnementResponsePatterns on AbonnementResponse {
             String periode,
             int price,
             String statut,
-            ProductResponse product)
+            ProductResponse? product)
         $default,
   ) {
     final _that = this;
@@ -354,7 +358,7 @@ extension AbonnementResponsePatterns on AbonnementResponse {
             String periode,
             int price,
             String statut,
-            ProductResponse product)?
+            ProductResponse? product)?
         $default,
   ) {
     final _that = this;
@@ -388,7 +392,7 @@ class _AbonnementResponse implements AbonnementResponse {
       required this.periode,
       required this.price,
       required this.statut,
-      required this.product});
+      this.product});
   factory _AbonnementResponse.fromJson(Map<String, dynamic> json) =>
       _$AbonnementResponseFromJson(json);
 
@@ -412,7 +416,7 @@ class _AbonnementResponse implements AbonnementResponse {
   @override
   final String statut;
   @override
-  final ProductResponse product;
+  final ProductResponse? product;
 
   /// Create a copy of AbonnementResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -476,10 +480,10 @@ abstract mixin class _$AbonnementResponseCopyWith<$Res>
       String periode,
       int price,
       String statut,
-      ProductResponse product});
+      ProductResponse? product});
 
   @override
-  $ProductResponseCopyWith<$Res> get product;
+  $ProductResponseCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -503,7 +507,7 @@ class __$AbonnementResponseCopyWithImpl<$Res>
     Object? periode = null,
     Object? price = null,
     Object? statut = null,
-    Object? product = null,
+    Object? product = freezed,
   }) {
     return _then(_AbonnementResponse(
       id: null == id
@@ -538,10 +542,10 @@ class __$AbonnementResponseCopyWithImpl<$Res>
           ? _self.statut
           : statut // ignore: cast_nullable_to_non_nullable
               as String,
-      product: null == product
+      product: freezed == product
           ? _self.product
           : product // ignore: cast_nullable_to_non_nullable
-              as ProductResponse,
+              as ProductResponse?,
     ));
   }
 
@@ -549,8 +553,12 @@ class __$AbonnementResponseCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $ProductResponseCopyWith<$Res> get product {
-    return $ProductResponseCopyWith<$Res>(_self.product, (value) {
+  $ProductResponseCopyWith<$Res>? get product {
+    if (_self.product == null) {
+      return null;
+    }
+
+    return $ProductResponseCopyWith<$Res>(_self.product!, (value) {
       return _then(_self.copyWith(product: value));
     });
   }

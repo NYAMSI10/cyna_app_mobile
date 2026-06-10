@@ -2,6 +2,7 @@ import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/core/data/remote/endpoint.dart';
 import 'package:cyna/core/data/remote/network_service.dart';
 import 'package:cyna/features/commande/data/model/commande_list_response.dart';
+import 'package:cyna/features/commande/data/model/commande_response.dart';
 import 'package:cyna/features/commande/data/model/create_commande_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,11 @@ abstract class CommandeApi {
   @GET(getCommandesEndPoint)
   Future<ApiResponse<CommandeListResponse>> getCommandes(
     @Queries() Map<String, dynamic>? queries,
+  );
+
+  @GET(getCommandeDetailEndPoint)
+  Future<ApiResponse<CommandeResponse>> getCommandeDetail(
+    @Path("reference") String reference,
   );
 
   @POST(createCommandeEndPoint)

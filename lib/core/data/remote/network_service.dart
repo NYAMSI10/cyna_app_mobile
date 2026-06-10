@@ -7,7 +7,8 @@ final networkServiceProvider = Provider<Dio>((ref) {
   final options = BaseOptions(
     // Utilisation d'une constante ou d'une logique d'IP selon la plateforme
     // baseUrl: "http://10.0.2.2:3000",
-    baseUrl: "https://cyna-backend.vercel.app",
+    // baseUrl: "https://cyna-backend.vercel.app",``
+    baseUrl: "http://localhost:3000",
     contentType: Headers.jsonContentType,
     connectTimeout: const Duration(seconds: 60),
     receiveTimeout: const Duration(seconds: 60),

@@ -1,5 +1,7 @@
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/commande/data/model/commande_response.dart';
+import 'package:cyna/features/commande/presentation/provider/commande_controller.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +53,7 @@ class CommandeDetailScreen extends ConsumerWidget {
         : (order.subscriptionDuration.toLowerCase() == 'mensuel'
             ? DateTime(startDate.year, startDate.month + 1, startDate.day)
             : null);
-    print(order);
+    final detailAsync = ref.watch(commandeDetailProvider(order.reference));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -128,48 +130,28 @@ class CommandeDetailScreen extends ConsumerWidget {
               _buildInfoRow('Date de fin', _formatDate(endDate)),
             const SizedBox(height: 24),
 
-            // Section Paiement
-            Text(
-              'Paiement',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
+            // Section Paiement + Adresse de facturation (détail récupéré via l'API)
+            detailAsync.when(
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (error, _) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text(
+                  'Impossible de charger le détail de la commande.',
+                  style: TextStyle(color: Colors.red.shade700, fontSize: 14),
+                ),
+              ),
+              data: (commande) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPaymentSection(commande),
+                  const SizedBox(height: 24),
+                  _buildBillingAddressSection(commande),
+                ],
               ),
             ),
-            const SizedBox(height: 8),
-            _buildInfoRow('Mode de paiement', "Carte bancaire"),
-            _buildInfoRow('Nom de carte', order.cb.carteName),
-            _buildInfoRow('Number de carte', order.cb.carteNumber),
-            _buildInfoRow('Date d’expiration', order.cb.carteDate),
-            // _buildInfoRow('Carte', '•••• •••• •••• ${order.last4Digits}'),
-            const SizedBox(height: 24),
-
-            // Section Adresse de facturation
-            Text(
-              'Adresse de facturation',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Section Paiement
-            Text(
-              'Adresse de facturation',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey.shade900,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _buildInfoRow('Nom', order.adresseFacturation.firstName),
-            _buildInfoRow('Prénom', order.adresseFacturation.lastName),
-            _buildInfoRow('Adresse', order.adresseFacturation.adresse),
-            _buildInfoRow('Code postal', order.adresseFacturation.codePostal),
-            _buildInfoRow('Ville', order.adresseFacturation.city),
 
             const SizedBox(height: 24),
 
@@ -219,6 +201,48 @@ class CommandeDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Colors.grey.shade900,
+      ),
+    );
+  }
+
+  Widget _buildPaymentSection(CommandeResponse commande) {
+    final cb = commande.cb;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle('Paiement'),
+        const SizedBox(height: 8),
+        _buildInfoRow('Mode de paiement', 'Carte bancaire'),
+        _buildInfoRow('Nom de carte', cb?.carteName ?? 'N/A'),
+        _buildInfoRow('Numéro de carte', cb?.carteNumber ?? 'N/A'),
+        _buildInfoRow('Date d’expiration', cb?.carteDate ?? 'N/A'),
+      ],
+    );
+  }
+
+  Widget _buildBillingAddressSection(CommandeResponse commande) {
+    final adresse = commande.addresseFacturation;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle('Adresse de facturation'),
+        const SizedBox(height: 8),
+        _buildInfoRow('Nom', adresse?.lastName ?? 'N/A'),
+        _buildInfoRow('Prénom', adresse?.firstName ?? 'N/A'),
+        _buildInfoRow('Adresse', adresse?.adresse ?? 'N/A'),
+        _buildInfoRow('Code postal', adresse?.codePostal ?? 'N/A'),
+        _buildInfoRow('Ville', adresse?.city ?? 'N/A'),
+      ],
     );
   }
 

@@ -18,7 +18,7 @@ abstract class AbonnementResponse with _$AbonnementResponse {
     required String periode,
     required int price,
     required String statut,
-    required ProductResponse product,
+    ProductResponse? product,
   }) = _AbonnementResponse;
 
   factory AbonnementResponse.fromJson(Map<String, dynamic> json) =>
