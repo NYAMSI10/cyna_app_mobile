@@ -50,10 +50,20 @@ class ServiceCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Image.asset(
-                  item.imagePath,
-                  fit: BoxFit.cover,
-                ),
+                child: item.isNetworkImage
+                    ? Image.network(
+                        item.imagePath,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Color(0xFFB0B0B8),
+                        ),
+                      )
+                    : Image.asset(
+                        item.imagePath,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             const SizedBox(width: 12),

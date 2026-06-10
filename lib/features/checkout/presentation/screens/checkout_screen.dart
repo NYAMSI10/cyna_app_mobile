@@ -66,8 +66,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -98,20 +97,19 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
-              context.goNamed(commandeRoute);
+              context.push(commandeRoute);
             },
             child: const Text('Voir mes commandes',
                 style: TextStyle(
-                    color: TColors.primaryColor,
-                    fontWeight: FontWeight.w600)),
+                    color: TColors.primaryColor, fontWeight: FontWeight.w600)),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
-              context.goNamed(navigationMenuRoute);
+              context.push(navigationMenuRoute);
             },
-            child: Text('Accueil',
-                style: TextStyle(color: Colors.grey.shade700)),
+            child:
+                Text('Accueil', style: TextStyle(color: Colors.grey.shade700)),
           ),
         ],
       ),
@@ -218,8 +216,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     return SelectableTile(
                       selected: carte.id == selectedCarteId,
                       isDefault: carte.isDefault == true,
-                      onTap: () =>
-                          setState(() => _selectedCarteId = carte.id),
+                      onTap: () => setState(() => _selectedCarteId = carte.id),
                       title: carte.carteName,
                       subtitle:
                           '${carte.carteNumber}  •  Expire ${carte.carteDate}',
@@ -300,8 +297,7 @@ class _OrderRecap extends StatelessWidget {
         Row(
           children: [
             const Text('Total',
-                style:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
             const Spacer(),
             Text(
               money.format(cart.total),
@@ -312,8 +308,7 @@ class _OrderRecap extends StatelessWidget {
               ),
             ),
             Text(' ${cart.period.suffix}',
-                style: const TextStyle(
-                    fontSize: 13, color: Color(0xFF8C8C95))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFF8C8C95))),
           ],
         ),
       ],
@@ -327,8 +322,7 @@ class _OrderRecap extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
         const Spacer(),
         Text(value,
-            style:
-                const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
       ],
     );
   }
@@ -491,8 +485,8 @@ class _EmptySection extends StatelessWidget {
               style: const TextStyle(color: TColors.primaryColor)),
           style: OutlinedButton.styleFrom(
             side: const BorderSide(color: TColors.primaryColor),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
         ),
       ],

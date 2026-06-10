@@ -59,7 +59,7 @@ class THomeCategory extends ConsumerWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            "http://localhost:3000/${category.image}",
+                            category.image,
                             fit: BoxFit
                                 .cover, // <--- L'image ne sera plus zoomée/coupée
                             errorBuilder: (context, error, stackTrace) =>

@@ -16,7 +16,7 @@ class TProductCard extends ConsumerWidget {
     final images = product.images;
 
     if (images != null && images.isNotEmpty) {
-      return "http://localhost:3000/${images.first.url}";
+      return images.first.url;
     }
 
     return "https://img-0.journaldunet.com/JgOAEEaKp00acGdrktPUB8Y2__8=/1500x/smart/32d90de13a5f411c86709152f70fc67c/ccmcms-jdn/10861192.jpg";

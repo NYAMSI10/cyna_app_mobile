@@ -1,5 +1,6 @@
 import 'package:cyna/features/panier/presentation/widgets/cart_service_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 
 /// Périodicité d'abonnement choisie pour l'ensemble du panier.
 enum BillingPeriod {
@@ -47,6 +48,9 @@ class CartState {
   /// Nombre de produits commandables (hors indisponibles).
   int get productCount => availableItems.length;
 
+  /// Quantité totale d'articles dans le panier (somme des quantités).
+  int get itemCount => items.fold(0, (sum, item) => sum + item.quantity);
+
   double get subTotal => availableItems.fold(
         0,
         (sum, item) => sum + item.lineTotal(multiplier),
@@ -68,61 +72,76 @@ class CartState {
 }
 
 class CartController extends Notifier<CartState> {
+  static const _itemsKey = 'cart_items';
+  static const _periodKey = 'cart_period';
+
+  final GetStorage _storage = GetStorage();
+
   @override
   CartState build() {
-    // Données de démonstration en attendant le branchement de l'API panier.
-    return CartState(
-      items: [
-        CartServiceItem(
-          id: 'edr',
-          name: 'Cyna EDR',
-          unitLabel: 'Par appareil',
-          unitPrice: 59.00,
-          quantity: 1,
-          imagePath: 'assets/images/station.png',
-        ),
-        CartServiceItem(
-          id: 'xdr',
-          name: 'Cyna XDR',
-          unitLabel: 'Par utilisateur',
-          unitPrice: 99.00,
-          quantity: 1,
-          imagePath: 'assets/images/avatar.png',
-          hasPromotion: true,
-        ),
-        CartServiceItem(
-          id: 'soc',
-          name: 'SOC Managé',
-          unitLabel: 'Pack entreprise',
-          unitPrice: 149.00,
-          quantity: 1,
-          imagePath: 'assets/images/brice.png',
-          isUnavailable: true,
-        ),
-      ],
+    // Restauration du panier persisté pour qu'il survive à la fermeture de l'app.
+    final rawItems = _storage.read(_itemsKey);
+    final items = <CartServiceItem>[];
+    if (rawItems is List) {
+      for (final raw in rawItems) {
+        if (raw is Map) {
+          items.add(CartServiceItem.fromJson(Map<String, dynamic>.from(raw)));
+        }
+      }
+    }
+
+    final periodName = _storage.read(_periodKey);
+    final period = BillingPeriod.values.firstWhere(
+      (p) => p.name == periodName,
+      orElse: () => BillingPeriod.mensuel,
     );
+
+    return CartState(items: items, period: period);
+  }
+
+  /// Sauvegarde l'état courant du panier dans GetStorage.
+  void _persist() {
+    _storage.write(_itemsKey, state.items.map((e) => e.toJson()).toList());
+    _storage.write(_periodKey, state.period.name);
   }
 
   void setPeriod(BillingPeriod period) {
     state = state.copyWith(period: period);
+    _persist();
+  }
+
+  /// Ajoute un produit au panier. Si un article de même id existe déjà,
+  /// on cumule la quantité au lieu de créer un doublon.
+  void addItem(CartServiceItem item) {
+    final index = state.items.indexWhere((current) => current.id == item.id);
+    if (index >= 0) {
+      state.items[index].quantity += item.quantity;
+      state = state.copyWith(items: [...state.items]);
+    } else {
+      state = state.copyWith(items: [...state.items, item]);
+    }
+    _persist();
   }
 
   void increment(CartServiceItem item) {
     if (item.isUnavailable) return;
     item.quantity += 1;
     state = state.copyWith(items: [...state.items]);
+    _persist();
   }
 
   void decrement(CartServiceItem item) {
     if (item.isUnavailable || item.quantity <= 1) return;
     item.quantity -= 1;
     state = state.copyWith(items: [...state.items]);
+    _persist();
   }
 
   void removeItem(CartServiceItem item) {
     state = state.copyWith(
       items: state.items.where((current) => current.id != item.id).toList(),
     );
+    _persist();
   }
 
   void replaceUnavailable(CartServiceItem item) {
@@ -130,10 +149,12 @@ class CartController extends Notifier<CartState> {
     item.isUnavailable = false;
     item.quantity = 1;
     state = state.copyWith(items: [...state.items]);
+    _persist();
   }
 
   void clear() {
     state = state.copyWith(items: []);
+    _persist();
   }
 }
 

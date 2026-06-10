@@ -1,5 +1,8 @@
 import 'package:cyna/common/constant/colors.dart';
+import 'package:cyna/common/helpers/notification_helper.dart';
 import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/panier/presentation/provider/cart_controller.dart';
+import 'package:cyna/features/panier/presentation/widgets/cart_service_item.dart';
 import 'package:cyna/features/product-detail/data/model/product_response.dart';
 import 'package:cyna/features/product-detail/presentation/provider/product_controller.dart';
 import 'package:cyna/features/product-detail/presentation/widgets/t_plan_tile.dart';
@@ -12,7 +15,7 @@ import 'package:readmore/readmore.dart';
 
 enum _PlanType { monthly, yearly }
 
-const String _imageBaseUrl = 'http://localhost:3000/';
+const String _imageBaseUrl = 'https://cyna-backend.vercel.app/';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   const ProductDetailScreen({super.key, required this.product});
@@ -47,7 +50,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   List<String> get _imageUrls {
     final images = _product.images;
     if (images != null && images.isNotEmpty) {
-      return images.map((image) => '$_imageBaseUrl${image.url}').toList();
+      return images.map((image) => image.url).toList();
     }
     return [];
   }
@@ -78,6 +81,27 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
+  void _addToCart() {
+    final images = _imageUrls;
+    final item = CartServiceItem(
+      id: _product.id,
+      name: _product.name ?? 'Produit',
+      unitLabel: _product.service?.category?.name ?? 'Abonnement',
+      // Le panier applique le multiplicateur de période (x1 mensuel / x10 annuel)
+      // sur ce prix de base : on stocke donc le prix mensuel.
+      unitPrice: _hasMonthly ? _monthlyPrice : _yearlyPrice,
+      quantity: _quantity,
+      imagePath: images.isNotEmpty ? images.first : '',
+    );
+
+    ref.read(cartControllerProvider.notifier).addItem(item);
+
+    TNotifications.success(
+      title: 'Panier',
+      message: '${_product.name ?? 'Produit'} ajouté au panier',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final stock = _product.stock ?? 0;
@@ -90,17 +114,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         totalLabel: _money(_totalPrice),
         suffix: _unitSuffix,
         enabled: inStock && _selectedUnitPrice > 0,
-        onAddToCart: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '${_product.name ?? 'Produit'} ajouté au panier '
-                '(x$_quantity, ${_isYearly ? 'annuel' : 'mensuel'})',
-              ),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        },
+        onAddToCart: _addToCart,
       ),
       body: SafeArea(
         bottom: false,
@@ -616,7 +630,7 @@ class _RecommendationCard extends StatelessWidget {
   String get _imageUrl {
     final images = product.images;
     if (images != null && images.isNotEmpty) {
-      return '$_imageBaseUrl${images.first.url}';
+      return images.first.url;
     }
     return '';
   }
@@ -680,14 +694,14 @@ class _RecommendationCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        _price,
+                        product.service?.category?.name ?? '',
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  color: TColors.success,
+                                  fontWeight: FontWeight.w800,
+                                ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13,
-                          color: TColors.secondColor,
-                        ),
                       ),
                     ],
                   ),
