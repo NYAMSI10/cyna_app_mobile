@@ -45,7 +45,7 @@ class _THomeHeaderState extends ConsumerState<THomeHeader> {
                   children: [
                     Text(
                       "Bon retour !",
-                      style: Theme.of(context).textTheme.titleSmall!.apply(
+                      style: Theme.of(context).textTheme.bodySmall!.apply(
                             fontWeightDelta: 5,
                           ),
                     ),

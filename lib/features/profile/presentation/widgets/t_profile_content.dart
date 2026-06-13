@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TProfileContent extends ConsumerStatefulWidget {
   const TProfileContent({super.key});
@@ -22,6 +23,22 @@ class TProfileContent extends ConsumerStatefulWidget {
 }
 
 class _TProfileContentState extends ConsumerState<TProfileContent> {
+  /// Ouvre [url] dans un navigateur intégré à l'application
+  /// (SFSafariViewController sur iOS, Custom Tab sur Android),
+  /// sans quitter l'app.
+  Future<void> _openInApp(BuildContext context, String url) async {
+    final uri = Uri.parse(url);
+    final launched = await launchUrl(
+      uri,
+      mode: LaunchMode.inAppBrowserView,
+    );
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Impossible d'ouvrir le lien.")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userControllerProvider);
@@ -170,9 +187,28 @@ class _TProfileContentState extends ConsumerState<TProfileContent> {
               ),
 
               TSettingsMenuTile(
-                onTap: () {},
-                icon: Iconsax.info_circle,
-                title: 'À propos',
+                onTap: () => _openInApp(
+                  context,
+                  'https://cynaapp.vercel.app/terms-of-use',
+                ),
+                icon: Iconsax.document_text,
+                title: "Conditions d'Utilisation",
+              ),
+              TSettingsMenuTile(
+                onTap: () => _openInApp(
+                  context,
+                  'https://cynaapp.vercel.app/privacy-policy',
+                ),
+                icon: Iconsax.shield_tick,
+                title: 'Politique de Confidentialité',
+              ),
+              TSettingsMenuTile(
+                onTap: () => _openInApp(
+                  context,
+                  'https://cynaapp.vercel.app/cookie-policy',
+                ),
+                icon: Iconsax.security_safe,
+                title: 'Politique de Cookies',
               ),
 
               // Bouton de déconnexion

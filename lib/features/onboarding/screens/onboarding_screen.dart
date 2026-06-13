@@ -117,7 +117,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         Expanded(
           child: OutlinedButton(
             // Utilisation d'un Outlined pour varier comme sur ton image
-            onPressed: () => context.go('/signUp'),
+            onPressed: () {
+              getStorage.write('has_seen_onboarding', true);
+              context.go('/register');
+            },
             style: _buttonStyle(),
             child: const Text(TTexts.signUp,
                 style: TextStyle(
