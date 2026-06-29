@@ -3,7 +3,6 @@ import 'package:cyna/common/extension/string_hardcoded.dart';
 import 'package:cyna/common/model/response/api_response.dart';
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
 import 'package:cyna/features/authentication/data/model/request/register/register_request.dart';
-import 'package:cyna/features/authentication/data/model/response/login/login_response.dart';
 import 'package:cyna/features/authentication/data/repositoryImpl/auth_repository_impl.dart';
 import 'package:cyna/features/authentication/domain/repository/auth_repository.dart';
 import 'package:cyna/features/authentication/domain/usecases/auth_usecase.dart';
@@ -22,7 +21,7 @@ final class AuthUsecaseImpl implements AuthUsecase {
   AuthUsecaseImpl(this._loginRepository);
 
   @override
-  Future<Result<ApiResponse<LoginResponse>, Failure>> login(
+  Future<Result<ApiResponse<dynamic>, Failure>> login(
       LoginRequest loginRequest) async {
     try {
       final response = await _loginRepository.login(loginRequest);

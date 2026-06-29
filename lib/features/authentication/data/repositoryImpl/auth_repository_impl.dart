@@ -5,7 +5,6 @@ import 'package:cyna/core/dio_eroor_exception.dart';
 import 'package:cyna/features/authentication/data/datasources/login_api.dart';
 import 'package:cyna/features/authentication/data/model/request/login/login_request.dart';
 import 'package:cyna/features/authentication/data/model/request/register/register_request.dart';
-import 'package:cyna/features/authentication/data/model/response/login/login_response.dart';
 import 'package:cyna/features/authentication/domain/repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,9 +22,13 @@ final class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._loginApi);
 
   @override
-  Future<ApiResponse<LoginResponse>> login(LoginRequest loginRequest) async {
+  Future<ApiResponse<dynamic>> login(LoginRequest loginRequest) async {
     try {
-      final response = await _loginApi.login(loginRequest);
+      final formData = FormData.fromMap({
+        'email': loginRequest.email,
+        'password': loginRequest.password,
+      });
+      final response = await _loginApi.login(formData);
       final getStorage = GetStorage();
 
       // On sauvegarde le token immédiatement en cas de succès
@@ -51,7 +54,13 @@ final class AuthRepositoryImpl implements AuthRepository {
     RegisterRequest registerRequest,
   ) async {
     try {
-      final response = await _loginApi.register(registerRequest);
+      final formData = FormData.fromMap({
+        'email': registerRequest.email,
+        'password': registerRequest.password,
+        'firstName': registerRequest.firstName,
+        'lastName': registerRequest.lastName,
+      });
+      final response = await _loginApi.register(formData);
       return response;
     } on DioException catch (e) {
       throw e.toFailure();

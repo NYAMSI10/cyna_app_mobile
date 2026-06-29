@@ -8,7 +8,7 @@ part of 'login_api.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main,avoid_redundant_argument_values
 
 class _LoginApi implements LoginApi {
   _LoginApi(this._dio, {this.baseUrl, this.errorLogger});
@@ -20,11 +20,11 @@ class _LoginApi implements LoginApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<LoginResponse>> login(LoginRequest loginRequest) async {
+  Future<ApiResponse<LoginResponse>> login(FormData formData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = loginRequest;
+    final _data = formData;
     final _options = _setStreamType<ApiResponse<LoginResponse>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -50,11 +50,11 @@ class _LoginApi implements LoginApi {
   }
 
   @override
-  Future<ApiResponse<dynamic>> register(RegisterRequest registerRequest) async {
+  Future<ApiResponse<dynamic>> register(FormData formData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = registerRequest;
+    final _data = formData;
     final _options = _setStreamType<ApiResponse<dynamic>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
