@@ -9,3 +9,4 @@ const String homeRoute = 'home';
 const String adresseRoute = 'adresse';
 const String carteBancaireRoute = 'carteBancaire';
 const String checkoutRoute = 'checkout';
+const String forgotPasswordRoute = 'forgotPassword';

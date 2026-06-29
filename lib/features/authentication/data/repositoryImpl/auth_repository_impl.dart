@@ -72,4 +72,21 @@ final class AuthRepositoryImpl implements AuthRepository {
       );
     }
   }
+
+  @override
+  Future<ApiResponse<dynamic>> forgotPassword(String email) async {
+    try {
+      final formData = FormData.fromMap({'email': email});
+      final response = await _loginApi.forgotPassword(formData);
+      return response;
+    } on DioException catch (e) {
+      throw e.toFailure();
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
 }

@@ -10,4 +10,6 @@ abstract interface class AuthUsecase {
 
   Future<Result<ApiResponse<dynamic>, Failure>> register(
       RegisterRequest registerRequest);
+
+  Future<Result<ApiResponse<dynamic>, Failure>> forgotPassword(String email);
 }

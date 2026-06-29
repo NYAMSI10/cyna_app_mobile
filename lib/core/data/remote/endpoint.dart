@@ -23,6 +23,9 @@ const String getSimilarProductsEndPoint = '/api/products/similar/{categoryId}';
 // Slider Endpoints
 const String getSlidersEndPoint = '/api/sliders/sliderTop';
 
+// Search Endpoints
+const String searchEndPoint = '/api/search';
+
 // Abonnement Endpoints
 const String getAbonnementEndPoint = '/api/commandes/abonnements/by-user';
 

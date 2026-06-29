@@ -1,74 +1,65 @@
-import 'package:cyna/common/helpers/responsive.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cyna/common/constant/colors.dart';
 import 'package:cyna/common/constant/image_strings.dart';
 import 'package:cyna/common/constant/sizes.dart';
-import 'package:cyna/common/constant/text_string.dart';
-import 'package:cyna/features/authentication/presentation/widgets/login_form.dart';
+import 'package:cyna/common/helpers/responsive.dart';
+import 'package:cyna/features/authentication/presentation/widgets/forgot_password_form.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends ConsumerWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: GestureDetector(
-        // Permet de fermer le clavier si on clique en dehors du formulaire
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
-          // Permet de scroller si le contenu est trop grand (ou quand le clavier sort)
           child: Column(
-            mainAxisSize: MainAxisSize
-                .min, // Indique à la colonne de ne prendre que la place nécessaire
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  top: 50,
-                  left: 20,
-                  right: 20,
-                ), // Un peu plus de top pour le logo
+                padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
                 child: Center(
                   child: Image.asset(
                     TImages.logo,
-                    height: 120, // Réduit légèrement pour gagner de la place
+                    height: 120,
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-
               Text(
-                TTexts.signInTitle,
-                style: Theme.of(
-                  context,
-                )
+                "Mot de passe oublié ?",
+                style: Theme.of(context)
                     .textTheme
                     .headlineSmall
                     ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
+              const SizedBox(height: TSizes.spaceBtwItems / 2),
+              Padding(
+                padding: Responsive.pagePadding(context),
+                child: Text(
+                  "Saisissez votre adresse email. Nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
               const SizedBox(height: TSizes.spaceBtwItems),
-              // On s'assure que le formulaire ne crée pas de conflit de taille
-              const LoginForm(),
-
+              const ForgotPasswordForm(),
               Padding(
                 padding: Responsive.pagePadding(context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      TTexts.noAlreadyAccount,
+                      "Retour à la",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextButton(
-                      onPressed: () => context.go('/register'),
+                      onPressed: () => context.go('/login'),
                       child: Text(
-                        TTexts.signUp,
+                        "Connexion",
                         style: Theme.of(context).textTheme.bodyMedium!.apply(
                               color: TColors.secondColor,
                               fontWeightDelta: 2,
@@ -77,7 +68,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:cyna/features/product-detail/data/model/sliders/slider_response.
 import 'package:cyna/features/product-detail/presentation/provider/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // THomeCarousel.dart
 
@@ -100,6 +101,14 @@ class _THomeCarouselState extends ConsumerState<THomeCarousel> {
     );
   }
 
+  Future<void> _launchUrl(String? url) async {
+    if (url == null || url.isEmpty) return;
+    final uri = Uri.parse('http://localhost:5173$url');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
   Widget _buildBannerCard(SliderResponse slider, BuildContext context) {
     return Container(
       width: double.infinity,
@@ -142,9 +151,7 @@ class _THomeCarouselState extends ConsumerState<THomeCarousel> {
                 // ),
                 const SizedBox(height: 12),
                 ElevatedButton(
-                  onPressed: () {
-                    // action si besoin, par exemple naviguer vers un produit
-                  },
+                  onPressed: () => _launchUrl(slider.linkUrl),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(

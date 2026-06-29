@@ -169,7 +169,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                         .apply(fontSizeDelta: -1)),
                 const Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => context.go('/forgot-password'),
                   child: Text("Mot de passe oublié ?",
                       style: Theme.of(context).textTheme.bodyMedium!.apply(
                           fontWeightDelta: 2,

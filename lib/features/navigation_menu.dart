@@ -4,6 +4,7 @@ import 'package:cyna/core/provider/navigation_menu_provider.dart';
 import 'package:cyna/features/home/presentation/screens/home_screen.dart';
 import 'package:cyna/features/panier/presentation/screens/panier_screen.dart';
 import 'package:cyna/features/profile/presentation/screen/profile_screen.dart';
+import 'package:cyna/features/search/presentation/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
@@ -22,7 +23,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
     final currentIndex = ref.watch(currentIndexProvider);
     final List<Widget> screens = [
       const HomeScreen(),
-      const Center(child: Text('Search')),
+      const SearchScreen(),
       const PanierScreen(),
       const ProfileScreen(),
     ];

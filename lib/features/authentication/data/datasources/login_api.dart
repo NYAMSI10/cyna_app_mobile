@@ -23,4 +23,7 @@ abstract class LoginApi {
 
   @POST(registerEndPoint)
   Future<ApiResponse<dynamic>> register(@Body() FormData formData);
+
+  @POST(forgotPasswordEndPoint)
+  Future<ApiResponse<dynamic>> forgotPassword(@Body() FormData formData);
 }

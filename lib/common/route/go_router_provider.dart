@@ -3,6 +3,7 @@ import 'package:cyna/features/abonnement/presentation/screens/abonnement_screen.
 import 'package:cyna/features/adresse/presentation/screen/adresse_screen.dart';
 import 'package:cyna/features/carte_bancaire/presentation/screen/carte_bancaire_screen.dart';
 import 'package:cyna/features/checkout/presentation/screens/checkout_screen.dart';
+import 'package:cyna/features/authentication/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/login/login_screen.dart';
 import 'package:cyna/features/authentication/presentation/screens/register/register_screen.dart';
 import 'package:cyna/features/commande/presentation/screens/commande_screen.dart';
@@ -44,7 +45,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       if (!loggedIn) {
         return (path == '/login' ||
                 path == '/onboarding' ||
-                path == '/register')
+                path == '/register' ||
+                path == '/forgot-password')
             ? null
             : '/login';
       }
@@ -71,6 +73,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/register',
         name: registerRoute,
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        name: forgotPasswordRoute,
+        builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
         path: '/navigationMenu',

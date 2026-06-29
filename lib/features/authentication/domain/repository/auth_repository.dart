@@ -6,4 +6,6 @@ abstract interface class AuthRepository {
   Future<ApiResponse<dynamic>> login(LoginRequest loginRequest);
 
   Future<ApiResponse<dynamic>> register(RegisterRequest registerRequest);
+
+  Future<ApiResponse<dynamic>> forgotPassword(String email);
 }

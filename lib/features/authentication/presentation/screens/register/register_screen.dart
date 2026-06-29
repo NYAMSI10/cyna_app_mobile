@@ -57,36 +57,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // On s'assure que le formulaire ne crée pas de conflit de taille
               const RegisterForm(),
 
-              const TFormDrivider(drividerText: "ou"),
-
-              Padding(
-                padding: Responsive.pagePadding(context),
-                child: OutlinedButton(
-                  // Google est souvent en Outlined pour contraster avec le bouton principal
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    side: const BorderSide(color: TColors.secondColor),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Ajoute ton icône Google ici si tu l'as
-                      Text(
-                        "S'inscrire avec Google",
-                        style: Theme.of(context).textTheme.bodyMedium!.apply(
-                              color: TColors.secondColor,
-                              fontWeightDelta: 1,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
               Padding(
                 padding: Responsive.pagePadding(context),
                 child: Row(

@@ -71,4 +71,31 @@ final class AuthUsecaseImpl implements AuthUsecase {
       );
     }
   }
+
+  @override
+  Future<Result<ApiResponse<dynamic>, Failure>> forgotPassword(
+      String email) async {
+    try {
+      final response = await _loginRepository.forgotPassword(email);
+
+      if (!response.success) {
+        return Result.error(
+          Failure(
+            message: response.message ??
+                "Une erreur inattendue est survenue".hardcoded,
+          ),
+        );
+      }
+
+      return Result.success(response);
+    } on Failure catch (failure) {
+      return Result.error(failure);
+    } catch (e, s) {
+      throw Failure(
+        message: "An unexpected error occurred".hardcoded,
+        exception: e is Exception ? e : Exception(e.toString()),
+        stackTrace: s,
+      );
+    }
+  }
 }
